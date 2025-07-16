@@ -4,7 +4,9 @@
 
 CFLAGS = -Wall -Wextra -Werror -g3 
 
-SRCS = main.c
+SRCS = main.c \
+	paaaaarsing/redirections.c \
+	paaaaarsing/quotes.c
 
 OBJS = ${SRCS:.c=.o}
 

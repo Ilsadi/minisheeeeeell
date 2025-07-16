@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/15 15:55:19 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:17:52 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define INPUT		6
 # define TRUNC		7
 
+# define ERROR_NEWLINE "bash: syntax error near unexpected token `newline'\n"
+
 typedef struct s_token
 {
 	char			*arg;
@@ -33,5 +35,19 @@ typedef struct s_token
 	int				type;
 	struct s_token	*next;
 }					t_token;
+
+//		PAAAAAARSING
+
+// quotes.c
+
+int		doubles_quotes_is_closed(char *str);
+int		quotes_is_closed(char *str);
+
+// redirections.c
+
+int		is_operator(char *str);
+int		input_and_trunc(char *str);
+int		redirection_heredoc(char *str);
+int		redirection_input(char *str);
 
 #endif
