@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:25:41 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/16 19:39:01 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/17 12:41:49 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	is_operator(char *str)
 	return (0);
 }
 
-int	heredoc_and_append(char *str)
+int	pars_redir(char *str)
 {
 	int	i;
 	int	found;
@@ -92,12 +92,12 @@ int	heredoc_and_append(char *str)
 			return (0);
 		}
 	}
-	return (0);
-}
-
-int	redirection_heredoc(char *str)
-{
-	if (!heredoc_and_append(str))
-		return (0);
 	return (1);
 }
+
+// int	redirection(char *str)
+// {
+// 	if (!pars_redir(str))
+// 		return (0);
+// 	return (1);
+// }

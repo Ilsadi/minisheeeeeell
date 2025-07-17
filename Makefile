@@ -6,7 +6,10 @@ CFLAGS = -Wall -Wextra -Werror -g3
 
 SRCS = main.c \
 	paaaaarsing/redirections.c \
-	paaaaarsing/quotes.c
+	paaaaarsing/quotes.c \
+	paaaaarsing/slash.c \
+	paaaaarsing/parsing.c \
+	paaaaarsing/pipe.c \
 
 OBJS = ${SRCS:.c=.o}
 

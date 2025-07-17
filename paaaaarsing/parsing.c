@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/17 12:42:39 by ilsadi           ###   ########.fr       */
+/*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
+/*   Updated: 2025/07/17 12:43:19 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	main(void)
+int	parsing(char *str)
 {
-	char	*line;
-
-	while (1)
-	{
-		line = readline(" Minisheeeeeeeeell ✗ ");
-		if (line == NULL)
-		{
-			break ;
-		}
-		if (*line)
-			add_history(line);
-		if (parsing(line))
-			ft_printf("ca maaaarche !\n");
-		if (ft_strncmp(line, "exit", 4) == 0)
-			break ;
-		free(line);
-	}
-	ft_printf("exit\n");
-	return (0);
+	if (!pars_slash(str))
+		return (0);
+	if (!pars_pipe(str))
+		return (0);
+	if (!pars_redir(str))
+		return (0);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/16 19:17:52 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/17 12:31:55 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define TRUNC		7
 
 # define ERROR_NEWLINE "bash: syntax error near unexpected token `newline'\n"
+# define ERROR_ENEXPECTED_SLASH "bash: syntax error near enexpected token '/'\n"
 
 typedef struct s_token
 {
@@ -46,8 +47,21 @@ int		quotes_is_closed(char *str);
 // redirections.c
 
 int		is_operator(char *str);
-int		input_and_trunc(char *str);
-int		redirection_heredoc(char *str);
-int		redirection_input(char *str);
+int		pars_redir(char *str);
+int		redirection(char *str);
+
+// slash.c
+
+int		is_word(char c);
+int		pars_slash(char *str);
+
+// pipe.c
+
+int		pars_pipe(char *str);
+
+// parsing.c
+
+int		parsing(char *str);
+
 
 #endif
