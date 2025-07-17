@@ -10,6 +10,7 @@ SRCS = main.c \
 	paaaaarsing/slash.c \
 	paaaaarsing/parsing.c \
 	paaaaarsing/pipe.c \
+	paaaaarsing/expand.c \
 
 OBJS = ${SRCS:.c=.o}
 

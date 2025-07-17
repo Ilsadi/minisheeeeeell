@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:25:41 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/17 12:41:49 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/17 14:52:03 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,13 @@ int	is_operator(char *str)
 	while (str[i])
 	{
 		if (str[i] == '<' && str[i + 1] == '<')
-			return (HEREDOC);
+			return (1);
 		else if (str[i] == '>' && str[i + 1] == '>')
-			return (APPEND);
+			return (1);
 		else if (str[i] == '>' || str[i] == '<')
-		{
-			if (str[i] == '>')
-				return (TRUNC);
-			else
-				return (INPUT);
-		}
+			return (1);
 		else if (str[i] == '|')
-			return (PIPE);
+			return (1);
 		i++;
 	}
 	return (0);

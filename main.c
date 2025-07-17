@@ -6,15 +6,17 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/17 12:42:39 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/17 15:08:42 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	char	*line;
+	(void)ac;
+	(void)av;
 
 	while (1)
 	{
@@ -25,7 +27,7 @@ int	main(void)
 		}
 		if (*line)
 			add_history(line);
-		if (parsing(line))
+		if (parsing(line, envp))
 			ft_printf("ca maaaarche !\n");
 		if (ft_strncmp(line, "exit", 4) == 0)
 			break ;
