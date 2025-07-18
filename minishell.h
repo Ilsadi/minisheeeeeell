@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/17 15:10:34 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/18 18:07:20 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ typedef struct s_token
 
 // quotes.c
 
-int		pars_double_quotes(char *str);
-int		pars_single_quotes(char *str);
+int		pars_quotes(char *str);
 
 // redirections.c
 

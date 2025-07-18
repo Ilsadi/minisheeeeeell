@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:45:46 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/17 15:00:13 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/18 18:09:42 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,50 +21,27 @@ static int	char_is_operator(char c)
 	return (0);
 }
 
-int	pars_double_quotes(char *str)
+int	pars_quotes(char *str)
 {
 	int	i;
-	int	flag;
+	int	state;
 
+	state = 0;
 	i = 0;
-	flag = 0;
 	while (str[i])
 	{
-		if (str[i] == '\"')
-			flag++;
-		if (char_is_operator(str[i]))
-		{
+		if (str[i] == '"' && state == 0)
+			state = 1;
+		else if (str[i] == '"' && state == 1)
+			state = 0;
+		else if (str[i] == '\'' && state == 0)
+			state = 2;
+		else if (state != 0 && char_is_operator(str[i]))
 			str[i] *= -1;
-		}
 		i++;
 	}
-	ft_printf("%s\n", str);
-	if (flag % 2 == 0)
+	if (state != 0)
 		return (0);
-	else
-		return (1);
+	return (1);
 }
 
-int	pars_single_quotes(char *str)
-{
-	int	i;
-	int	flag;
-
-	i = 0;
-	flag = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			flag++;
-		if (char_is_operator(str[i]))
-		{
-			str[i] *= -1;
-		}
-		i++;
-	}
-	ft_printf("%s\n", str);
-	if (flag % 2 == 0)
-		return (0);
-	else
-		return (1);
-}
