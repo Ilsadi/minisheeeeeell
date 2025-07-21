@@ -11,6 +11,7 @@ SRCS = main.c \
 	paaaaarsing/parsing.c \
 	paaaaarsing/pipe.c \
 	paaaaarsing/expand.c \
+	paaaaarsing/token.c \
 
 OBJS = ${SRCS:.c=.o}
 

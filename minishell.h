@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/18 18:07:20 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/21 16:58:06 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 
 typedef struct s_token
 {
-	char			*arg;
 	char			*str;
 	int				type;
 	struct s_token	*next;
@@ -66,5 +65,8 @@ int		parsing(char *str, char **envp);
 
 char	*pars_expand(char *str, char **envp);
 
-
+t_token *create_token(char *str, int type);
+void add_token(t_token **head, t_token **last, t_token *new_token);
+t_token	*tokenize(char *line);
+void	ft_printlist(t_token *token);
 #endif

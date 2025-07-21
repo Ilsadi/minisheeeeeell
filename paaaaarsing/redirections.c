@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:25:41 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/17 14:52:03 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/21 14:25:03 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	is_operator(char *str)
 		else if (str[i] == '>' && str[i + 1] == '>')
 			return (1);
 		else if (str[i] == '>' || str[i] == '<')
+
 			return (1);
 		else if (str[i] == '|')
 			return (1);
