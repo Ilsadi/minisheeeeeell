@@ -17,12 +17,12 @@ int	pwd(void)
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
-	if (cwd)
+	if (!cwd)
 	{
-		ft_putstr_fd("pwd: error retrieving current directory: No such file or directory")
+		ft_putstr_fd("pwd: error retrieving current directory: No such file or directory", 2);
 		return (1);
 	}
-	ft_printf("%s\n", cwd)
-	free(cwd)
+	ft_printf("%s\n", cwd);
+	free(cwd);
 	return (0);
 }

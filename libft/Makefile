@@ -6,7 +6,7 @@
 #    By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/24 12:44:34 by ilsadi            #+#    #+#              #
-#    Updated: 2025/06/22 14:50:17 by ilsadi           ###   ########.fr        #
+#    Updated: 2025/07/22 14:21:33 by ilsadi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,8 @@ SRCS =  ft_isalpha.c \
 	ft_count_word.c \
 	ft_free_tab.c \
 	ft_sort_int_tab.c \
-	ft_strcspn.c
+	ft_strcspn.c \
+	ft_strcmp.c \
 
 SRCS_BONUS = ft_lstadd_back_bonus.c \
 	ft_lstadd_front_bonus.c \

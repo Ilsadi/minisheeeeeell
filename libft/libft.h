@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:44:22 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/06/24 19:04:07 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/22 14:22:08 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ int		ft_count_word(char const *str, char c);
 void	ft_free_tab(char **tab);
 int		ft_sort_int_tab(int *tab, int size);
 size_t	ft_strcspn(const char *str, const char *reject);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

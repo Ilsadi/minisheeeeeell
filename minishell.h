@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/21 16:58:06 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/07/22 13:50:01 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,26 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+//		EXEEEEEC
+
+//	built_in
+
+// built_in .c
+
+int		is_builtin(const char *cmd);
+
+// echo.c
+
+int		ft_echo(char **args);
+
+// env.c
+
+int		env(char **envp);
+
+// pwd.c
+
+int		pwd(void);
+
 //		PAAAAAARSING
 
 // quotes.c
@@ -46,7 +66,6 @@ int		pars_quotes(char *str);
 
 int		is_operator(char *str);
 int		pars_redir(char *str);
-int		redirection(char *str);
 
 // slash.c
 
@@ -65,8 +84,11 @@ int		parsing(char *str, char **envp);
 
 char	*pars_expand(char *str, char **envp);
 
-t_token *create_token(char *str, int type);
-void add_token(t_token **head, t_token **last, t_token *new_token);
+// token.c
+
+t_token	*create_token(char *str, int type);
+void	add_token(t_token **head, t_token **last, t_token *new_token);
 t_token	*tokenize(char *line);
 void	ft_printlist(t_token *token);
+
 #endif

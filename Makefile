@@ -12,6 +12,10 @@ SRCS = main.c \
 	paaaaarsing/pipe.c \
 	paaaaarsing/expand.c \
 	paaaaarsing/token.c \
+	exeeeeec/built_in/built_in.c \
+	exeeeeec/built_in/pwd.c \
+	exeeeeec/built_in/echo.c \
+	exeeeeec/built_in/env.c \
 
 OBJS = ${SRCS:.c=.o}
 

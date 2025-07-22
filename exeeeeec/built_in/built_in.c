@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 15:03:04 by ilsadi           ###   ########.fr       */
+/*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
+/*   Updated: 2025/07/22 15:16:40 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
-int	main(int ac, char **av, char **envp)
+char
+
+int	is_builtin(const char *cmd)
 {
-	char	*line;
-
-	(void)ac;
-	(void)av;
-
-	while (1)
-	{
-		line = readline(" Minisheeeeeeeeell ✗ ");
-		if (line == NULL)
-		{
-			break ;
-		}
-		if (*line)
-			add_history(line);
-		parsing(line, envp);
-		if (ft_strncmp(line, "exit", 4) == 0)
-			break ;
-		free(line);
-	}
-	ft_printf("exit\n");
+	if (!cmd)
+		return (0);
+	if (ft_strcmp(cmd, "echo") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "env") == 0)
+		return (1);
 	return (0);
 }

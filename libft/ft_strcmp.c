@@ -1,38 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 15:03:04 by ilsadi           ###   ########.fr       */
+/*   Created: 2025/07/22 13:55:35 by ilsadi            #+#    #+#             */
+/*   Updated: 2025/07/22 14:20:45 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **envp)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char	*line;
+	int	i;
 
-	(void)ac;
-	(void)av;
-
-	while (1)
-	{
-		line = readline(" Minisheeeeeeeeell ✗ ");
-		if (line == NULL)
-		{
-			break ;
-		}
-		if (*line)
-			add_history(line);
-		parsing(line, envp);
-		if (ft_strncmp(line, "exit", 4) == 0)
-			break ;
-		free(line);
-	}
-	ft_printf("exit\n");
-	return (0);
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

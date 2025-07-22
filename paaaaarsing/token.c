@@ -88,6 +88,7 @@ t_token	*operator(char *line, int *i)
 // 	add_token(&head, &current, tok);
 // 	free(word);
 // }
+
 // Fonction qui parse la ligne et construit la liste de tokens
 t_token	*tokenize(char *line)
 {
