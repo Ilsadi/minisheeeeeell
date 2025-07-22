@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 13:50:01 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:34:58 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 typedef struct s_token
 {
 	char			*str;
+	// char			**args;
 	int				type;
 	struct s_token	*next;
 }					t_token;
@@ -46,7 +47,7 @@ int		is_builtin(const char *cmd);
 
 // echo.c
 
-int		ft_echo(char **args);
+int		ft_echo(t_token *token);
 
 // env.c
 

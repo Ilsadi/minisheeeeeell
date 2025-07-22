@@ -6,13 +6,11 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 15:16:40 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:40:23 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-char
 
 int	is_builtin(const char *cmd)
 {

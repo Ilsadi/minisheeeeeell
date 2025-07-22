@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 15:06:42 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:43:47 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,12 @@ int	parsing(char *str, char **envp)
 	first = tokenize (str);
 	if (first)
 	{
-		if (is_builtin(first->str))
-			ft_printf("Built-in detected: %s\n", first->str);
+		if (ft_strcmp(first->str, "echo") == 0)
+			ft_echo(first);
+		else if (ft_strcmp(first->str, "pwd") == 0)
+			pwd();
+		else if (ft_strcmp(first->str, "env") == 0)
+			env(envp);
 		else
 			ft_printf("Not a built-in: %s\n", first->str);
 	}

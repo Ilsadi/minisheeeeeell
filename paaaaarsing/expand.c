@@ -6,13 +6,13 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 13:37:18 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/22 15:55:34 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	dollar_no_var(char **result, const char *str, int last_pos, int start)
+void	dollar_no_var(char **result, const char *str, int last_pos, int start)
 {
 	char	*tmp;
 

@@ -12,30 +12,31 @@
 
 #include "../../minishell.h"
 
-int	ft_echo(char **args)
+int	ft_echo(t_token *token)
 {
-	int	i;
-	int	j;
-	int	n_flag;
+	int		j;
+	int		n_flag;
+	t_token *current;
 
-	i = 1;
 	n_flag = 0;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	current = token->next;
+
+	while (current && current->type == ARG && current->str[0] == '-' && current->str[1] == 'n')
 	{
 		j = 2;
-		while (args[i][j] == 'n')
+		while (current->str[j] == 'n')
 			j++;
-		if (args[i][j] != '\0')
+		if (current->str[j] != '\0')
 			break ;
 		n_flag = 1;
-		i++;
+		current = current->next;
 	}
-	while (args[i])
+	while (current && current->type == ARG)
 	{
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1])
+		ft_putstr_fd(current->str, 1);
+		if (current->next && current->next->type == ARG)
 			ft_putstr_fd(" ", 1);
-		i++;
+		current = current->next;
 	}
 	if (!n_flag)
 		ft_putstr_fd("\n", 1);

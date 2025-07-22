@@ -11,6 +11,7 @@ t_token	*create_token(char *str, int type)
 		new_token->str = ft_strdup(str);
 	else
 		new_token->str = NULL;
+	// new_token->args = NULL;
 	new_token->type = type;
 	new_token->next = NULL;
 	return (new_token);
@@ -76,17 +77,12 @@ t_token	*operator(char *line, int *i)
 	return (tok);
 }
 
-// t_token	*arg(char *line, int *i)
+// t_token *cmd(char *line, int *i)
 // {
-// 	char	*word;
-// 	int		start;
-// 		// while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<' && line[i] != '>')
-// 			// 	i++;
-// 	start = 0;
-// 	word = ft_substr(line, start, &i - start);
-// 	t_token *tok = create_token(word, ARG); // ou CMD selon contexte
-// 	add_token(&head, &current, tok);
-// 	free(word);
+// 	int	type;
+// 	t_token *tok;
+
+// 	if ()
 // }
 
 // Fonction qui parse la ligne et construit la liste de tokens
@@ -123,7 +119,14 @@ t_token	*tokenize(char *line)
 			while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<' && line[i] != '>')
 				i++;
 			word = ft_substr(line, start, i - start);
-			new_tok = create_token(word, ARG);
+			if (ft_strcmp(word, "echo") == 0)
+				new_tok = create_token(word, CMD);
+			else if (ft_strcmp(word, "pwd") == 0)
+				new_tok = create_token(word, CMD);
+			else if (ft_strcmp(word, "env") == 0)
+				new_tok = create_token(word, CMD);
+			else
+				new_tok = create_token(word, ARG);
 			add_token(&head, &current, new_tok);
 			free(word);
 		}
