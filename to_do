@@ -1,0 +1,6 @@
+.proteger malloc
+.faire fonctions free nodes sur fonction setup
+.changer envp pour parsing
+.peut etre a faire slash token
+.refaire le exit building
+.dans cd error quand doc don t exist

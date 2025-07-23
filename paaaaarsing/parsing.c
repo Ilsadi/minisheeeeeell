@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 16:43:47 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/23 17:44:39 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	free_token_list(t_token *token)
 	}
 }
 
-int	parsing(char *str, char **envp)
+int	parsing(char *str, char **envp, t_var **var)
 {
 	t_token	*first;
 
 	if (!pars_quotes(str))
 		return (0);
-	if (!pars_slash(str))
-		return (0);
+	// if (!pars_slash(str))
+	// 	return (0);
 	if (!pars_pipe(str))
 		return (0);
 	if (!pars_redir(str))
@@ -47,6 +47,8 @@ int	parsing(char *str, char **envp)
 			pwd();
 		else if (ft_strcmp(first->str, "env") == 0)
 			env(envp);
+		else if (ft_strcmp(first->str, "cd") == 0)
+			cd(first, var);
 		else
 			ft_printf("Not a built-in: %s\n", first->str);
 	}

@@ -1,28 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in.c                                         :+:      :+:    :+:   */
+/*   utils_setup.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/23 17:27:54 by ilsadi           ###   ########.fr       */
+/*   Created: 2025/07/23 14:02:04 by ilsadi            #+#    #+#             */
+/*   Updated: 2025/07/23 17:40:39 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(const char *cmd)
+int	size_tab(char **env)
 {
-	if (!cmd)
-		return (0);
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "env") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "cd") == 0)	
-		return (1);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+int	size_var(t_var **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+void	print_tab(t_var **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_printf("%s : %s\n", tab[i]->name, tab[i]->value);
+		i++;
+	}
 }

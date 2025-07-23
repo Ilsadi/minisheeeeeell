@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 16:34:58 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/23 18:01:19 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_var
+{
+	char	*name;
+	char	*value;
+}			t_var;
+
+
 //		EXEEEEEC
 
 //	built_in
@@ -56,6 +63,10 @@ int		env(char **envp);
 // pwd.c
 
 int		pwd(void);
+
+// cd.c
+
+int		cd(t_token *token, t_var **var);
 
 //		PAAAAAARSING
 
@@ -79,7 +90,8 @@ int		pars_pipe(char *str);
 
 // parsing.c
 
-int		parsing(char *str, char **envp);
+int		parsing(char *str, char **envp, t_var **var);
+void	free_token_list(t_token *token);
 
 // expand.c
 
@@ -91,5 +103,21 @@ t_token	*create_token(char *str, int type);
 void	add_token(t_token **head, t_token **last, t_token *new_token);
 t_token	*tokenize(char *line);
 void	ft_printlist(t_token *token);
+void	free_tokens(t_token *token);
+
+//		SETUP
+
+// utils_setup.c
+
+int		size_var(t_var **tab);
+int		size_tab(char **env);
+void	print_tab(t_var **tab);
+
+// search_var.c
+
+t_var	**created_tab(char **env);
+char	*get_value(t_var **tab, char *name);
+void	destroy_tab(t_var **tab);
+t_var	**unset_var(t_var **tab, char *name);
 
 #endif

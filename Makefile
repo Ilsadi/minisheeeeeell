@@ -2,7 +2,7 @@
 #                                  VARIABLES                                   #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror -g3 
+CFLAGS = -Wall -Wextra -Werror -g3 -I$(INC)
 
 SRCS = main.c \
 	paaaaarsing/redirections.c \
@@ -16,6 +16,9 @@ SRCS = main.c \
 	exeeeeec/built_in/pwd.c \
 	exeeeeec/built_in/echo.c \
 	exeeeeec/built_in/env.c \
+	exeeeeec/built_in/cd.c \
+	setup/utils_setup.c \
+	setup/search_var.c \
 
 OBJS = ${SRCS:.c=.o}
 
@@ -23,7 +26,7 @@ NAME = minishell
 
 LIBFT = libft/libft.a
 
-INC = minishell.h
+INC = ./
 
 all: $(NAME)
 
@@ -31,7 +34,7 @@ libft/libft.a:
 	@$(MAKE) -C libft
 
 
-%.o: %.c $(INC)
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT) 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 int	ft_echo(t_token *token)
 {
@@ -20,7 +20,6 @@ int	ft_echo(t_token *token)
 
 	n_flag = 0;
 	current = token->next;
-
 	while (current && current->type == ARG && current->str[0] == '-' && current->str[1] == 'n')
 	{
 		j = 2;

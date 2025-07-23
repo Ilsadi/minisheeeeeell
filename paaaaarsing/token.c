@@ -100,7 +100,7 @@ t_token	*tokenize(char *line)
 		while (line[i] == ' ')
 			i++;
 		if (!line[i])
-			break;
+			break ;
 		start = i;
 
 		if (line[i] == '\'' || line[i] == '"')

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/22 15:03:04 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/23 17:52:50 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,15 @@
 int	main(int ac, char **av, char **envp)
 {
 	char	*line;
+	t_var	**result;
 
 	(void)ac;
 	(void)av;
 
+	result = created_tab (envp);
+	if (!result)
+		return (1);
+	// print_tab(result);
 	while (1)
 	{
 		line = readline(" Minisheeeeeeeeell ✗ ");
@@ -28,9 +33,13 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*line)
 			add_history(line);
-		parsing(line, envp);
+		parsing(line, envp, result);
 		if (ft_strncmp(line, "exit", 4) == 0)
+		{
+			free(line);
+			destroy_tab(result);
 			break ;
+		}
 		free(line);
 	}
 	ft_printf("exit\n");
