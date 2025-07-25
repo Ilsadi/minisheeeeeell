@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/24 17:41:22 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/25 18:25:14 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int	main(int ac, char **av, char **envp)
 	// print_tab(result);
 	while (1)
 	{
-		line = readline(" Minisheeeeeeeeell ✗ ");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		line = readline(">Minisheeeeel : ");
 		if (line == NULL)
 		{
 			break ;

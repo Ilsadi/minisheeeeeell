@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/24 17:49:37 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/25 17:04:26 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	free_token_list(t_token *token);
 
 // expand.c
 
-char	*pars_expand(char *str, char **envp);
+char	*pars_expand(char *str, t_var **tab);
 
 // token.c
 

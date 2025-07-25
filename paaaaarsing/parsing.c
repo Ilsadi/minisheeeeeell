@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/24 17:49:54 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/25 18:30:19 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	parsing(char *str, char **envp, t_var **var)
 		return (0);
 	if (!pars_redir(str))
 		return (0);
-	str = pars_expand(str, envp);
+	str = pars_expand(str, var);
 	first = tokenize (str);
 	if (first)
 	{
@@ -51,14 +51,13 @@ int	parsing(char *str, char **envp, t_var **var)
 			cd(first, var);
 		else if (ft_strcmp(first->str, "exit") == 0)
 			ft_exit(first, var);
-		else
-			ft_printf("Not a built-in: %s\n", first->str);
+		// else
+		// 	ft_printf("Not a built-in: %s\n", first->str);
 	}
 	else
-		ft_printf("No tokens created\n");
-	ft_printlist(first);
+		// ft_printf("No tokens created\n");
+	// ft_printlist(first);
 	free_token_list(first);
-	free(str);
 	return (1);
 }
 
