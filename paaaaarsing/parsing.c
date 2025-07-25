@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/23 17:44:39 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/24 17:49:54 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	parsing(char *str, char **envp, t_var **var)
 			env(envp);
 		else if (ft_strcmp(first->str, "cd") == 0)
 			cd(first, var);
+		else if (ft_strcmp(first->str, "exit") == 0)
+			ft_exit(first, var);
 		else
 			ft_printf("Not a built-in: %s\n", first->str);
 	}

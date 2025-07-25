@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/23 18:01:19 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/24 17:49:37 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ int		pwd(void);
 // cd.c
 
 int		cd(t_token *token, t_var **var);
+
+// exit.c
+
+int		ft_exit(t_token *token, t_var **var);
 
 //		PAAAAAARSING
 

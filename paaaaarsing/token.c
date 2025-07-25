@@ -8,7 +8,14 @@ t_token	*create_token(char *str, int type)
 	if (!new_token)
 		return (NULL);
 	if (str)
+	{
 		new_token->str = ft_strdup(str);
+		if (!new_token->str)
+		{
+			free(new_token);
+			return (NULL);
+		}
+	}
 	else
 		new_token->str = NULL;
 	// new_token->args = NULL;
@@ -39,12 +46,19 @@ t_token	*quotes(char *line, int *i)
 	char	*word;
 	t_token	*tok;
 
-	quote = line[*i++];
+	quote = line[(*i)++];
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
 	word = ft_substr(line, start, *i - start);
+	if (!word)
+		return (NULL);
 	tok = create_token(word, ARG);
+	if (!tok)
+	{
+		free(word);
+		return (NULL);
+	}
 	free(word);
 
 	return (tok);
@@ -74,6 +88,8 @@ t_token	*operator(char *line, int *i)
 	else
 		(*i)++;
 	tok = create_token(NULL, type);
+	if (!tok)
+		return (NULL);
 	return (tok);
 }
 
@@ -106,11 +122,21 @@ t_token	*tokenize(char *line)
 		if (line[i] == '\'' || line[i] == '"')
 		{
 			new_tok = quotes(line, &i);
+			if (!new_tok)
+			{
+				free_token_list(head);
+				return (NULL);
+			}
 			add_token(&head, &current, new_tok);
 		}
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
 		{
 			new_tok = operator(line, &i);
+			if (!new_tok)
+			{
+				free_token_list(head);
+				return (NULL);
+			}
 			add_token(&head, &current, new_tok);
 		}
 		else
@@ -119,6 +145,11 @@ t_token	*tokenize(char *line)
 			while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<' && line[i] != '>')
 				i++;
 			word = ft_substr(line, start, i - start);
+			if (!word)
+			{
+				free_token_list(head);
+				return (NULL);
+			}
 			if (ft_strcmp(word, "echo") == 0)
 				new_tok = create_token(word, CMD);
 			else if (ft_strcmp(word, "pwd") == 0)
@@ -127,8 +158,13 @@ t_token	*tokenize(char *line)
 				new_tok = create_token(word, CMD);
 			else
 				new_tok = create_token(word, ARG);
-			add_token(&head, &current, new_tok);
 			free(word);
+			if (!new_tok)
+			{
+					free_token_list(head);
+					return (NULL);
+			}
+			add_token(&head, &current, new_tok);
 		}
 	}
 	return (head);
