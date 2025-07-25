@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/25 18:30:19 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/26 01:19:14 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	free_token_list(t_token *token)
 int	parsing(char *str, char **envp, t_var **var)
 {
 	t_token	*first;
+	char	*original_str;
 
 	if (!pars_quotes(str))
 		return (0);
@@ -37,6 +38,7 @@ int	parsing(char *str, char **envp, t_var **var)
 		return (0);
 	if (!pars_redir(str))
 		return (0);
+	original_str = str;
 	str = pars_expand(str, var);
 	first = tokenize (str);
 	if (first)
@@ -57,6 +59,8 @@ int	parsing(char *str, char **envp, t_var **var)
 	else
 		// ft_printf("No tokens created\n");
 	// ft_printlist(first);
+	if (str != original_str)
+		free(original_str);
 	free_token_list(first);
 	return (1);
 }

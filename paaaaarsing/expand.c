@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/25 17:27:32 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/26 01:26:42 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ char	*pars_expand(char *str, t_var **tab)
 			result = ft_strfreejoin(result, tmp);
 			free(tmp);
 			varname = ft_substr(str, start, i - start);
+			printf("Recherche de la variable : '%s'\n", varname);
 			tmp = get_value(tab, varname);
 			if (tmp)
 				result = ft_strfreejoin(result, tmp);
