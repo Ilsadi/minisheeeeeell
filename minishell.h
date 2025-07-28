@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/25 17:04:26 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/28 13:03:59 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,20 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_pipex
+{
+	int		infile;
+	int		outfile;
+	pid_t	pid1;
+	pid_t	pid2;
+	int		pipefd[2];
+	int		fd_in;
+	int		fd_out;
+	int		cmd_start;
+	char	**cmd1;
+	char	**cmd2;
+}	t_pipex;
+
 typedef struct s_var
 {
 	char	*name;
@@ -45,6 +59,16 @@ typedef struct s_var
 
 
 //		EXEEEEEC
+
+//	pipex
+
+// pipex_utils.c
+
+void	close_test(int fd);
+void	close_all(t_pipex *pipex);
+void	ft_error_exit(const char *msg);
+int		choose_out(t_pipex *pipex, int i, int ac);
+char	**var_to_envp(t_var **var);
 
 //	built_in
 
