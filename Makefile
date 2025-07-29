@@ -18,6 +18,7 @@ SRCS = main.c \
 	exeeeeec/built_in/env.c \
 	exeeeeec/built_in/cd.c \
 	exeeeeec/built_in/exit.c \
+	exeeeeec/built_in/unset.c \
 	setup/utils_setup.c \
 	setup/search_var.c \
 

@@ -12,16 +12,8 @@
 
 #include "minishell.h"
 
-int	env(char **envp)
+int	env(t_var	**var)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strchr(envp[i], '='))
-			ft_putendl_fd(envp[i], 1);
-		i++;
-	}
+	print_tab(var);
 	return (0);
 }

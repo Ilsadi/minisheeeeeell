@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 13:51:55 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/25 17:12:11 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/29 18:42:41 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,35 +84,3 @@ void	destroy_tab(t_var **tab)
 	free(tab);
 }
 
-t_var	**unset_var(t_var **tab, char *name)
-{
-	t_var	**new_tab;
-	int		i;
-	int		is_found;
-
-	i = 0;
-	is_found = 0;
-	new_tab = ft_calloc(sizeof(t_var *), size_var(tab));
-	if (!new_tab)
-		return (NULL);
-	while (tab[i])
-	{
-		if (ft_strcmp(name, tab[i]->name) == 0)
-		{
-			is_found = 1;
-			free(tab[i]->name);
-			free(tab[i]->value);
-			free(tab[i]);
-		}
-		else
-			new_tab[i - is_found] = tab[i];
-		i++;
-	}
-	if (!is_found)
-	{
-		free(new_tab);
-		return (tab);
-	}
-	free(tab);
-	return (new_tab);
-}

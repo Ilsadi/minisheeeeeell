@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 13:04:25 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/24 17:49:16 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/29 19:08:12 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	ft_exit(t_token *token, t_var **var)
 	}
 	free_token_list(token);
 	destroy_tab(var);
+	//clear_history();
 	ft_printf("exit\n");
 	exit(exit_code & 255);
 }

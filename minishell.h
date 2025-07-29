@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/28 13:03:59 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/29 19:36:04 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_pipex
 	int		cmd_start;
 	char	**cmd1;
 	char	**cmd2;
-}	t_pipex;
+}				t_pipex;
 
 typedef struct s_var
 {
@@ -57,6 +57,11 @@ typedef struct s_var
 	char	*value;
 }			t_var;
 
+typedef struct s_mini
+{
+	struct s_token	*first;
+	struct s_var	**env;
+}				t_mini;
 
 //		EXEEEEEC
 
@@ -82,7 +87,7 @@ int		ft_echo(t_token *token);
 
 // env.c
 
-int		env(char **envp);
+int		env(t_var **var);
 
 // pwd.c
 
@@ -91,6 +96,11 @@ int		pwd(void);
 // cd.c
 
 int		cd(t_token *token, t_var **var);
+
+// unset.c
+
+t_var	**unset_var(t_var **tab, char *name);
+int		unset(t_token *token, t_mini *mini);
 
 // exit.c
 
@@ -118,7 +128,7 @@ int		pars_pipe(char *str);
 
 // parsing.c
 
-int		parsing(char *str, char **envp, t_var **var);
+int		parsing(char *str, t_mini *mini);
 void	free_token_list(t_token *token);
 
 // expand.c
@@ -146,6 +156,5 @@ void	print_tab(t_var **tab);
 t_var	**created_tab(char **env);
 char	*get_value(t_var **tab, char *name);
 void	destroy_tab(t_var **tab);
-t_var	**unset_var(t_var **tab, char *name);
 
 #endif

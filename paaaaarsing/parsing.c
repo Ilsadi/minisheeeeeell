@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/26 01:19:14 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/29 19:47:46 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_token_list(t_token *token)
 	}
 }
 
-int	parsing(char *str, char **envp, t_var **var)
+int	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
 	char	*original_str;
@@ -39,7 +39,7 @@ int	parsing(char *str, char **envp, t_var **var)
 	if (!pars_redir(str))
 		return (0);
 	original_str = str;
-	str = pars_expand(str, var);
+	str = pars_expand(str, mini->env);
 	first = tokenize (str);
 	if (first)
 	{
@@ -48,19 +48,21 @@ int	parsing(char *str, char **envp, t_var **var)
 		else if (ft_strcmp(first->str, "pwd") == 0)
 			pwd();
 		else if (ft_strcmp(first->str, "env") == 0)
-			env(envp);
+			env(mini->env);
 		else if (ft_strcmp(first->str, "cd") == 0)
-			cd(first, var);
+			cd(first, mini->env);
 		else if (ft_strcmp(first->str, "exit") == 0)
-			ft_exit(first, var);
-		// else
+			ft_exit(first, mini->env);
+		else if (ft_strcmp(first->str, "unset") == 0)
+			unset(first, mini);
+		// elsef
 		// 	ft_printf("Not a built-in: %s\n", first->str);
 	}
 	else
 		// ft_printf("No tokens created\n");
 	// ft_printlist(first);
-	if (str != original_str)
-		free(original_str);
+	// if (str != original_str)
+	// 	free(str);
 	free_token_list(first);
 	return (1);
 }

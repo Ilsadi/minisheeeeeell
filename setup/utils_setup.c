@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:02:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/23 17:40:39 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/07/29 18:47:27 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_tab(t_var **tab)
 	i = 0;
 	while (tab[i])
 	{
-		ft_printf("%s : %s\n", tab[i]->name, tab[i]->value);
+		ft_printf("%s=%s\n", tab[i]->name, tab[i]->value);
 		i++;
 	}
 }
