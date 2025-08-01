@@ -142,7 +142,8 @@ t_token	*tokenize(char *line)
 		else
 		{
 			start = i;
-			while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<' && line[i] != '>')
+			while (line[i] && line[i] != ' '
+				&& line[i] != '|' && line[i] != '<' && line[i] != '>')
 				i++;
 			word = ft_substr(line, start, i - start);
 			if (!word)
@@ -161,8 +162,8 @@ t_token	*tokenize(char *line)
 			free(word);
 			if (!new_tok)
 			{
-					free_token_list(head);
-					return (NULL);
+				free_token_list(head);
+				return (NULL);
 			}
 			add_token(&head, &current, new_tok);
 		}

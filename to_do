@@ -1,6 +1,8 @@
-.proteger malloc
-.faire fonctions free nodes sur fonction setup
-.changer envp pour parsing
-.peut etre a faire slash token
-.refaire le exit building
-.dans cd error quand doc don t exist
+RESTE A FAIRE POUR MINISHELL FONCTIONNEL
+
+leak quand on cree un token
+export
+faire en sort que les token ARG ET CMD soient reconnu automatiquement
+integrer pipex
+gestion des bon messages d erreur
+verifier si il y a des leaks

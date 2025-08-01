@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/29 19:47:46 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/01 10:48:26 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	parsing(char *str, t_mini *mini)
 	else
 		// ft_printf("No tokens created\n");
 	// ft_printlist(first);
-	// if (str != original_str)
-	// 	free(str);
+	//  if (str != original_str)
+	// 	free(original_str);
 	free_token_list(first);
 	return (1);
 }
