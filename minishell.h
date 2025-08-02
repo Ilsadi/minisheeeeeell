@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 18:51:47 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 18:53:13 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ typedef struct s_mini
 	struct s_var	**env;
 }				t_mini;
 
-typedef struct s_gc_node
+typedef struct s_rb_node
 {
 	void							*ptr;
-	struct s_gc_node				*next;
-}									t_gc_node;
+	struct s_rb_node				*next;
+}									t_rb_node;
 
-typedef struct s_gc_list
+typedef struct s_rb_list
 {
-	t_gc_node						*head;
-}									t_gc_list;
+	t_rb_node						*head;
+}									t_rb_list;
 
 //		EXEEEEEC
 

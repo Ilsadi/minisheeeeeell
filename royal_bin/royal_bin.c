@@ -6,42 +6,42 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:50:34 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 18:50:50 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 18:52:50 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	*gc_malloc(size_t size, t_gc_list *gc)
+void	*rb_malloc(size_t size, t_rb_list *rb)
 {
-	t_gc_node	*node;
+	t_rb_node	*node;
 	void		*ptr;
 
-	if (!gc)
+	if (!rb)
 		return (NULL);
 	ptr = malloc(size);
 	if (!ptr)
 		return (NULL);
-	node = malloc(sizeof(t_gc_node));
+	node = malloc(sizeof(t_rb_node));
 	if (!node)
 	{
 		free(ptr);
 		return (NULL);
 	}
 	node->ptr = ptr;
-	node->next = gc->head;
-	gc->head = node;
+	node->next = rb->head;
+	rb->head = node;
 	return (ptr);
 }
 
-void	gc_free_all(t_gc_list *gc)
+void	rb_free_all(t_rb_list *rb)
 {
-	t_gc_node	*current;
-	t_gc_node	*tmp;
+	t_rb_node	*current;
+	t_rb_node	*tmp;
 
-	if (!gc || !gc->head)
+	if (!rb || !rb->head)
 		return ;
-	current = gc->head;
+	current = rb->head;
 	while (current)
 	{
 		tmp = current;
@@ -53,5 +53,5 @@ void	gc_free_all(t_gc_list *gc)
 		current = current->next;
 		free(tmp);
 	}
-	gc->head = NULL;
+	rb->head = NULL;
 }
