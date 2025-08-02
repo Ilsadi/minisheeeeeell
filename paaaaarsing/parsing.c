@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 15:46:14 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 22:06:55 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	parsing(char *str, t_mini *mini)
 	if (!pars_redir(str))
 		return (0);
 	original_str = str;
-	str = pars_expand(str, mini->env);
-	first = tokenize (str);
+	str = pars_expand(str, mini);
+	first = tokenize (str, mini);
 	// ft_printlist(first);
 	if (first)
 	{
@@ -69,18 +69,21 @@ int	parsing(char *str, t_mini *mini)
 			cd(first, mini->env);
 		else if (ft_strcmp(first->str, "exit") == 0)
 		{
-			free(str);
-			ft_exit(first, mini->env);
+			int exit_code = 0; // ✅ Valeur par défaut
+    		if (first->next && first->next->type == ARG)
+        		exit_code = ft_atoi(first->next->str);
+    		rb_free_all(mini->rb);
+			free(mini->rb); // ✅ Libère tout
+			destroy_tab(mini->env);
+    		ft_printf("exit\n");
+    		exit(exit_code & 255);
 		}
 		else if (ft_strcmp(first->str, "unset") == 0)
 			unset(first, mini);
 		// elsef
 		// 	ft_printf("Not a built-in: %s\n", first->str);
 	}
-	else
-		// ft_printf("No tokens created\n");
-	free(str);
-	free_token_list(first);
+	rb_free_all(mini->rb);
 	return (1);
 }
 

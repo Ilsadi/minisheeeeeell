@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 15:30:44 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 22:04:52 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,19 @@
 int	main(int ac, char **av, char **envp)
 {
 	char	*line;
-	t_mini	mini;
+	t_mini mini;
 
 	ft_bzero(&mini, sizeof(t_mini));
+	mini.rb = malloc(sizeof(t_rb_list));
+	mini.rb->head = NULL;
 	(void)ac;
 	(void)av;
 
-	mini.env = created_tab(envp);
+	mini.env = created_tab(envp, &mini);
 	if (!mini.env)
 		return (1);
 	// print_tab(result);
-	while (!mini.should_exit)
+	while (1)
 	{
 		line = readline(">Minisheeeeel : ");
 		if (!line)
@@ -40,7 +42,8 @@ int	main(int ac, char **av, char **envp)
 		}
 		free(line);
 	}
-	destroy_tab(mini.env);
 	clear_history();
-	return (mini.exit_code);
+	free(mini.rb);
+	destroy_tab(mini.env);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:50:34 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 18:52:50 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 21:44:27 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*rb_malloc(size_t size, t_rb_list *rb)
 	t_rb_node	*node;
 	void		*ptr;
 
-	if (!rb)
+	if (!rb || size == 0)
 		return (NULL);
 	ptr = malloc(size);
 	if (!ptr)

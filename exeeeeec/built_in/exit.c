@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 13:04:25 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/01 16:44:51 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 20:10:54 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_numeric(char *str)
 	return (1);
 }
 
-int	ft_exit(t_token *token, t_var **var)
+int	ft_exit(t_token *token)
 {	
 	t_token	*current;
 	int		exit_code;
@@ -42,8 +42,6 @@ int	ft_exit(t_token *token, t_var **var)
 	if (!current || current->type != ARG)
 	{
 		ft_printf("exit\n");
-		free_token_list(token);
-		destroy_tab(var);
 		exit(0);
 	}
 	exit_code = ft_atoi(current->str);
@@ -55,12 +53,8 @@ int	ft_exit(t_token *token, t_var **var)
 	if (!is_numeric(current->str))
 	{
 		ft_putstr_fd("exit: numeric argument required\n", 2);
-		free_token_list(token);
-		destroy_tab(var);
 		exit(2);
 	}
-	free_token_list(token);
-	destroy_tab(var);
 	//clear_history();
 	ft_printf("exit\n");
 	exit(exit_code & 255);

@@ -6,18 +6,19 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 13:51:55 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/29 18:42:41 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 22:05:24 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_var	**created_tab(char **env)
+t_var	**created_tab(char **env, t_mini *mini)
 {
 	t_var	**tab;
 	int		tablen;
 	int		i;
 	int		j;
+	(void)mini;
 
 	i = 0;
 	tablen = size_tab(env);
@@ -30,24 +31,15 @@ t_var	**created_tab(char **env)
 		j = 0;
 		tab[i] = malloc(sizeof(t_var));
 		if (!tab[i])
-		{
-			destroy_tab(tab);
 			return (NULL);
-		}
 		while (env[i][j] != '=')
 			j++;
 		tab[i]->name = ft_substr(env[i], 0, j);
 		if (!tab[i]->name)
-		{
-			destroy_tab(tab);
 			return (NULL);
-		}
 		tab[i]->value = ft_strdup(env[i] + (j + 1));
 		if (!tab[i]->value)
-		{
-			destroy_tab(tab);
 			return (NULL);
-		}
 		i++;
 	}
 	return (tab);

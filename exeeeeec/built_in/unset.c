@@ -6,13 +6,13 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 13:59:15 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/29 19:46:29 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 19:44:16 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_var	**unset_var(t_var **tab, char *name)
+t_var	**unset_var(t_var **tab, char *name, t_mini *mini)
 {
 	t_var	**new_tab;
 	int		i;
@@ -20,7 +20,7 @@ t_var	**unset_var(t_var **tab, char *name)
 
 	i = 0;
 	is_found = 0;
-	new_tab = ft_calloc(sizeof(t_var *), size_var(tab));
+	new_tab = rb_calloc(sizeof(t_var *), size_var(tab), mini->rb);
 	if (!new_tab)
 		return (NULL);
 	while (tab[i])
@@ -28,20 +28,16 @@ t_var	**unset_var(t_var **tab, char *name)
 		if (ft_strcmp(name, tab[i]->name) == 0)
 		{
 			is_found = 1;
-			free(tab[i]->name);
-			free(tab[i]->value);
-			free(tab[i]);
+			// free(tab[i]->name);
+			// free(tab[i]->value);
+			// free(tab[i]);
 		}
 		else
 			new_tab[i - is_found] = tab[i];
 		i++;
 	}
 	if (!is_found)
-	{
-		free(new_tab);
 		return (tab);
-	}
-	free(tab);
 	return (new_tab);
 }
 
@@ -52,7 +48,7 @@ int	unset(t_token *token, t_mini *mini)
 	current = token->next;
 	while (current && current->type == ARG)
 	{
-		mini->env = unset_var(mini->env, current->str);
+		mini->env = unset_var(mini->env, current->str, mini);
 		current = current->next;
 	}
 	return (0);

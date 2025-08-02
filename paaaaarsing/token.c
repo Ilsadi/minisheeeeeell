@@ -1,20 +1,17 @@
 #include "../minishell.h"
 
-t_token	*create_token(char *str, int type)
+t_token	*create_token(char *str, int type, t_mini *mini)
 {
 	t_token	*new_token;
 
-	new_token = malloc(sizeof(t_token));
+	new_token = rb_malloc(sizeof(t_token), mini->rb);
 	if (!new_token)
 		return (NULL);
 	if (str)
 	{
-		new_token->str = ft_strdup(str);
+		new_token->str = rb_strdup(str, mini->rb);
 		if (!new_token->str)
-		{
-			free(new_token);
 			return (NULL);
-		}
 	}
 	else
 		new_token->str = NULL;
@@ -39,7 +36,7 @@ void	add_token(t_token **head, t_token **last, t_token *new_token)
 	}
 }
 
-t_token	*quotes(char *line, int *i)
+t_token	*quotes(char *line, int *i, t_mini *mini)
 {
 	int		start;
 	char	quote;
@@ -50,21 +47,16 @@ t_token	*quotes(char *line, int *i)
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
-	word = ft_substr(line, start, *i - start);
+	word = rb_substr(line, start, *i - start, mini->rb);
 	if (!word)
 		return (NULL);
-	tok = create_token(word, ARG);
+	tok = create_token(word, ARG, mini);
 	if (!tok)
-	{
-		free(word);
 		return (NULL);
-	}
-	free(word);
-
 	return (tok);
 }
 
-t_token	*operator(char *line, int *i)
+t_token	*operator(char *line, int *i, t_mini *mini)
 {
 	int		type;
 	t_token	*tok;
@@ -87,22 +79,14 @@ t_token	*operator(char *line, int *i)
 		*i += 2;
 	else
 		(*i)++;
-	tok = create_token(NULL, type);
+	tok = create_token(NULL, type, mini);
 	if (!tok)
 		return (NULL);
 	return (tok);
 }
 
-// t_token *cmd(char *line, int *i)
-// {
-// 	int	type;
-// 	t_token *tok;
-
-// 	if ()
-// }
-
 // Fonction qui parse la ligne et construit la liste de tokens
-t_token	*tokenize(char *line)
+t_token	*tokenize(char *line, t_mini *mini)
 {
 	t_token *head = NULL;
 	t_token *current = NULL;
@@ -122,23 +106,17 @@ t_token	*tokenize(char *line)
 
 		if (line[i] == '\'' || line[i] == '"')
 		{
-			new_tok = quotes(line, &i);
+			new_tok = quotes(line, &i, mini);
 			if (!new_tok)
-			{
-				free_token_list(head);
 				return (NULL);
-			}
 			add_token(&head, &current, new_tok);
 			command_expected = 0;
 		}
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
 		{
-			new_tok = operator(line, &i);
+			new_tok = operator(line, &i, mini);
 			if (!new_tok)
-			{
-				free_token_list(head);
 				return (NULL);
-			}
 			if (new_tok->type == PIPE)
 				command_expected = 1;
 			add_token(&head, &current, new_tok);
@@ -149,28 +127,20 @@ t_token	*tokenize(char *line)
 			while (line[i] && line[i] != ' '
 				&& line[i] != '|' && line[i] != '<' && line[i] != '>')
 				i++;
-			word = ft_substr(line, start, i - start);
+			word = rb_substr(line, start, i - start, mini->rb);
 			if (!word)
-			{
-				free_token_list(head);
 				return (NULL);
-			}
 			if (command_expected == 1)
 			{
-				new_tok = create_token(word, CMD);
+				new_tok = create_token(word, CMD, mini);
 				command_expected = 0;
 			}
 			else
-				new_tok = create_token(word, ARG);
-			free(word);
+				new_tok = create_token(word, ARG, mini);
 			if (!new_tok)
-			{
-				free_token_list(head);
 				return (NULL);
-			}
 			add_token(&head, &current, new_tok);
 		}
 	}
-	//free(line);
 	return (head);
 }

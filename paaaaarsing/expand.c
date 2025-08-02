@@ -6,25 +6,23 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/01 13:14:31 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 21:59:45 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	dollar_no_var(char **result, const char *str, int last_pos, int start)
+void	dollar_no_var(char **result, const char *str, int last_pos, int start, t_mini *mini)
 {
 	char	*tmp;
 
 	if (start - 1 - last_pos > 0)
 	{
-		tmp = ft_substr(str, last_pos, start - 1 - last_pos);
-		*result = ft_strfreejoin(*result, tmp);
-		free(tmp);
+		tmp = rb_substr(str, last_pos, start - 1 - last_pos, mini->rb);
+		*result = rb_strfreejoin(*result, tmp, mini->rb);
 	}
-	tmp = ft_substr(str, start - 1, 1);
-	*result = ft_strfreejoin(*result, tmp);
-	free(tmp);
+	tmp = rb_substr(str, start - 1, 1, mini->rb);
+	*result = rb_strfreejoin(*result, tmp, mini->rb);
 }
 
 // char	*pars_expand(char *str, char **envp)
@@ -85,7 +83,7 @@ void	dollar_no_var(char **result, const char *str, int last_pos, int start)
 // 	return (result);
 // }
 			
-char	*pars_expand(char *str, t_var **tab)
+char	*pars_expand(char *str, t_mini *mini)
 {
 	int		i;
 	int		start;
@@ -96,7 +94,7 @@ char	*pars_expand(char *str, t_var **tab)
 
 	i = 0;
 	last_pos = 0;
-	result = ft_strdup("");
+	result = rb_strdup("", mini->rb);
 	while (str[i])
 	{
 		if (str[i] == '$')
@@ -107,25 +105,22 @@ char	*pars_expand(char *str, t_var **tab)
 				i++;
 			if (i == start)
 			{
-				dollar_no_var(&result, str, last_pos, start);
+				dollar_no_var(&result, str, last_pos, start, mini);
 				last_pos = i;
 				continue ;
 			}
-			tmp = ft_substr(str, last_pos, start - 1 - last_pos);
-			result = ft_strfreejoin(result, tmp);
-			free(tmp);
-			varname = ft_substr(str, start, i - start);
-			tmp = get_value(tab, varname);
+			tmp = rb_substr(str, last_pos, start - 1 - last_pos, mini->rb);
+			result = rb_strfreejoin(result, tmp, mini->rb);
+			varname = rb_substr(str, start, i - start, mini->rb);
+			tmp = get_value(mini->env, varname);
 			if (tmp)
-				result = ft_strfreejoin(result, tmp);
-			free(varname);
+				result = rb_strfreejoin(result, tmp, mini->rb);
 			last_pos = i;
 			continue ;
 		}
 		i++;
 	}
-	tmp = ft_substr(str, last_pos, ft_strlen(str) - last_pos);
-	result = ft_strfreejoin(result, tmp);
-	free(tmp);
+	tmp = rb_substr(str, last_pos, ft_strlen(str) - last_pos, mini->rb);
+	result = rb_strfreejoin(result, tmp, mini->rb);
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 18:53:13 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 20:07:54 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,9 @@ typedef struct s_var
 
 typedef struct s_mini
 {
-	struct s_token	*first;
-	int				exit_code;
-	int				should_exit;
-	struct s_var	**env;
+	struct s_token		*first;
+	struct s_rb_list 	*rb;
+	struct s_var		**env;
 }				t_mini;
 
 typedef struct s_rb_node
@@ -111,12 +110,12 @@ int		cd(t_token *token, t_var **var);
 
 // unset.c
 
-t_var	**unset_var(t_var **tab, char *name);
+t_var	**unset_var(t_var **tab, char *name, t_mini *mini);
 int		unset(t_token *token, t_mini *mini);
 
 // exit.c
 
-int		ft_exit(t_token *token, t_var **var);
+int		ft_exit(t_token *token);
 
 //		PAAAAAARSING
 
@@ -145,13 +144,13 @@ void	free_token_list(t_token *token);
 
 // expand.c
 
-char	*pars_expand(char *str, t_var **tab);
+char	*pars_expand(char *str, t_mini *mini);
 
 // token.c
 
-t_token	*create_token(char *str, int type);
+t_token	*create_token(char *str, int type, t_mini *mini);
 void	add_token(t_token **head, t_token **last, t_token *new_token);
-t_token	*tokenize(char *line);
+t_token	*tokenize(char *line, t_mini *mini);
 void	ft_printlist(t_token *token);
 void	free_tokens(t_token *token);
 
@@ -165,8 +164,21 @@ void	print_tab(t_var **tab);
 
 // search_var.c
 
-t_var	**created_tab(char **env);
+t_var	**created_tab(char **env, t_mini *mini);
 char	*get_value(t_var **tab, char *name);
 void	destroy_tab(t_var **tab);
+
+//				ROYAL_BIN
+
+// rb_substr.c
+char	*rb_substr(char const *str, unsigned int st, size_t len, t_rb_list *rb);
+char	*rb_strfreejoin(char *s1, char *s2, t_rb_list *rb);
+char	*rb_strdup(const char *src, t_rb_list *rb);
+void	*rb_calloc(size_t count, size_t size, t_rb_list *rb);
+
+// royal_bin.c
+
+void	rb_free_all(t_rb_list *rb);
+void	*rb_malloc(size_t size, t_rb_list *rb);
 
 #endif
