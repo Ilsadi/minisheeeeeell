@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/01 13:22:53 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 18:51:47 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 typedef struct s_token
 {
 	char			*str;
-	// char			**args;
 	int				type;
 	struct s_token	*next;
 }					t_token;
@@ -64,6 +63,17 @@ typedef struct s_mini
 	int				should_exit;
 	struct s_var	**env;
 }				t_mini;
+
+typedef struct s_gc_node
+{
+	void							*ptr;
+	struct s_gc_node				*next;
+}									t_gc_node;
+
+typedef struct s_gc_list
+{
+	t_gc_node						*head;
+}									t_gc_list;
 
 //		EXEEEEEC
 
