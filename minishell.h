@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/29 19:36:04 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/01 13:22:53 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_var
 typedef struct s_mini
 {
 	struct s_token	*first;
+	int				exit_code;
+	int				should_exit;
 	struct s_var	**env;
 }				t_mini;
 

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/29 19:33:22 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/01 13:23:44 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,22 @@ int	main(int ac, char **av, char **envp)
 	if (!mini.env)
 		return (1);
 	// print_tab(result);
-	while (1)
+	while (!mini.should_exit)
 	{
-		rl_on_new_line();
-		//rl_replace_line("", 0);
 		line = readline(">Minisheeeeel : ");
-		if (line == NULL)
+		if (!line)
+		{
+			ft_printf("exit\n");
 			break ;
+		}
 		if (line && *line)
+		{
 			add_history(line);
-		parsing(line, &mini);
+			parsing(line, &mini);
+		}
 		free(line);
-		clear_history();
 	}
-	ft_printf("exit\n");
-	return (0);
+	destroy_tab(mini.env);
+	clear_history();
+	return (mini.exit_code);
 }

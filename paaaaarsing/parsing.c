@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/01 10:48:26 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/01 16:46:25 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	parsing(char *str, t_mini *mini)
 		else if (ft_strcmp(first->str, "cd") == 0)
 			cd(first, mini->env);
 		else if (ft_strcmp(first->str, "exit") == 0)
+		{
+			free(str);
 			ft_exit(first, mini->env);
+		}
 		else if (ft_strcmp(first->str, "unset") == 0)
 			unset(first, mini);
 		// elsef
@@ -61,9 +64,11 @@ int	parsing(char *str, t_mini *mini)
 	else
 		// ft_printf("No tokens created\n");
 	// ft_printlist(first);
-	//  if (str != original_str)
-	// 	free(original_str);
+	 if (str != original_str)
+		free(str);
 	free_token_list(first);
+	free(str);
+	// printf("teeeeeeeeeeeeeeeeeest\n");
 	return (1);
 }
 

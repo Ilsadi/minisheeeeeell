@@ -168,6 +168,6 @@ t_token	*tokenize(char *line)
 			add_token(&head, &current, new_tok);
 		}
 	}
-	free(line);
+	//free(line);
 	return (head);
 }
