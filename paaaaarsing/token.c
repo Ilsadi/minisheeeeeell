@@ -111,6 +111,7 @@ t_token	*tokenize(char *line)
 	char *word;
 	int i = 0;
 	int start = 0;
+	int	command_expected = 1;
 	while (line[i])
 	{
 		while (line[i] == ' ')
@@ -128,6 +129,7 @@ t_token	*tokenize(char *line)
 				return (NULL);
 			}
 			add_token(&head, &current, new_tok);
+			command_expected = 0;
 		}
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
 		{
@@ -137,6 +139,8 @@ t_token	*tokenize(char *line)
 				free_token_list(head);
 				return (NULL);
 			}
+			if (new_tok->type == PIPE)
+				command_expected = 1;
 			add_token(&head, &current, new_tok);
 		}
 		else
@@ -151,12 +155,11 @@ t_token	*tokenize(char *line)
 				free_token_list(head);
 				return (NULL);
 			}
-			if (ft_strcmp(word, "echo") == 0)
+			if (command_expected == 1)
+			{
 				new_tok = create_token(word, CMD);
-			else if (ft_strcmp(word, "pwd") == 0)
-				new_tok = create_token(word, CMD);
-			else if (ft_strcmp(word, "env") == 0)
-				new_tok = create_token(word, CMD);
+				command_expected = 0;
+			}
 			else
 				new_tok = create_token(word, ARG);
 			free(word);

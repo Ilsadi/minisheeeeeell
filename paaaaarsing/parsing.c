@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/01 16:46:25 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/02 15:46:14 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,21 @@ void	free_token_list(t_token *token)
 		free(token->str);
 		free(token);
 		token = tmp;
+	}
+}
+
+void	ft_printlist(t_token *token)
+{
+	while (token)
+	{
+		ft_printf("%d ", token->type);
+		if (token->str)
+			ft_printf("%s ", token->str);
+		if (token->next)
+			ft_printf("-> ");
+		else
+			ft_printf("\n");
+		token = token->next;
 	}
 }
 
@@ -41,6 +56,7 @@ int	parsing(char *str, t_mini *mini)
 	original_str = str;
 	str = pars_expand(str, mini->env);
 	first = tokenize (str);
+	// ft_printlist(first);
 	if (first)
 	{
 		if (ft_strcmp(first->str, "echo") == 0)
@@ -63,26 +79,9 @@ int	parsing(char *str, t_mini *mini)
 	}
 	else
 		// ft_printf("No tokens created\n");
-	// ft_printlist(first);
-	 if (str != original_str)
-		free(str);
-	free_token_list(first);
 	free(str);
-	// printf("teeeeeeeeeeeeeeeeeest\n");
+	free_token_list(first);
 	return (1);
 }
 
-void	ft_printlist(t_token *token)
-{
-	while (token)
-	{
-		ft_printf("%d ", token->type);
-		if (token->str)
-			ft_printf("%s ", token->str);
-		if (token->next)
-			ft_printf("-> ");
-		else
-			ft_printf("\n");
-		token = token->next;
-	}
-}
+
