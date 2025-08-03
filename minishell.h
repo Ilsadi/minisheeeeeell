@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 20:07:54 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:53:27 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,10 @@ int		cd(t_token *token, t_var **var);
 
 t_var	**unset_var(t_var **tab, char *name, t_mini *mini);
 int		unset(t_token *token, t_mini *mini);
+
+// export.c
+
+int	ft_export(t_token *token, t_mini *mini);
 
 // exit.c
 

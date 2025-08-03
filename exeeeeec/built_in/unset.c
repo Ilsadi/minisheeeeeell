@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 13:59:15 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 19:44:16 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:46:12 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ t_var	**unset_var(t_var **tab, char *name, t_mini *mini)
 		if (ft_strcmp(name, tab[i]->name) == 0)
 		{
 			is_found = 1;
-			// free(tab[i]->name);
-			// free(tab[i]->value);
-			// free(tab[i]);
 		}
 		else
 			new_tab[i - is_found] = tab[i];

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 22:06:55 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 18:06:29 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	ft_printlist(t_token *token)
 int	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
-	char	*original_str;
 
 	if (!pars_quotes(str))
 		return (0);
@@ -53,7 +52,6 @@ int	parsing(char *str, t_mini *mini)
 		return (0);
 	if (!pars_redir(str))
 		return (0);
-	original_str = str;
 	str = pars_expand(str, mini);
 	first = tokenize (str, mini);
 	// ft_printlist(first);
@@ -69,17 +67,19 @@ int	parsing(char *str, t_mini *mini)
 			cd(first, mini->env);
 		else if (ft_strcmp(first->str, "exit") == 0)
 		{
-			int exit_code = 0; // ✅ Valeur par défaut
+			int exit_code = 0;
     		if (first->next && first->next->type == ARG)
         		exit_code = ft_atoi(first->next->str);
     		rb_free_all(mini->rb);
-			free(mini->rb); // ✅ Libère tout
+			free(mini->rb);
 			destroy_tab(mini->env);
     		ft_printf("exit\n");
     		exit(exit_code & 255);
 		}
 		else if (ft_strcmp(first->str, "unset") == 0)
 			unset(first, mini);
+		else if (ft_strcmp(first->str, "export") == 0)
+			ft_export(first, mini);
 		// elsef
 		// 	ft_printf("Not a built-in: %s\n", first->str);
 	}

@@ -1,6 +1,5 @@
 RESTE A FAIRE POUR MINISHELL FONCTIONNEL
 
-export
 integrer pipex
 faire marcher les redirections
 gestion des bon messages d erreur
