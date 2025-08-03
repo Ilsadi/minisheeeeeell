@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 21:40:27 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 23:29:09 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_mini
 	struct s_token		*first;
 	struct s_rb_list 	*rb;
 	struct s_var		**env;
+	int					exit_status;
 }				t_mini;
 
 typedef struct s_rb_node
@@ -81,12 +82,13 @@ typedef struct s_rb_list
 
 // pipex_pars.c
 
-char	*find_cmd_path(char *cmd, char **envp);
+char	*find_cmd_path(char *cmd, char **envp, t_mini *mini);
 
 // pipex_mini.c
 
 int		has_pipe(t_token *tokens);
 void	execute_pipeline(t_mini *mini);
+char	**token_to_cmd(t_token **current, t_mini *mini);
 
 // pipex_utils.c
 
@@ -99,7 +101,7 @@ char	**var_to_envp(t_var **var);
 // pipex_bonus.c
 
 
-void	ft_pipex_loop(t_pipex *pipex, t_var **var);
+void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_var **var, t_mini *mini);
 
 // pipex_utils.c
 
@@ -201,6 +203,7 @@ char	*rb_substr(char const *str, unsigned int st, size_t len, t_rb_list *rb);
 char	*rb_strfreejoin(char *s1, char *s2, t_rb_list *rb);
 char	*rb_strdup(const char *src, t_rb_list *rb);
 void	*rb_calloc(size_t count, size_t size, t_rb_list *rb);
+char	**rb_split(const char *str, char c, t_rb_list *rb);
 
 // royal_bin.c
 

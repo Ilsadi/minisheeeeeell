@@ -6,13 +6,13 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 19:34:11 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 21:26:29 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 23:18:20 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char	*find_cmd_in_paths(char **paths, char *cmd)
+static char	*find_cmd_in_paths(char **paths, char *cmd, t_mini *mini)
 {
 	int		i;
 	char	*tmp;
@@ -21,25 +21,23 @@ static char	*find_cmd_in_paths(char **paths, char *cmd)
 	i = 0;
 	while (paths[i])
 	{
-		tmp = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(tmp, cmd);
-		free(tmp);
+		tmp = rb_strfreejoin(paths[i], "/", mini->rb);
+		full_path = rb_strfreejoin(tmp, cmd, mini->rb);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
-		free(full_path);
 		i++;
 	}
 	return (NULL);
 }
 
-static char	*handle_path_cmd(char *cmd)
+static char	*handle_path_cmd(char *cmd,t_mini *mini)
 {
 	if (access(cmd, F_OK | X_OK) == 0)
-		return (ft_strdup(cmd));
+		return (rb_strdup(cmd, mini->rb));
 	return (NULL);
 }
 
-char	*find_cmd_path(char *cmd, char **envp)
+char	*find_cmd_path(char *cmd, char **envp, t_mini *mini)
 {
 	int		i;
 	char	*path_env;
@@ -49,7 +47,7 @@ char	*find_cmd_path(char *cmd, char **envp)
 	i = 0;
 	path_env = NULL;
 	if (ft_strchr(cmd, '/'))
-		return (handle_path_cmd(cmd));
+		return (handle_path_cmd(cmd, mini));
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
@@ -61,9 +59,9 @@ char	*find_cmd_path(char *cmd, char **envp)
 	}
 	if (!path_env)
 		return (NULL);
-	paths = ft_split(path_env, ':');
+	paths = rb_split(path_env, ':', mini->rb);
 	if (!paths)
 		return (NULL);
-	full_path = find_cmd_in_paths(paths, cmd);
-	return (ft_free_tab(paths), full_path);
+	full_path = find_cmd_in_paths(paths, cmd, mini);
+	return (full_path);
 }

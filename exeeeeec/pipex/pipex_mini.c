@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-static char	**token_to_cmd(t_token **current, t_mini *mini)
+char	**token_to_cmd(t_token **current, t_mini *mini)
 {
 	t_token *start;
 	int		count;
@@ -60,19 +60,20 @@ void	execute_pipeline(t_mini *mini)
 	t_token	*current;
 	t_pipex	pipex;
 	int		status;
+	int		last_status = 0;
+	pid_t	waited_pid;
 
 	current = mini->first;
-	ft_bzero(&pipex, 0);
-	pipex.cmd1 = token_to_cmd(&current, mini);
-	if (current && current->type == PIPE)
-		current = current->next;
-	if (current)
-		pipex.cmd2 = token_to_cmd(&current, mini);
+	ft_memset(&pipex, 0, sizeof(t_pipex));
 	pipex.infile = STDIN_FILENO;
 	pipex.outfile = STDOUT_FILENO;
-	ft_pipex_loop(&pipex, mini->env);
-	if (pipex.pid1 > 0)
-		waitpid(pipex.pid1, &status, 0);
-	if (pipex.pid2 > 0)
-		waitpid(pipex.pid2, &status, 0);
+	if (current && current->type == PIPE)
+		current = current->next;
+	ft_pipex_loop(&pipex, mini->first, mini->env, mini);
+	while ((waited_pid = wait(&status)) > 0)
+    {
+        if (WIFEXITED(status))
+            last_status = WEXITSTATUS(status);
+    }
+	mini->exit_status = last_status;
 }

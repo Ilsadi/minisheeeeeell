@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 22:13:31 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 23:31:46 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	parsing(char *str, t_mini *mini)
 			ft_export(first, mini);
 		}
 	}
-	rb_free_all(mini->rb);
 	return (1);
 }
 
