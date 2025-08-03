@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 17:53:27 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:40:27 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 
 # define CMD		1
 # define ARG		2
@@ -78,12 +79,33 @@ typedef struct s_rb_list
 
 //	pipex
 
+// pipex_pars.c
+
+char	*find_cmd_path(char *cmd, char **envp);
+
+// pipex_mini.c
+
+int		has_pipe(t_token *tokens);
+void	execute_pipeline(t_mini *mini);
+
 // pipex_utils.c
 
 void	close_test(int fd);
 void	close_all(t_pipex *pipex);
 void	ft_error_exit(const char *msg);
-int		choose_out(t_pipex *pipex, int i, int ac);
+int		choose_out(t_pipex *pipex);
+char	**var_to_envp(t_var **var);
+
+// pipex_bonus.c
+
+
+void	ft_pipex_loop(t_pipex *pipex, t_var **var);
+
+// pipex_utils.c
+
+void	close_test(int fd);
+void	close_all(t_pipex *pipex);
+void	ft_error_exit(const char *msg);
 char	**var_to_envp(t_var **var);
 
 //	built_in

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 18:06:29 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 22:13:31 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,35 +53,42 @@ int	parsing(char *str, t_mini *mini)
 	if (!pars_redir(str))
 		return (0);
 	str = pars_expand(str, mini);
+	// ft_printf("DEBUG: After pars_expand: '%s'\n", str);
 	first = tokenize (str, mini);
 	// ft_printlist(first);
+	mini->first = first;
 	if (first)
 	{
-		if (ft_strcmp(first->str, "echo") == 0)
-			ft_echo(first);
-		else if (ft_strcmp(first->str, "pwd") == 0)
-			pwd();
-		else if (ft_strcmp(first->str, "env") == 0)
-			env(mini->env);
-		else if (ft_strcmp(first->str, "cd") == 0)
-			cd(first, mini->env);
-		else if (ft_strcmp(first->str, "exit") == 0)
+		if (has_pipe(first))
 		{
-			int exit_code = 0;
-    		if (first->next && first->next->type == ARG)
-        		exit_code = ft_atoi(first->next->str);
-    		rb_free_all(mini->rb);
-			free(mini->rb);
-			destroy_tab(mini->env);
-    		ft_printf("exit\n");
-    		exit(exit_code & 255);
+			execute_pipeline(mini);
 		}
-		else if (ft_strcmp(first->str, "unset") == 0)
+		else
+		{
+			if (ft_strcmp(first->str, "echo") == 0)
+			ft_echo(first);
+			else if (ft_strcmp(first->str, "pwd") == 0)
+			pwd();
+			else if (ft_strcmp(first->str, "env") == 0)
+			env(mini->env);
+			else if (ft_strcmp(first->str, "cd") == 0)
+			cd(first, mini->env);
+			else if (ft_strcmp(first->str, "exit") == 0)
+			{
+				int exit_code = 0;
+				if (first->next && first->next->type == ARG)
+				exit_code = ft_atoi(first->next->str);
+				rb_free_all(mini->rb);
+				free(mini->rb);
+				destroy_tab(mini->env);
+				ft_printf("exit\n");
+				exit(exit_code & 255);
+			}
+			else if (ft_strcmp(first->str, "unset") == 0)
 			unset(first, mini);
-		else if (ft_strcmp(first->str, "export") == 0)
+			else if (ft_strcmp(first->str, "export") == 0)
 			ft_export(first, mini);
-		// elsef
-		// 	ft_printf("Not a built-in: %s\n", first->str);
+		}
 	}
 	rb_free_all(mini->rb);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 17:22:37 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/28 13:04:14 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:22:11 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,10 @@ void	ft_error_exit(const char *msg)
 	exit(127);
 }
 
-int	choose_out(t_pipex *pipex, int i, int ac)
+int	choose_out(t_pipex *pipex)
 {
-	if (i < ac - 2)
-	{
-		if (pipe(pipex->pipefd) == -1)
-			ft_error_exit("Error : pipe");
+	if (pipex->cmd2)
 		return (pipex->pipefd[1]);
-	}
 	else
 		return (pipex->outfile);
 }
@@ -49,7 +45,7 @@ int	choose_out(t_pipex *pipex, int i, int ac)
 char	**var_to_envp(t_var **var)
 {
 	char	**envp;
-	char	**tmp;
+	char	*tmp;
 	int		i;
 	int		count;
 

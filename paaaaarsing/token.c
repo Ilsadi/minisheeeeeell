@@ -50,6 +50,8 @@ t_token	*quotes(char *line, int *i, t_mini *mini)
 	word = rb_substr(line, start, *i - start, mini->rb);
 	if (!word)
 		return (NULL);
+	if (line[*i] == quote)
+		(*i)++;
 	tok = create_token(word, ARG, mini);
 	if (!tok)
 		return (NULL);
