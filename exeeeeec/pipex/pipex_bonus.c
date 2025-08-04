@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 23:39:28 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/04 14:45:43 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,26 @@ static void	error_fd(t_pipex *pipex)
 	}
 }
 
-static void	ft_child_process(t_pipex *pipex, char **cmd_args, char **envp, t_mini *mini)
+static void	ft_child_process(t_pipex *pipex, char **cmd_args, char **envp, t_mini *mini, t_var **var)
 {
 	char	*cmd_path;
-
+	// (void)var;
 	if (!cmd_args || !cmd_args[0] || cmd_args[0][0] == '\0')
 	{
 		close_all(pipex);
+		ft_free_tab(envp);
 		ft_error_exit("Pipex: command not found\n");
 	}
 	cmd_path = find_cmd_path(cmd_args[0], envp, mini);
+	// mini->env = envp;
 	if (!cmd_path)
 	{
 		close_all(pipex);
         rb_free_all(mini->rb);
-        ft_error_exit("Pipex : command not found\n");;
+		ft_free_tab(envp);
+		destroy_tab(var);
+		free(mini->rb);
+        ft_error_exit("Pipex : command not found\n");
 	}
 	error_fd(pipex);
 	close_all(pipex);
@@ -64,6 +69,7 @@ void ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_var **var, t_mini *mini)
     
     pipex->fd_in = pipex->infile;
     envp = var_to_envp(var);
+	// destroy_tab(var);
     if (!envp)
     {
         ft_error_exit("Error: var_to_envp");
@@ -81,14 +87,14 @@ void ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_var **var, t_mini *mini)
             // Pas la dernière commande - créer un pipe
             if (pipe(pipex->pipefd) == -1)
             {
-                ft_error_exit("pipe error");
+				ft_error_exit("pipe error");
             }
             pipex->fd_out = pipex->pipefd[1];
             current = current->next; // Skip le token PIPE
         }
         else
         {
-            // Dernière commande - sortie finale
+			// Dernière commande - sortie finale
             pipex->fd_out = pipex->outfile;
         }
         
@@ -96,23 +102,22 @@ void ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_var **var, t_mini *mini)
         pipex->pid1 = fork();
         if (pipex->pid1 == 0)
         {
-            ft_child_process(pipex, current_cmd, envp, mini);
+            ft_child_process(pipex, current_cmd, envp, mini, var);
         }
         
         // Fermer les descripteurs dans le parent
         close_test(pipex->fd_in);
         close_test(pipex->fd_out);
         
-        // Pour la prochaine commande, l'input sera la sortie du pipe actuel
         if (current)
         {
             pipex->fd_in = pipex->pipefd[0];
         }
-        
         cmd_index++;
     }
-    
     ft_free_tab(envp);
+	// destroy_tab(var);
+		
 }
 
 // static void	handle_here_doc(t_pipex *pipex, int ac, char **av)

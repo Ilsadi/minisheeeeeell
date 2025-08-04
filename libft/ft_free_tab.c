@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:49:25 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/06/14 01:26:48 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/04 13:38:33 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_free_tab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
+		// ft_printf("envp[i] : %s", envp[i]);
 		free(tab[i]);
 		i++;
 	}
