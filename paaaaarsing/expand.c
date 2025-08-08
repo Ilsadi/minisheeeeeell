@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 21:59:45 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/05 11:21:11 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	dollar_no_var(char **result, const char *str, int last_pos, int start, t_mi
 // 	free(tmp);
 // 	return (result);
 // }
-			
 char	*pars_expand(char *str, t_mini *mini)
 {
 	int		i;

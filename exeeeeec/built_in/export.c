@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:48:21 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 18:08:37 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/04 15:01:27 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_export(t_token *token, t_mini *mini)
 		while (mini->env[i])
 		{
 			
-			ft_printf("declare -x %s", mini->env[i]->name);
+			ft_printf("declare -x %s", mini->env[i]->name); // a verifier
 			if (mini->env[i]->value)
 				ft_printf("=\"%s\"", mini->env[i]->value);
 			ft_printf("\n");

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 11:41:44 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 23:29:09 by ilsadi           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
@@ -78,6 +66,10 @@ typedef struct s_rb_list
 
 //		EXEEEEEC
 
+//	input_trunc.c
+
+int		handle_redirections(t_token *tokens);
+
 //	pipex
 
 // pipex_pars.c
@@ -114,7 +106,8 @@ char	**var_to_envp(t_var **var);
 
 // built_in .c
 
-int		is_builtin(const char *cmd);
+int		is_builtins(t_token *first);
+int		builtin_with_redir(t_token *first, t_mini *mini);
 
 // echo.c
 
@@ -139,11 +132,15 @@ int		unset(t_token *token, t_mini *mini);
 
 // export.c
 
-int	ft_export(t_token *token, t_mini *mini);
+int		ft_export(t_token *token, t_mini *mini);
 
 // exit.c
 
-int		ft_exit(t_token *token);
+int		ft_exit(t_token *token, t_mini *mini);
+
+//	commands.c
+
+void	ft_commands(t_mini *mini);
 
 //		PAAAAAARSING
 
@@ -153,7 +150,7 @@ int		pars_quotes(char *str);
 
 // redirections.c
 
-int		is_operator(char *str);
+int		is_operator(char str);
 int		pars_redir(char *str);
 
 // slash.c

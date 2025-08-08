@@ -122,6 +122,29 @@ t_token	*tokenize(char *line, t_mini *mini)
 			if (new_tok->type == PIPE)
 				command_expected = 1;
 			add_token(&head, &current, new_tok);
+			if (line[i] == '\'' || line[i] == '"')
+			{
+				t_token *quoted = quotes(line, &i, mini);
+				if (!quoted)
+					return (NULL);
+				add_token(&head, &current, quoted);
+			}
+			else
+			{
+				int start_arg = i;
+				while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<' && line[i] != '>')
+					i++;
+				if (i > start_arg) // ← Ajoute le token seulement si le mot n'est pas vide
+				{
+					word = rb_substr(line, start_arg, i - start_arg, mini->rb);
+					if (!word)
+						return (NULL);
+					t_token *arg_tok = create_token(word, ARG, mini);
+					if (!arg_tok)
+						return (NULL);
+					add_token(&head, &current, arg_tok);
+				}
+			}
 		}
 		else
 		{

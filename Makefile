@@ -24,6 +24,8 @@ SRCS = main.c \
 	exeeeeec/pipex/pipex_utils.c \
 	exeeeeec/pipex/pipex_mini.c \
 	exeeeeec/pipex/pipex_pars.c \
+	exeeeeec/commands.c \
+	exeeeeec/input_trunc.c \
 	royal_bin/royal_bin.c \
 	royal_bin/rb_substr.c\
 	setup/utils_setup.c \
