@@ -6,11 +6,11 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:20:19 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/07/21 14:30:16 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:25:00 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 int	is_word(char c)
 {

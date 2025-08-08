@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   input_trunc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:12:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 12:56:33 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:23:48 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 // int	handle_redirections(t_token *tokens)
 // {

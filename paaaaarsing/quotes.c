@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:45:46 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 22:10:07 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:24:45 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 static int	char_is_operator(char c)
 {

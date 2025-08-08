@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/05 11:21:11 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:24:29 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	dollar_no_var(char **result, const char *str, int last_pos, int start, t_mini *mini)
 {

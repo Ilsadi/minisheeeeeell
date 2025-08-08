@@ -6,6 +6,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <termios.h> // a verifier si autorise
 
 # define CMD		1
 # define ARG		2
@@ -18,6 +20,8 @@
 # define ERROR_NEWLINE "bash: syntax error near unexpected token `newline'\n"
 # define ERROR_ENEXPECTED_SLASH "bash: syntax error near enexpected token '/'\n"
 
+extern int g_in_cmd;
+extern volatile sig_atomic_t g_sig;
 typedef struct s_token
 {
 	char			*str;
@@ -66,6 +70,16 @@ typedef struct s_rb_list
 
 //		EXEEEEEC
 
+//	signaux
+
+// ctrl.c
+void sigint_handler(int sig);
+void setup_signals(void);
+void setup_child_signals(void);
+int execute_command(char **args, char **envp);
+
+// echo_terms.c
+void disable_signal_echo(void);
 //	input_trunc.c
 
 int		handle_redirections(t_token *tokens);
@@ -206,5 +220,6 @@ char	**rb_split(const char *str, char c, t_rb_list *rb);
 
 void	rb_free_all(t_rb_list *rb);
 void	*rb_malloc(size_t size, t_rb_list *rb);
+
 
 #endif

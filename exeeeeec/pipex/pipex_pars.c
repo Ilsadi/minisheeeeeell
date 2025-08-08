@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_pars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 19:34:11 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/03 23:18:20 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:23:30 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 static char	*find_cmd_in_paths(char **paths, char *cmd, t_mini *mini)
 {

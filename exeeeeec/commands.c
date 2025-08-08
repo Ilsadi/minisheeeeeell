@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/07 17:08:26 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:23:43 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	ft_commands(t_mini *mini)
 {
@@ -42,5 +42,6 @@ void	ft_commands(t_mini *mini)
 	execve(cmd_path, cmd_args, env);
 	perror("execve");
 	free(cmd_path);
+	//ft_free_tab?
 	exit(1);
 }

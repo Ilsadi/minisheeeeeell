@@ -2,7 +2,7 @@
 #                                  VARIABLES                                   #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror -g3 -I$(INC)
+CFLAGS = -Wall -Wextra -Werror -g3 $(addprefix -I, $(INC))
 
 SRCS = main.c \
 	paaaaarsing/redirections.c \
@@ -26,6 +26,8 @@ SRCS = main.c \
 	exeeeeec/pipex/pipex_pars.c \
 	exeeeeec/commands.c \
 	exeeeeec/input_trunc.c \
+	exeeeeec/signaux/ctrl.c \
+	exeeeeec/signaux/echo_term.c \
 	royal_bin/royal_bin.c \
 	royal_bin/rb_substr.c\
 	setup/utils_setup.c \
@@ -37,7 +39,7 @@ NAME = minishell
 
 LIBFT = libft/libft.a
 
-INC = ./
+INC = . ./libft/includes
 
 all: $(NAME)
 

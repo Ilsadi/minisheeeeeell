@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/07 17:09:10 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 17:10:43 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ int	main(int ac, char **av, char **envp)
 	char	*line;
 	t_mini mini;
 
+	setup_signals();
+	disable_signal_echo();
+	
 	ft_bzero(&mini, sizeof(t_mini));
 	mini.rb = malloc(sizeof(t_rb_list));
 	mini.rb->head = NULL;

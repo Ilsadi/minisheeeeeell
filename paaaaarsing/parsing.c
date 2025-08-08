@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/07 17:07:35 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:24:35 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	free_token_list(t_token *token)
 {
@@ -44,11 +44,11 @@ int	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
 	pid_t	pid;
+	int status;
+	int sig;
 
 	if (!pars_quotes(str))
 		return (0);
-	// if (!pars_slash(str))
-	// 	return (0);
 	if (!pars_pipe(str))
 		return (0);
 	if (!pars_redir(str))
@@ -67,27 +67,38 @@ int	parsing(char *str, t_mini *mini)
 		}
 		if (!first || first->type != CMD)
 			return (1);
-		else
+		if (first->str ==NULL)
 		{
-			if (first->str ==NULL)
+			handle_redirections(first);
+			return (0);
+		}
+		else if (is_builtins(first))
+		{
+			builtin_with_redir(first, mini);
+			return (0);
+		}
+		pid = fork();
+		if (pid == 0)
+		{
+			setup_child_signals();
+			ft_commands(mini);
+			exit(EXIT_FAILURE);
+		}
+		else if (pid > 0)
+		{
+			g_in_cmd = 1;
+			waitpid(pid, &status, 0);
+			g_in_cmd = 0;
+			if (WIFSIGNALED(status))
 			{
-				handle_redirections(first);
-				return (0);
-			}
-			else if (is_builtins(first))
-			{
-				builtin_with_redir(first, mini);
-				return (0);
-			}
-			else
-			{
-				pid = fork();
-				if (pid == 0)
-					ft_commands(mini);
-				else if (pid > 0)
-					wait(NULL);
+				sig = WTERMSIG(status);
+				if (sig == SIGINT)
+					write(1, "\n", 1);
+				else if (sig == SIGQUIT)
+					write (1, "Quit (core dumped)\n", 20);
 			}
 		}
+		return (0);
 	}
 	return (1);
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/04 14:45:43 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:23:20 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 static void	error_fd(t_pipex *pipex)
 {

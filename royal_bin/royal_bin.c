@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   royal_bin.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:50:34 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/02 21:44:27 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/08 20:25:16 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	*rb_malloc(size_t size, t_rb_list *rb)
 {
