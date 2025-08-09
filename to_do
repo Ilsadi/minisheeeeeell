@@ -1,6 +1,4 @@
 RESTE A FAIRE POUR MINISHELL FONCTIONNEL
 
-integrer pipex
 faire marcher les redirections
 gestion des bon messages d erreur
-verifier si il y a des leaks
