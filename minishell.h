@@ -73,13 +73,13 @@ typedef struct s_rb_list
 //	signaux
 
 // ctrl.c
-void sigint_handler(int sig);
-void setup_signals(void);
-void setup_child_signals(void);
-int execute_command(char **args, char **envp);
+void 	sigint_handler(int sig);
+void 	setup_signals(void);
+void	setup_child_signals(void);
+int		execute_command(char **args, char **envp);
 
 // echo_terms.c
-void disable_signal_echo(void);
+void 	disable_signal_echo(void);
 //	input_trunc.c
 
 int		handle_redirections(t_token *tokens);
@@ -180,6 +180,7 @@ int		pars_pipe(char *str);
 
 int		parsing(char *str, t_mini *mini);
 void	free_token_list(t_token *token);
+void	restore_operators(char *str);
 
 // expand.c
 

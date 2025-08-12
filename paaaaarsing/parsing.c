@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:24:35 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/12 23:26:19 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ void	ft_printlist(t_token *token)
 	}
 }
 
+void	restore_operators(char *str)
+{
+	int	i;
+	
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] < 0)
+			str[i] *= -1;
+		i++;
+	}
+}
+
 int	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
@@ -54,6 +67,7 @@ int	parsing(char *str, t_mini *mini)
 	if (!pars_redir(str))
 		return (0);
 	str = pars_expand(str, mini);
+	restore_operators(str);
 	// ft_printf("DEBUG: After pars_expand: '%s'\n", str);
 	first = tokenize (str, mini);
 	// ft_printlist(first);

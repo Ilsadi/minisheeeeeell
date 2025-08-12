@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:45:46 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:24:45 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/12 22:52:45 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	pars_quotes(char *str)
 			state = 2;
 		else if (str[i] == '\'' && state == 2)
 			state = 0;
-		else if (state != 0 && char_is_operator(str[i]))
+		else if (state == 1 && char_is_operator(str[i]))
 			str[i] *= -1;
 		i++;
 	}
