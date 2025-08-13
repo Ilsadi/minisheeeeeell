@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/12 23:26:19 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/13 12:30:07 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,37 @@ void	restore_operators(char *str)
 	}
 }
 
+char	*remove_quotes(const char *str, t_mini *mini)
+{
+	int	i;
+	int	j;
+	int	state;
+	char	*res;
+	
+	i = 0;
+	j = 0;
+	state = 0;
+	res = rb_malloc(ft_strlen(str) + 1, mini->rb);
+	if (!res)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == '"' && state == 0)
+			state = 1;
+		else if (str[i] == '"' && state == 1)
+			state = 0;
+		else if (str[i] == '\'' && state == 0)
+			state = 2;
+		else if (str[i] == '\'' && state == 2)
+			state = 0;
+		else
+			res[j++] = str[i];
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
+	}
+
 int	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
@@ -68,6 +99,7 @@ int	parsing(char *str, t_mini *mini)
 		return (0);
 	str = pars_expand(str, mini);
 	restore_operators(str);
+	str = remove_quotes(str, mini);
 	// ft_printf("DEBUG: After pars_expand: '%s'\n", str);
 	first = tokenize (str, mini);
 	// ft_printlist(first);

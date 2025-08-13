@@ -181,6 +181,7 @@ int		pars_pipe(char *str);
 int		parsing(char *str, t_mini *mini);
 void	free_token_list(t_token *token);
 void	restore_operators(char *str);
+char	*remove_quotes(const char *str, t_mini *mini);
 
 // expand.c
 

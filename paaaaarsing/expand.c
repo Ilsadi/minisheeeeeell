@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:24:29 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/13 12:38:53 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,23 @@ char	*pars_expand(char *str, t_mini *mini)
 	char	*result;
 	char	*tmp;
 	int		last_pos;
+	int		state;
 
 	i = 0;
 	last_pos = 0;
+	state = 0;
 	result = rb_strdup("", mini->rb);
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '"' && state == 0)
+			state = 1;
+		else if (str[i] == '"' && state == 1)
+			state = 0;
+		else if (str[i] == '\'' && state == 0)
+			state = 2;
+		else if (str[i] == '\'' && state == 2)
+			state = 0;
+		if (str[i] == '$' && state != 2)
 		{
 			i++;
 			start = i;
