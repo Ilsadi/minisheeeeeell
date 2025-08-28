@@ -11,6 +11,8 @@ SRCS = main.c \
 	paaaaarsing/parsing.c \
 	paaaaarsing/pipe.c \
 	paaaaarsing/expand.c \
+	paaaaarsing/error.c \
+	paaaaarsing/ampersand.c \
 	paaaaarsing/token.c \
 	exeeeeec/built_in/built_in.c \
 	exeeeeec/built_in/pwd.c \

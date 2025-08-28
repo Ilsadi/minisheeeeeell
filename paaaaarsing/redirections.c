@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:25:41 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:24:54 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/28 17:21:09 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,17 @@ int	is_operator(char str)
 // 		}
 // 		else if (str[i] == '<' && str[i + 1] == '<')
 // 		{
-// 			ft_putstr_fd("bash: syntax error near unexpected token `<<'\n", 2);
+// 			ft_putstr_fd("syntax error near unexpected token `<<'\n", 2);
 // 			return (0);
 // 		}
 // 		else if (str[i] == '>' && str[i + 1] == '>')
 // 		{
-// 			ft_putstr_fd("bash: syntax error near unexpected token `>>'\n", 2);
+// 			ft_putstr_fd("syntax error near unexpected token `>>'\n", 2);
 // 			return (0);
 // 		}
 // 		else
 // 		{
-// 			ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+// 			ft_putstr_fd("syntax error near unexpected token `", 2);
 // 			ft_putchar_fd(str[i], 2);
 // 			ft_putstr_fd("'\n", 2);
 // 			return (0);
@@ -100,17 +100,17 @@ int	pars_redir(char *str)
 			}
 			else if (str[i] == '<' && str[i + 1] == '<')
 			{
-				ft_putstr_fd("bash: syntax error near unexpected token `<<'\n", 2);
+				ft_putstr_fd("syntax error near unexpected token `<<'\n", 2);
 				return (0);
 			}
 			else if (str[i] == '>' && str[i + 1] == '>')
 			{
-				ft_putstr_fd("bash: syntax error near unexpected token `>>'\n", 2);
+				ft_putstr_fd("syntax error near unexpected token `>>'\n", 2);
 				return (0);
 			}
 			else if (is_operator(str[i]))
 			{
-				ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+				ft_putstr_fd("syntax error near unexpected token `", 2);
 				ft_putchar_fd(str[i], 2);
 				ft_putstr_fd("'\n", 2);
 				return (0);
@@ -128,7 +128,7 @@ int	pars_redir(char *str)
 			}
 			else if (is_operator(str[i]))
 			{
-				ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+				ft_putstr_fd("syntax error near unexpected token `", 2);
 				ft_putchar_fd(str[i], 2);
 				ft_putstr_fd("'\n", 2);
 				return (0);

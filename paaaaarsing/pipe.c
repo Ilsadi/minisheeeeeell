@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:04:13 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:24:40 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/28 19:33:41 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,14 @@ int	pars_pipe(char *str)
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
-	if (str[i] == '|')
+	if (str[i] == '|' && str[i + 1] == '|')
 	{
-		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+		ft_putstr_fd("syntax error near unexpected token `||'\n", 2);
+		return (0);
+	}
+	else if (str[i] == '|')
+	{
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 		return (0);
 	}
 	while (str[i])
@@ -33,7 +38,7 @@ int	pars_pipe(char *str)
 				i++;
 			if (str[i] == '|' || str[i] == '\0')
 			{
-				ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+				ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 				return (0);
 			}
 		}

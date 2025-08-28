@@ -17,8 +17,8 @@
 # define INPUT		6
 # define TRUNC		7
 
-# define ERROR_NEWLINE "bash: syntax error near unexpected token `newline'\n"
-# define ERROR_ENEXPECTED_SLASH "bash: syntax error near enexpected token '/'\n"
+# define ERROR_NEWLINE "syntax error near unexpected token `newline'\n"
+# define ERROR_ENEXPECTED_SLASH "syntax error near enexpected token '/'\n"
 
 extern int g_in_cmd;
 extern volatile sig_atomic_t g_sig;
@@ -157,6 +157,14 @@ int		ft_exit(t_token *token, t_mini *mini);
 void	ft_commands(t_mini *mini);
 
 //		PAAAAAARSING
+
+// ampersand.c
+
+int		pars_ampersand(char *str);
+
+// error.c
+
+void	ft_error(char *msg);
 
 // quotes.c
 

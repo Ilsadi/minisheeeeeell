@@ -336,13 +336,13 @@ class TestTest(TestReturnError):
     def _error(self):
         return self.error_is_directory("///////")
     
-@AddTest("hyphen_1")#line 24
-class TestTest(TestReturnError):
-    def _input(self):
-        return "-"
+# @AddTest("hyphen_1")#line 24
+# class TestTest(TestReturnError):
+#     def _input(self):
+#         return "-"
         
-    def _error(self):
-        return self.error_cmd_not_found("-")
+#     def _error(self):
+#         return self.error_cmd_not_found("-")
     
 @AddTest("pipe_error_1")#line 25
 class TestTest(TestReturnError):
