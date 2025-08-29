@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/28 20:02:34 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/08/29 18:42:55 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,22 @@ void	restore_operators(char *str)
 			str[i] *= -1;
 		i++;
 	}
+}
+
+int is_only_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || str[0] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 char	*remove_quotes(const char *str, t_mini *mini)
@@ -102,10 +118,26 @@ int	parsing(char *str, t_mini *mini)
 	str = pars_expand(str, mini);
 	restore_operators(str);
 	str = remove_quotes(str, mini);
-	// ft_printf("DEBUG: After pars_expand: '%s'\n", str);
 	first = tokenize (str, mini);
 	// ft_printlist(first);
 	mini->first = first;
+	if (!first)
+	{
+		if (is_only_spaces(str))
+		{
+			return (0); // Ne rien afficher si uniquement des espaces
+		}
+		else
+		{
+			ft_error(": command not found\n");
+			return (1); // Afficher l'erreur si commande vide
+		}
+	}
+	if (first->str && first->str[0] == '\0')
+	{
+		ft_error(": command not found\n");
+		return (1);
+	}
 	if (first)
 	{
 		if (has_pipe(first))
@@ -114,7 +146,10 @@ int	parsing(char *str, t_mini *mini)
 			return (0);
 		}
 		if (!first || first->type != CMD)
+		{
+			ft_error(": command not found\n");
 			return (1);
+		}
 		if (first->str ==NULL)
 		{
 			handle_redirections(first);

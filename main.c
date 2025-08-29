@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 17:10:43 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/29 17:16:49 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,5 @@ int	main(int ac, char **av, char **envp)
 	clear_history();
 	free(mini.rb);
 	destroy_tab(mini.env);
-	printf("DEBUG: env destroyed\n");
 	return (0);
 }

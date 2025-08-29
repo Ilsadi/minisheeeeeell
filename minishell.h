@@ -165,6 +165,7 @@ int		pars_ampersand(char *str);
 // error.c
 
 void	ft_error(char *msg);
+void	command_not_found(char *cmd);
 
 // quotes.c
 
@@ -190,6 +191,7 @@ int		parsing(char *str, t_mini *mini);
 void	free_token_list(t_token *token);
 void	restore_operators(char *str);
 char	*remove_quotes(const char *str, t_mini *mini);
+int 	is_only_spaces(char *str);
 
 // expand.c
 

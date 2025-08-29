@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:23:43 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/08/29 16:12:23 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ void	ft_commands(t_mini *mini)
 	{
 		destroy_tab(mini->env);
 		free(mini->rb);
-		ft_error_exit("Path_cmd not found\n");
+		command_not_found(cmd_args[0]);
 	}
 	execve(cmd_path, cmd_args, env);
 	perror("execve");
 	free(cmd_path);
-	//ft_free_tab?
 	exit(1);
 }

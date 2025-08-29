@@ -64,7 +64,9 @@ char    **token_to_cmd(t_token **current, t_mini *mini)
             continue;
         }
         if (tmp->type == CMD || tmp->type == ARG)
+		{
             cmd[i++] = rb_strdup(tmp->str, mini->rb);
+		}
         tmp = tmp->next;
     }
     cmd[i] = NULL;
