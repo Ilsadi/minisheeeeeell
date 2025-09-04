@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rb_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:55:05 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:25:13 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/02 12:25:19 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,4 +171,50 @@ char	**rb_split(const char *str, char c, t_rb_list *rb)
 	if (!rb_fill_result(result, str, c, rb))
 		return (NULL);
 	return (result);
+}
+
+static int	ft_countnum(int n)
+{
+	int		count;
+	long	nb;
+
+	nb = n;
+	count = 0;
+	if (nb <= 0)
+		count = 1;
+	while (nb)
+	{
+		nb /= 10;
+		count++;
+	}
+	return (count);
+}
+
+char	*rb_itoa(int n, t_rb_list *rb)
+{
+	char	*tab;
+	long	nb;
+	int		len;
+
+	nb = n;
+	len = ft_countnum(n);
+	tab = rb_malloc(sizeof(char) * (len + 1), rb);
+	if (!tab)
+		return (NULL);
+	tab[len] = '\0';
+	len--;
+	if (nb == 0)
+		tab[0] = '0';
+	if (nb < 0)
+	{
+		tab[0] = '-';
+		nb *= -1;
+	}
+	while (nb > 0)
+	{
+		tab[len] = nb % 10 + '0';
+		nb /= 10;
+		len--;
+	}
+	return (tab);
 }

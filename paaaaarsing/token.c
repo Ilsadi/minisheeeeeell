@@ -97,7 +97,6 @@ t_token	*tokenize(char *line, t_mini *mini)
 	char *word;
 	int i = 0;
 	int start = 0;
-	int	command_expected = 1;
 	while (line[i])
 	{
 		while (line[i] == ' ')
@@ -105,22 +104,18 @@ t_token	*tokenize(char *line, t_mini *mini)
 		if (!line[i])
 			break ;
 		start = i;
-
 		if (line[i] == '\'' || line[i] == '"')
 		{
 			new_tok = quotes(line, &i, mini);
 			if (!new_tok)
 				return (NULL);
 			add_token(&head, &current, new_tok);
-			command_expected = 0;
 		}
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
 		{
 			new_tok = operator(line, &i, mini);
 			if (!new_tok)
 				return (NULL);
-			if (new_tok->type == PIPE)
-				command_expected = 1;
 			add_token(&head, &current, new_tok);
 			if (line[i] == '\'' || line[i] == '"')
 			{
@@ -134,7 +129,7 @@ t_token	*tokenize(char *line, t_mini *mini)
 				int start_arg = i;
 				while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<' && line[i] != '>')
 					i++;
-				if (i > start_arg) // ← Ajoute le token seulement si le mot n'est pas vide
+				if (i > start_arg)
 				{
 					word = rb_substr(line, start_arg, i - start_arg, mini->rb);
 					if (!word)
@@ -149,21 +144,22 @@ t_token	*tokenize(char *line, t_mini *mini)
 		else
 		{
 			start = i;
-			while (line[i] && line[i] != ' '
-				&& line[i] != '|' && line[i] != '<' && line[i] != '>')
+			while (line[i] && line[i] != ' ' && line[i] != '|' && line[i] != '<'
+				&& line[i] != '>' && line[i] != '"'
+				&& line[i] != '\'')
 				i++;
 			word = rb_substr(line, start, i - start, mini->rb);
 			if (!word)
 				return (NULL);
-			if (command_expected == 1)
-			{
-				new_tok = create_token(word, CMD, mini);
-				command_expected = 0;
-			}
 			else
 				new_tok = create_token(word, ARG, mini);
 			if (!new_tok)
 				return (NULL);
+			add_token(&head, &current, new_tok);
+		}
+		if (line[i] == ' ')
+		{
+			new_tok = create_token(NULL, TMP_SPACE, mini);
 			add_token(&head, &current, new_tok);
 		}
 	}

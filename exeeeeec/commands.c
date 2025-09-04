@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/29 16:12:23 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/04 12:19:48 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_commands(t_mini *mini)
 		destroy_tab(mini->env);
 		free(mini->rb);
 		command_not_found(cmd_args[0]);
+		exit(127);
 	}
 	execve(cmd_path, cmd_args, env);
 	perror("execve");

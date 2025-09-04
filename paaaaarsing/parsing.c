@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/29 18:42:55 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/03 19:00:02 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@ void	free_token_list(t_token *token)
 	while (token)
 	{
 		tmp = token->next;
-		free(token->str);
-		free(token);
+		free_token(token);
 		token = tmp;
 	}
+}
+
+void	free_token(t_token *token)
+{
+	free(token->str);
+	free(token);
 }
 
 void	ft_printlist(t_token *token)
@@ -100,11 +105,88 @@ char	*remove_quotes(const char *str, t_mini *mini)
 	return (res);
 	}
 
+static void	remove_spaces(t_token **head)
+{
+	t_token	*first;
+	t_token	*tmp;
+
+	first = *head;
+
+	if (!head || !*head)
+		return ;
+	while (first && first->next)
+	{
+		tmp = first->next;
+		if (first->type == TMP_SPACE)
+			*head = tmp;
+		else if (tmp->type == TMP_SPACE)
+			first->next = tmp->next;
+		first = first->next;
+	}
+}
+	
+static void	remove_empty_token(t_token **head, t_rb_list *rb)
+{
+	t_token	*first;
+	t_token	*tmp;
+
+	first = *head;
+
+	if (!head || !*head)
+		return ;
+	while (first && first->next)
+	{
+		tmp = first->next;
+		if (first->type == ARG && (first->str == NULL || *first->str == '\0'))
+			*head = tmp;
+		else if ((tmp->type == ARG && (tmp->str == NULL || *tmp->str == '\0')))
+		{
+			first->next = tmp->next;
+			continue ;
+		}
+		else if ((first->type == CMD || first->type == ARG) && tmp->type == ARG)
+		{
+			first->str = rb_strfreejoin(first->str, tmp->str, rb);
+			first->next = tmp->next;
+			tmp = first->next;
+		}
+		first = first->next;
+	}
+}
+
+static void	find_commands(t_token **head)
+{
+	t_token	*first;
+	int		expected;
+
+	first = *head;
+
+	if (!head || !*head)
+		return ;
+	expected = 1;
+	while (first)
+	{
+		if (first->type == ARG && expected)
+		{
+			first->type = CMD;
+			expected = 0;
+		}
+		else if (first->type == PIPE)
+			expected = 1;
+		else if (first->type >= HEREDOC)
+		{
+			first = first->next;
+			expected = 1;
+			// if (first->next)
+		}
+		first = first->next;
+	}
+}
+
 int	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
 	pid_t	pid;
-	int status;
 	int sig;
 
 	if (!pars_quotes(str))
@@ -117,20 +199,24 @@ int	parsing(char *str, t_mini *mini)
 		return (0);
 	str = pars_expand(str, mini);
 	restore_operators(str);
-	str = remove_quotes(str, mini);
 	first = tokenize (str, mini);
+	str = remove_quotes(str, mini);
+	// ft_printlist(first);
+	remove_empty_token(&first, mini->rb);
+	remove_spaces(&first);
+	find_commands(&first);
 	// ft_printlist(first);
 	mini->first = first;
 	if (!first)
 	{
 		if (is_only_spaces(str))
 		{
-			return (0); // Ne rien afficher si uniquement des espaces
+			return (0);
 		}
 		else
 		{
 			ft_error(": command not found\n");
-			return (1); // Afficher l'erreur si commande vide
+			return (1);
 		}
 	}
 	if (first->str && first->str[0] == '\0')
@@ -145,10 +231,10 @@ int	parsing(char *str, t_mini *mini)
 			execute_pipeline(mini);
 			return (0);
 		}
-		if (!first || first->type != CMD)
+		if (first->type != CMD)
 		{
-			ft_error(": command not found\n");
-			return (1);
+			command_not_found(first->str);
+			return (0);
 		}
 		if (first->str ==NULL)
 		{
@@ -160,6 +246,7 @@ int	parsing(char *str, t_mini *mini)
 			builtin_with_redir(first, mini);
 			return (0);
 		}
+		
 		pid = fork();
 		if (pid == 0)
 		{
@@ -170,18 +257,18 @@ int	parsing(char *str, t_mini *mini)
 		else if (pid > 0)
 		{
 			g_in_cmd = 1;
-			waitpid(pid, &status, 0);
+			waitpid(pid, &mini->exit_status, 0);
 			g_in_cmd = 0;
-			if (WIFSIGNALED(status))
+			if (WIFSIGNALED(mini->exit_status))
 			{
-				sig = WTERMSIG(status);
+				sig = WTERMSIG(mini->exit_status);
 				if (sig == SIGINT)
 					write(1, "\n", 1);
 				else if (sig == SIGQUIT)
 					write (1, "Quit (core dumped)\n", 20);
 			}
 		}
-		return (0);
+		return (0); //iccccccccccccci
 	}
 	return (1);
 }

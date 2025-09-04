@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/13 12:38:53 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/03 18:53:55 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,29 @@ char	*pars_expand(char *str, t_mini *mini)
 			state = 0;
 		if (str[i] == '$' && state != 2)
 		{
+			if (str[i + 1] == '?')
+			{
+				tmp = rb_substr(str, last_pos, i - last_pos, mini->rb);
+				result = rb_strfreejoin(result, tmp, mini->rb);
+				tmp = rb_itoa(mini->exit_status / 256, mini->rb);
+				result = rb_strfreejoin(result, tmp, mini->rb);
+				last_pos = i + 2;
+				i += 2;
+				continue ;
+			}
 			i++;
 			start = i;
+			if (!ft_isalpha(str[i]) && str[i] != '_')
+			{
+				if (ft_isdigit(str[i]) || str[i] == '\'' || str[i] == '"')
+					tmp = rb_substr(str, last_pos, start - 1 - last_pos, mini->rb);
+				else
+					tmp = rb_substr(str, last_pos, start - last_pos, mini->rb);
+				result = rb_strfreejoin(result, tmp, mini->rb);
+				i += ft_isdigit(str[i]);
+				last_pos = i;
+				continue ;
+			}
 			while (ft_isalnum(str[i]) || str[i] == '_')
 				i++;
 			if (i == start)

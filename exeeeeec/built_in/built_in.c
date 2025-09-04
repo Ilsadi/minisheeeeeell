@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 12:57:28 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/03 15:04:08 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ int	builtin_with_redir(t_token *first, t_mini *mini)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	handle_redirections(first);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
 	if (ft_strcmp(first->str, "env") == 0)
 		env(mini->env);
 	else if (ft_strcmp(first->str, "export") == 0)
@@ -55,9 +59,6 @@ int	builtin_with_redir(t_token *first, t_mini *mini)
 		pwd();
 	else if (ft_strcmp(first->str, "echo") == 0)
 		ft_echo(first);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
+
 	return (0);
 }

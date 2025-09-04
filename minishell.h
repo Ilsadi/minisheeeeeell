@@ -16,6 +16,7 @@
 # define APPEND		5
 # define INPUT		6
 # define TRUNC		7
+# define TMP_SPACE		8
 
 # define ERROR_NEWLINE "syntax error near unexpected token `newline'\n"
 # define ERROR_ENEXPECTED_SLASH "syntax error near enexpected token '/'\n"
@@ -52,7 +53,7 @@ typedef struct s_var
 typedef struct s_mini
 {
 	struct s_token		*first;
-	struct s_rb_list 	*rb;
+	struct s_rb_list	*rb;
 	struct s_var		**env;
 	int					exit_status;
 }				t_mini;
@@ -203,7 +204,7 @@ t_token	*create_token(char *str, int type, t_mini *mini);
 void	add_token(t_token **head, t_token **last, t_token *new_token);
 t_token	*tokenize(char *line, t_mini *mini);
 void	ft_printlist(t_token *token);
-void	free_tokens(t_token *token);
+void	free_token(t_token *token);
 
 //		SETUP
 
@@ -227,6 +228,7 @@ char	*rb_strfreejoin(char *s1, char *s2, t_rb_list *rb);
 char	*rb_strdup(const char *src, t_rb_list *rb);
 void	*rb_calloc(size_t count, size_t size, t_rb_list *rb);
 char	**rb_split(const char *str, char c, t_rb_list *rb);
+char	*rb_itoa(int n, t_rb_list *rb);
 
 // royal_bin.c
 

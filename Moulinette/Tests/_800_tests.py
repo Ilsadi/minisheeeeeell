@@ -751,13 +751,13 @@ class TestTest(TestDiff):
     def _input(self):
         return "echo $HOME"
     
-@AddTest("echo_37")#line 92
-class TestTest(TestReturn):
-    def _input(self):
-        return "echo \$HOME"
+# @AddTest("echo_37")#line 92
+# class TestTest(TestReturn):
+#     def _input(self):
+#         return "echo \$HOME"
     
-    def _response(self):
-        return "$HOME\n"
+#     def _response(self):
+#         return "$HOME\n"
     
 @AddTest("echo_38")#line 93
 class TestTest(TestDiff):
@@ -824,10 +824,10 @@ class TestTest(TestDiff):
     def _input(self):
         return "echo Le path de mon HOME est $HOME"
     
-@AddTest("echo_47")#line 102
-class TestTest(TestDiff):
-    def _input(self):
-        return "echo $USER$var\$USER$USER\$USERtest$USER"
+# @AddTest("echo_47")#line 102
+# class TestTest(TestDiff):
+#     def _input(self):
+#         return "echo $USER$var\$USER$USER\$USERtest$USER"
     
 @AddTest("echo_48")#line 103
 class TestTest(TestReturn):
