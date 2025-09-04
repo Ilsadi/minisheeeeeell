@@ -8,6 +8,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <termios.h> // a verifier si autorise
+# include <dirent.h>
 
 # define CMD		1
 # define ARG		2
@@ -19,7 +20,7 @@
 # define TMP_SPACE		8
 
 # define ERROR_NEWLINE "syntax error near unexpected token `newline'\n"
-# define ERROR_ENEXPECTED_SLASH "syntax error near enexpected token '/'\n"
+# define ERROR_ENEXPECTED_SLASH "\n"
 
 extern int g_in_cmd;
 extern volatile sig_atomic_t g_sig;
@@ -142,7 +143,7 @@ int		cd(t_token *token, t_var **var);
 
 // unset.c
 
-t_var	**unset_var(t_var **tab, char *name, t_mini *mini);
+t_var	**unset_var(t_var **tab, char *name);
 int		unset(t_token *token, t_mini *mini);
 
 // export.c
@@ -167,6 +168,7 @@ int		pars_ampersand(char *str);
 
 void	ft_error(char *msg);
 void	command_not_found(char *cmd);
+void	is_a_directory(char *cmd);
 
 // quotes.c
 

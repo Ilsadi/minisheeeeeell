@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/03 19:00:02 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/04 19:39:23 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,18 +137,18 @@ static void	remove_empty_token(t_token **head, t_rb_list *rb)
 	while (first && first->next)
 	{
 		tmp = first->next;
-		if (first->type == ARG && (first->str == NULL || *first->str == '\0'))
+		if (first->type == ARG && (first->str == NULL || *first->str == '\0') && first == *head)
 			*head = tmp;
-		else if ((tmp->type == ARG && (tmp->str == NULL || *tmp->str == '\0')))
-		{
-			first->next = tmp->next;
-			continue ;
-		}
+		// else if ((tmp->type == ARG && (tmp->str == NULL || *tmp->str == '\0')))
+		// {
+		// 	first->next = tmp->next;
+		// 	continue ;
+		// }
 		else if ((first->type == CMD || first->type == ARG) && tmp->type == ARG)
 		{
 			first->str = rb_strfreejoin(first->str, tmp->str, rb);
 			first->next = tmp->next;
-			tmp = first->next;
+			continue ;
 		}
 		first = first->next;
 	}
@@ -195,12 +195,14 @@ int	parsing(char *str, t_mini *mini)
 		return (0);
 	if (!pars_redir(str))
 		return (0);
+	// if (!pars_slash(str))
+	// 	return (0);
 	if (!pars_ampersand(str))
 		return (0);
 	str = pars_expand(str, mini);
 	restore_operators(str);
+	// str = remove_quotes(str, mini);
 	first = tokenize (str, mini);
-	str = remove_quotes(str, mini);
 	// ft_printlist(first);
 	remove_empty_token(&first, mini->rb);
 	remove_spaces(&first);

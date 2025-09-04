@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   slash.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:20:19 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:25:00 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/04 12:55:35 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	pars_slash(char *str)
 			{
 				if (!is_word(str[i + 1]))
 				{
-					ft_putstr_fd(ERROR_ENEXPECTED_SLASH, 2);
+					is_a_directory(str);
 					return (0);
 				}
 				i++;
@@ -38,7 +38,7 @@ int	pars_slash(char *str)
 			}
 			if (!is_word(str[i - 1]) || !is_word(str[i + 1]))
 			{
-				ft_putstr_fd(ERROR_ENEXPECTED_SLASH, 2);
+				is_a_directory(str);
 				return (0);
 			}
 		}

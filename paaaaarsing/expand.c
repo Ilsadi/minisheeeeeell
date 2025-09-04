@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/03 18:53:55 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/04 19:44:42 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	*pars_expand(char *str, t_mini *mini)
 			start = i;
 			if (!ft_isalpha(str[i]) && str[i] != '_')
 			{
-				if (ft_isdigit(str[i]) || str[i] == '\'' || str[i] == '"')
+				if (ft_isdigit(str[i]) || ((str[i] == '\'' || str[i] == '"') && state < 1))
 					tmp = rb_substr(str, last_pos, start - 1 - last_pos, mini->rb);
 				else
 					tmp = rb_substr(str, last_pos, start - last_pos, mini->rb);

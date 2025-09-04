@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/02 18:48:56 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/04 12:43:46 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	ft_child_process(t_pipex *pipex, char **cmd_args, char **envp, t_min
 		ft_free_tab(envp);
 		destroy_tab(var);
 		free(mini->rb);
-        ft_error_exit("Pipex : command not found\n");
+        exit(127);
 	}
 	error_fd(pipex);
 	close_all(pipex);
