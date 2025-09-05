@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/04 19:39:23 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/05 17:16:00 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,9 +246,8 @@ int	parsing(char *str, t_mini *mini)
 		else if (is_builtins(first))
 		{
 			builtin_with_redir(first, mini);
-			return (0);
+			return (1);
 		}
-		
 		pid = fork();
 		if (pid == 0)
 		{

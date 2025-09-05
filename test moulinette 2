@@ -1,4 +1,4 @@
-nombre de test rate : 201
+nombre de test rate : 155
 fslash_1
 fslash_2
 fslash_3
@@ -74,22 +74,6 @@ permissions_3
 permissions_4
 permissions_5
 permissions_8
-exit_2
-exit_3
-exit_4
-exit_8
-exit_9
-exit_10
-exit_11
-exit_12
-exit_13
-exit_25
-exit_26
-exit_27
-exit_28
-exit_29
-exit_34
-exit_35
 exit_41
 exit_43
 pipe_3
@@ -97,6 +81,7 @@ pipe_5
 pipe_6
 pipe_12
 pipe_13
+pipe_19
 pipe_20
 pipe_22
 pipe_23
@@ -169,4 +154,3 @@ even_more_redirs_7
 even_more_redirs_8
 even_more_redirs_9
 even_more_redirs_11
-

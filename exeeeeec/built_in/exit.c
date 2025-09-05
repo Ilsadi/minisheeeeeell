@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 13:04:25 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/04 13:45:45 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/05 16:39:12 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ int	ft_exit(t_token *token, t_mini *mini)
 	}
 	if (!is_numeric(current->str))
 	{
-		ft_putstr_fd("exit: numeric argument required\n", 2);
+		ft_putstr_fd("exit: ", 2);
+		ft_putstr_fd(current->str, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		rb_free_all(mini->rb);
 		free(mini->rb);
 		destroy_tab(mini->env);
@@ -59,7 +61,12 @@ int	ft_exit(t_token *token, t_mini *mini)
 	if (current->next && current->next->type == ARG)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		return (1);
+		exit_code = ft_atoi(current->str);
+		rb_free_all(mini->rb);
+		free(mini->rb);
+		destroy_tab(mini->env);
+		ft_printf("exit\n");
+		exit(1);
 	}
 	exit_code = ft_atoi(current->str);
 	rb_free_all(mini->rb);
