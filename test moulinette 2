@@ -1,12 +1,4 @@
-nombre de test rate : 155
-fslash_1
-fslash_2
-fslash_3
-fslash_4
-fslash_5
-var_5
-var_6
-var_9
+nombre de test rate : 146
 env_1
 env_7
 env_8
@@ -39,7 +31,6 @@ echo_export_4
 echo_export_5
 echo_export_12
 echo_export_13
-echo_export_28
 echo_export_33
 echo_export_34
 echo_export_35

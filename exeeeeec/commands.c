@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/05 16:24:48 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/05 19:58:12 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,18 @@ void	ft_commands(t_mini *mini)
 	cmd_path = find_cmd_path(cmd_args[0], env, mini);
 	if (cmd_path)
 	{
+		dir = opendir(cmd_path);
+		if (dir)
+		{
+			ft_putstr_fd(cmd_args[0], 2);
+			ft_putstr_fd(": Is a directory\n", 2);
+			closedir(dir);
+			ft_free_tab(env);
+			destroy_tab(mini->env);
+			rb_free_all(mini->rb);
+			free(mini->rb);
+			exit(126);
+		}
 		execve(cmd_path, cmd_args, env);
 		perror(cmd_path);
 		ft_free_tab(env);
@@ -111,8 +123,6 @@ void	ft_commands(t_mini *mini)
 			rb_free_all(mini->rb);
 			free(mini->rb);
 			exit(1);
-			// }
-			// is_a_directory(cmd_args);
 		}
 		ft_putstr_fd(cmd_args[0], 2);
 		if (ft_strchr(cmd_args[0], '/'))

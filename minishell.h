@@ -10,13 +10,13 @@
 # include <termios.h> // a verifier si autorise
 # include <dirent.h>
 
-# define CMD		1
-# define ARG		2
-# define PIPE		3
-# define HEREDOC	4
-# define APPEND		5
-# define INPUT		6
-# define TRUNC		7
+# define CMD			1
+# define ARG			2
+# define PIPE			3
+# define HEREDOC		4
+# define APPEND			5
+# define INPUT			6
+# define TRUNC			7
 # define TMP_SPACE		8
 
 # define ERROR_NEWLINE "syntax error near unexpected token `newline'\n"
