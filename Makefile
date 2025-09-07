@@ -31,7 +31,9 @@ SRCS = main.c \
 	exeeeeec/signaux/ctrl.c \
 	exeeeeec/signaux/echo_term.c \
 	royal_bin/royal_bin.c \
-	royal_bin/rb_substr.c\
+	royal_bin/rb_utils.c\
+	royal_bin/rb_itoa.c \
+	royal_bin/rb_split.c \
 	setup/utils_setup.c \
 	setup/search_var.c \
 
