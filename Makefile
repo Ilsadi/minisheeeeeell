@@ -7,7 +7,6 @@ CFLAGS = -Wall -Wextra -Werror -g3 $(addprefix -I, $(INC))
 SRCS = main.c \
 	paaaaarsing/redirections.c \
 	paaaaarsing/quotes.c \
-	paaaaarsing/slash.c \
 	paaaaarsing/parsing.c \
 	paaaaarsing/pipe.c \
 	paaaaarsing/expand.c \

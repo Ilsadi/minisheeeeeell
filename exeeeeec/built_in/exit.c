@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 13:04:25 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 09:50:46 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/10 15:43:26 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,55 +32,11 @@ int	is_numeric(char *str)
 	return (1);
 }
 
-// int	ft_exit(t_token *token, t_mini *mini)
-// {	
-// 	t_token	*current;
-// 	int		exit_code;
-
-// 	exit_code = 0;
-// 	current = token->next;
-
-// 	if (!current || current->type != ARG)
-// 	{
-// 		rb_free_all(mini->rb);
-// 		free(mini->rb);
-// 		destroy_tab(mini->env);
-// 		ft_printf("exit\n");
-// 		exit(exit_code & 255);
-// 	}
-// 	if (!is_numeric(current->str))
-// 	{
-// 		ft_putstr_fd("exit: ", 2);
-// 		ft_putstr_fd(current->str, 2);
-// 		ft_putstr_fd(": numeric argument required\n", 2);
-// 		rb_free_all(mini->rb);
-// 		free(mini->rb);
-// 		destroy_tab(mini->env);
-// 		ft_printf("exit\n");
-// 		exit(2);
-// 	}
-// 	if (current->next && current->next->type == ARG)
-// 	{
-// 		ft_putstr_fd("exit: too many arguments\n", 2);
-// 		exit_code = ft_atoi(current->str);
-// 		rb_free_all(mini->rb);
-// 		free(mini->rb);
-// 		destroy_tab(mini->env);
-// 		ft_printf("exit\n");
-// 		exit(1);
-// 	}
-// 	exit_code = ft_atoi(current->str);
-// 	rb_free_all(mini->rb);
-// 	free(mini->rb);
-// 	destroy_tab(mini->env);
-// 	ft_printf("exit\n");
-// 	exit(exit_code & 255);
-// }
 
 int	ft_exit(t_token *token, t_mini *mini)
 {
 	int		code;
-	t_token	*arg; 
+	t_token	*arg;
 
 	arg = token->next;
 	ft_printf("exit\n");
@@ -102,6 +58,6 @@ int	ft_exit(t_token *token, t_mini *mini)
 		code = ft_atoi(arg->str);
 	rb_free_all(mini->rb);
 	free(mini->rb);
-	destroy_tab(mini->env);
+	destroy_tab(mini->env, NULL);
 	exit(code & 255);
 }

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 13:51:55 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/04 13:33:14 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/10 16:06:03 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@ t_var	**created_tab(char **env, t_mini *mini)
 	int		tablen;
 	int		i;
 	int		j;
-	(void)mini;
 
+	(void)mini;
 	i = 0;
 	tablen = size_tab(env);
 	tab = ft_calloc(sizeof(t_var *), tablen + 1);
 	if (!tab)
 		return (NULL);
-
 	while (env[i])
 	{
 		j = 0;
@@ -61,7 +60,7 @@ char	*get_value(t_var **tab, char *name)
 	return (NULL);
 }
 
-void	destroy_tab(t_var **tab)
+void	destroy_tab(t_var **tab, char *str)
 {
 	int	i;
 
@@ -74,5 +73,9 @@ void	destroy_tab(t_var **tab)
 		i++;
 	}
 	free(tab);
+	if (str)
+	{
+		perror(str);
+		exit(127);
+	}
 }
-
