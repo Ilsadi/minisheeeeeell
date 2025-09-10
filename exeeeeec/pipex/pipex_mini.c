@@ -12,104 +12,74 @@
 
 #include "minishell.h"
 
-char    **token_to_cmd(t_token **current, t_mini *mini)
+static int	is_redir_token(int type)
 {
-    t_token *start;
-    t_token *tmp;
-    int      count;
-    int      i;
-    int      skip_next;
-    char   **cmd;
-
-    start = *current;
-    count = 0;
-    skip_next = 0;
-
-    /* 1) Compter */
-    tmp = start;
-    while (tmp && tmp->type != PIPE)
-    {
-        if (skip_next) { skip_next = 0; tmp = tmp->next; continue; }
-
-        if (tmp->type == INPUT || tmp->type == TRUNC
-         || tmp->type == APPEND || tmp->type == HEREDOC)
-        {
-            /* ne pas inclure l'opérateur, et skipper aussi son operand (filename/delimiter) */
-            skip_next = 1;
-            tmp = tmp->next;
-            continue;
-        }
-        if (tmp->type == CMD || tmp->type == ARG)
-            count++;
-        tmp = tmp->next;
-    }
-
-    cmd = rb_calloc(count + 1, sizeof(char *), mini->rb);
-    if (!cmd)
-        return (NULL);
-
-    /* 2) Remplir */
-    i = 0;
-    skip_next = 0;
-    tmp = start;
-    while (tmp && tmp->type != PIPE)
-    {
-        if (skip_next) { skip_next = 0; tmp = tmp->next; continue; }
-
-        if (tmp->type == INPUT || tmp->type == TRUNC
-         || tmp->type == APPEND || tmp->type == HEREDOC)
-        {
-            skip_next = 1;                 /* sauter le filename */
-            tmp = tmp->next;
-            continue;
-        }
-        if (tmp->type == CMD || tmp->type == ARG)
-		{
-            cmd[i++] = rb_strdup(tmp->str, mini->rb);
-		}
-        tmp = tmp->next;
-    }
-    cmd[i] = NULL;
-
-    /* Avancer *current jusqu’au pipe (même comportement que ton code) */
-    while (*current && (*current)->type != PIPE)
-        *current = (*current)->next;
-
-    return (cmd);
+	return (type == INPUT || type == TRUNC
+		|| type == APPEND || type == HEREDOC);
 }
 
+static int	count_cmd_args(t_token *start)
+{
+	t_token	*tmp;
+	int		count;
 
-// char	**token_to_cmd(t_token **current, t_mini *mini)
-// {
-// 	t_token *start;
-// 	int		count;
-// 	char	**cmd;
-// 	int		i;
+	tmp = start;
+	count = 0;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (is_redir_token(tmp->type))
+		{
+			tmp = tmp->next;
+			if (tmp)
+				tmp = tmp->next;
+			continue ;
+		}
+		if (tmp->type == CMD || tmp->type == ARG)
+			count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
 
-// 	start = *current;
-// 	count = 0;
-// 	i = 0;
-// 	while (*current && (*current)->type != PIPE)
-// 	{
-// 		if ((*current)->type == CMD || (*current)->type == ARG)
-// 			count++;
-// 		*current = (*current)->next;
-// 	}
-// 	cmd = rb_calloc(count + 1, sizeof(char *), mini->rb);
-// 	if (!cmd)
-// 		return (NULL);
-// 	while (start && start->type != PIPE)
-// 	{
-// 		if (start->type == CMD || start->type == ARG)
-// 		{
-// 			cmd[i] = rb_strdup(start->str, mini->rb);
-// 			i++;
-// 		}
-// 		start = start->next;
-// 	}
-// 	cmd[i] = NULL;
-// 	return (cmd);
-// }
+static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
+{
+	t_token	*tmp;
+	int		i;
+
+	tmp = start;
+	i = 0;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (is_redir_token(tmp->type))
+		{
+			tmp = tmp->next;
+			if (tmp)
+				tmp = tmp->next;
+			continue ;
+		}
+		if (tmp->type == CMD || tmp->type == ARG)
+			cmd[i++] = rb_strdup(tmp->str, mini->rb);
+		tmp = tmp->next;
+	}
+	cmd[i] = NULL;
+}
+
+char	**token_to_cmd(t_token **current, t_mini *mini)
+{
+	t_token	*start;
+	int		count;
+	char	**cmd;
+
+	start = *current;
+	count = count_cmd_args(start);
+	cmd = rb_calloc(count + 1, sizeof(char *), mini->rb);
+	if (!cmd)
+		return (NULL);
+	fill_cmd_args(cmd, start, mini);
+	while (*current && (*current)->type != PIPE)
+		*current = (*current)->next;
+	return (cmd);
+}
 
 int	has_pipe(t_token *tokens)
 {
@@ -122,25 +92,34 @@ int	has_pipe(t_token *tokens)
 	return (0);
 }
 
-void	execute_pipeline(t_mini *mini)
+static int	wait_pipeline(void)
 {
-	t_token	*current;
-	t_pipex	pipex;
 	int		status;
-	int		last_status = 0;
+	int		last_status;
 	pid_t	waited_pid;
 
-	current = mini->first;
+	last_status = 0;
+	waited_pid = 0;
+	while (1)
+	{
+		waited_pid = wait(&status);
+		if (waited_pid <= 0)
+			break ;
+		if (WIFEXITED(status))
+			last_status = WEXITSTATUS(status);
+	}
+	return (last_status);
+}
+
+void	execute_pipeline(t_mini *mini)
+{
+	t_pipex	pipex;
+
 	ft_memset(&pipex, 0, sizeof(t_pipex));
 	pipex.infile = STDIN_FILENO;
 	pipex.outfile = STDOUT_FILENO;
-	if (current && current->type == PIPE)
-		current = current->next;
-	ft_pipex_loop(&pipex, mini->first, mini->env, mini);
-	while ((waited_pid = wait(&status)) > 0)
-    {
-        if (WIFEXITED(status))
-            last_status = WEXITSTATUS(status);
-    }
-	mini->exit_status = last_status;
+	if (mini->first && mini->first->type == PIPE)
+		mini->first = mini->first->next;
+	ft_pipex_loop(&pipex, mini->first, mini);
+	mini->exit_status = wait_pipeline();
 }

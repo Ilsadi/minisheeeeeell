@@ -109,7 +109,7 @@ char	**var_to_envp(t_var **var);
 // pipex_bonus.c
 
 
-void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_var **var, t_mini *mini);
+void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini);
 
 // pipex_utils.c
 
