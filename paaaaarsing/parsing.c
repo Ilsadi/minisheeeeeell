@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/05 20:03:07 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/10 12:10:05 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ int	parsing(char *str, t_mini *mini)
 	if (!pars_ampersand(str))
 		return (0);
 	str = pars_expand(str, mini);
+	
 	restore_operators(str);
 	// str = remove_quotes(str, mini);
 	first = tokenize (str, mini);
@@ -212,13 +213,9 @@ int	parsing(char *str, t_mini *mini)
 	if (!first)
 	{
 		if (is_only_spaces(str))
-		{
-			return (0);
-		}
+		return (0);
 		else
-		{
-			return (1);
-		}
+		return (1);
 	}
 	if (first->str && first->str[0] == '\0')
 	{
@@ -233,10 +230,7 @@ int	parsing(char *str, t_mini *mini)
 			return (0);
 		}
 		if (first->type != CMD)
-		{
-			command_not_found(first->str);
-			return (0);
-		}
+			return (command_not_found(first->str),0);
 		if (first->str ==NULL)
 		{
 			handle_redirections(first);

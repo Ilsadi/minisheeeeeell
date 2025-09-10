@@ -19,7 +19,8 @@ int	pwd(void)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_putstr_fd("pwd: error retrieving current directory: No such file or directory", 2);
+		ft_putstr_fd("pwd: error retrieving current directory:\
+			 No such file or directory", 2);
 		return (1);
 	}
 	ft_printf("%s\n", cwd);

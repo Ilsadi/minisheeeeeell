@@ -12,21 +12,29 @@
 
 #include "minishell.h"
 
+static int	is_echo_n_flag(char *str)
+{
+	int	j;
+
+	j = 2;
+	if (str[0] != '-' || str[1] != 'n')
+		return (0);
+	while (str[j] == 'n')
+		j++;
+	if (str[j] == '\0')
+		return (1);
+	return (0);
+}
+
 int	ft_echo(t_token *token)
 {
-	int		j;
 	int		n_flag;
-	t_token *current;
+	t_token	*current;
 
 	n_flag = 0;
 	current = token->next;
-	while (current && current->type == ARG && current->str[0] == '-' && current->str[1] == 'n')
+	while (current && current->type == ARG && is_echo_n_flag(current->str))
 	{
-		j = 2;
-		while (current->str[j] == 'n')
-			j++;
-		if (current->str[j] != '\0')
-			break ;
 		n_flag = 1;
 		current = current->next;
 	}

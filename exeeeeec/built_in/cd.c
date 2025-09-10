@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+
+static int	cd_error(t_token *token)
+{
+	if (chdir(token->next->str))
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(token->next->str, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
 int	cd(t_token *token, t_var **var)
 {
 	t_token	*current;
@@ -27,15 +40,7 @@ int	cd(t_token *token, t_var **var)
 	if (mdr_args == 1)
 		chdir(get_value(var, "HOME"));
 	else if (mdr_args == 2)
-	{
-		if (chdir(token->next->str))
-		{
-			ft_putstr_fd("cd: ", 2);
-			ft_putstr_fd(token->next->str, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			return (1);
-		}
-	}
+		cd_error(token);
 	else
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
