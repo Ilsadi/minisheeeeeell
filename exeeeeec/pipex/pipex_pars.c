@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_pars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 19:34:11 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/08/08 20:23:30 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/11 18:30:42 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,17 @@ static char	*handle_path_cmd(char *cmd,t_mini *mini)
 	return (NULL);
 }
 
-char	*find_cmd_path(char *cmd, char **envp, t_mini *mini)
+char	*find_cmd_path(char *cmd, t_mini *mini)
 {
-	int		i;
 	char	*path_env;
 	char	**paths;
 	char	*full_path;
 
-	i = 0;
-	path_env = NULL;
 	if (ft_strchr(cmd, '/'))
 		return (handle_path_cmd(cmd, mini));
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			path_env = envp[i] + 5;
-			break ;
-		}
-		i++;
-	}
+	if (!*cmd)
+		return (NULL);
+	path_env = get_value(mini->env, "PATH");
 	if (!path_env)
 		return (NULL);
 	paths = rb_split(path_env, ':', mini->rb);

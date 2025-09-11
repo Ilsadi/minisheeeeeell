@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:12:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 16:51:39 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:13:56 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	is_heredoc(int *pipefd, t_token *current, int last_heredoc_pipe)
 	return (1);
 }
 
-int	handle_redirections(t_token *tokens)
+int	handle_redirections(t_token *tokens, int stop)
 {
 	t_token	*current;
 	int		pipefd[2];
@@ -79,7 +79,7 @@ int	handle_redirections(t_token *tokens)
 
 	last_heredoc_pipe = -1;
 	current = tokens;
-	while (current)
+	while (current && current->type != stop)
 	{
 		if (current->type == INPUT && current->next)
 			is_input(current);

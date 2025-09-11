@@ -86,14 +86,13 @@ int								execute_command(char **args, char **envp);
 void							disable_signal_echo(void);
 //	input_trunc.c
 
-int								handle_redirections(t_token *tokens);
+int								handle_redirections(t_token *tokens, int stop);
 
 //	pipex
 
 // pipex_pars.c
 
-char							*find_cmd_path(char *cmd, char **envp,
-									t_mini *mini);
+char							*find_cmd_path(char *cmd, t_mini *mini);
 
 // pipex_mini.c
 
@@ -194,7 +193,7 @@ int								pars_pipe(char *str);
 
 // parsing.c
 
-int								parsing(char *str, t_mini *mini);
+void							parsing(char *str, t_mini *mini);
 void							free_token_list(t_token *token);
 void							restore_operators(char *str);
 char							*remove_quotes(const char *str, t_mini *mini);
@@ -224,9 +223,9 @@ void							print_tab(t_var **tab);
 
 // search_var.c
 
-t_var							**created_tab(char **env, t_mini *mini);
+t_var							**created_tab(char **env);
 char							*get_value(t_var **tab, char *name);
-void							destroy_tab(t_var **tab, char *str);
+void							destroy_tab(t_var **tab);
 
 //				ROYAL_BIN
 

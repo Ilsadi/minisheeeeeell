@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 15:43:17 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:13:38 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini)
 		ft_free_tab(envp);
 		ft_error_exit("Pipex: command not found\n");
 	}
-	cmd_path = find_cmd_path(cmd_args[0], envp, mini);
+	cmd_path = find_cmd_path(cmd_args[0], mini);
 	if (!cmd_path)
 	{
 		close_all(p);
 		rb_free_all(mini->rb);
 		ft_free_tab(envp);
-		destroy_tab(mini->env, NULL);
+		destroy_tab(mini->env);
 		free(mini->rb);
 		exit(127);
 	}
@@ -85,6 +85,7 @@ void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini)
 	current = tokens;
 	while (current)
 	{
+		handle_redirections(current, PIPE);
 		current_cmd = token_to_cmd(&current, mini);
 		setup_pipe(pipex, &current);
 		pipex->pid1 = fork();

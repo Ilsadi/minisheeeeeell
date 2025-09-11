@@ -6,40 +6,38 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 13:51:55 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 16:06:03 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:37:56 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_var	**created_tab(char **env, t_mini *mini)
+t_var	**created_tab(char **env)
 {
 	t_var	**tab;
 	int		tablen;
 	int		i;
 	int		j;
 
-	(void)mini;
-	i = 0;
+	i = -1;
 	tablen = size_tab(env);
 	tab = ft_calloc(sizeof(t_var *), tablen + 1);
 	if (!tab)
 		return (NULL);
-	while (env[i])
+	while (env[++i])
 	{
 		j = 0;
 		tab[i] = malloc(sizeof(t_var));
 		if (!tab[i])
-			return (NULL);
+			return (destroy_tab(tab), NULL);
 		while (env[i][j] != '=')
 			j++;
 		tab[i]->name = ft_substr(env[i], 0, j);
 		if (!tab[i]->name)
-			return (NULL);
+			return (destroy_tab(tab), NULL);
 		tab[i]->value = ft_strdup(env[i] + (j + 1));
 		if (!tab[i]->value)
-			return (NULL);
-		i++;
+			return (destroy_tab(tab), NULL);
 	}
 	return (tab);
 }
@@ -60,7 +58,7 @@ char	*get_value(t_var **tab, char *name)
 	return (NULL);
 }
 
-void	destroy_tab(t_var **tab, char *str)
+void	destroy_tab(t_var **tab)
 {
 	int	i;
 
@@ -73,9 +71,4 @@ void	destroy_tab(t_var **tab, char *str)
 		i++;
 	}
 	free(tab);
-	if (str)
-	{
-		perror(str);
-		exit(127);
-	}
 }

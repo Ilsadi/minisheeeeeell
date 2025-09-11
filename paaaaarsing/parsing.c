@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 12:10:05 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:51:47 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,22 +183,20 @@ static void	find_commands(t_token **head)
 	}
 }
 
-int	parsing(char *str, t_mini *mini)
+void	parsing(char *str, t_mini *mini)
 {
 	t_token	*first;
 	pid_t	pid;
 	int sig;
 
 	if (!pars_quotes(str))
-		return (0);
+		return ;
 	if (!pars_pipe(str))
-		return (0);
+		return ;
 	if (!pars_redir(str))
-		return (0);
-	// if (!pars_slash(str))
-	// 	return (0);
+		return ;
 	if (!pars_ampersand(str))
-		return (0);
+		return ;
 	str = pars_expand(str, mini);
 	
 	restore_operators(str);
@@ -211,58 +209,37 @@ int	parsing(char *str, t_mini *mini)
 	// ft_printlist(first);
 	mini->first = first;
 	if (!first)
+		return ;
+	if (has_pipe(first))
 	{
-		if (is_only_spaces(str))
-		return (0);
-		else
-		return (1);
+		execute_pipeline(mini);
+		return ;
 	}
-	if (first->str && first->str[0] == '\0')
+	else if (is_builtins(first))
 	{
-		ft_error(": command not found\n");
-		return (1);
+		builtin_with_redir(first, mini);
+		return ;
 	}
-	if (first)
+	pid = fork();
+	if (pid == 0)
 	{
-		if (has_pipe(first))
-		{
-			execute_pipeline(mini);
-			return (0);
-		}
-		if (first->type != CMD)
-			return (command_not_found(first->str),0);
-		if (first->str ==NULL)
-		{
-			handle_redirections(first);
-			return (0);
-		}
-		else if (is_builtins(first))
-		{
-			builtin_with_redir(first, mini);
-			return (1);
-		}
-		pid = fork();
-		if (pid == 0)
-		{
-			setup_child_signals();
-			ft_commands(mini);
-			exit(EXIT_FAILURE);
-		}
-		else if (pid > 0)
-		{
-			g_in_cmd = 1;
-			waitpid(pid, &mini->exit_status, 0);
-			g_in_cmd = 0;
-			if (WIFSIGNALED(mini->exit_status))
-			{
-				sig = WTERMSIG(mini->exit_status);
-				if (sig == SIGINT)
-					write(1, "\n", 1);
-				else if (sig == SIGQUIT)
-					write (1, "Quit (core dumped)\n", 20);
-			}
-		}
-		return (0); //iccccccccccccci
+		setup_child_signals();
+		handle_redirections(first, -1);
+		ft_commands(mini);
+		exit(EXIT_FAILURE);
 	}
-	return (1);
+	else if (pid > 0)
+	{
+		g_in_cmd = 1;
+		waitpid(pid, &mini->exit_status, 0);
+		g_in_cmd = 0;
+		if (WIFSIGNALED(mini->exit_status))
+		{
+			sig = WTERMSIG(mini->exit_status);
+			if (sig == SIGINT)
+				write(1, "\n", 1);
+			else if (sig == SIGQUIT)
+				write (1, "Quit (core dumped)\n", 20);
+		}
+	}
 }

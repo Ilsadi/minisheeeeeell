@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 15:43:41 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:45:10 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 
-	mini.env = created_tab(envp, &mini);
+	mini.env = created_tab(envp);
 	if (!mini.env)
 		return (1);
 	while (1)
@@ -47,6 +47,6 @@ int	main(int ac, char **av, char **envp)
 	}
 	clear_history();
 	free(mini.rb);
-	destroy_tab(mini.env, NULL);
+	destroy_tab(mini.env);
 	return (0);
 }

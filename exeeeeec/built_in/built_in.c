@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 09:34:50 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:19:21 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,6 @@ int	is_builtins(t_token *first)
 	return (0);
 }
 
-static void	save_and_handle(t_token *first, int saved_stdin, int saved_stdout)
-{
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	handle_redirections(first);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-}
-
 int	builtin_with_redir(t_token *first, t_mini *mini)
 {
 	int	saved_stdin;
@@ -51,7 +40,9 @@ int	builtin_with_redir(t_token *first, t_mini *mini)
 
 	saved_stdin = 0;
 	saved_stdout = 0;
-	save_and_handle(first, saved_stdin, saved_stdout);
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	handle_redirections(first, -1);
 	if (ft_strcmp(first->str, "env") == 0)
 		env(mini->env);
 	else if (ft_strcmp(first->str, "export") == 0)
@@ -66,7 +57,8 @@ int	builtin_with_redir(t_token *first, t_mini *mini)
 		pwd();
 	else if (ft_strcmp(first->str, "echo") == 0)
 		ft_echo(first);
-
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 16:48:31 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 18:48:07 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	free_command(char **env, t_mini *mini, int exit_code)
 {
 	ft_free_tab(env);
-	destroy_tab(mini->env, NULL);
+	destroy_tab(mini->env);
 	rb_free_all(mini->rb);
 	free(mini->rb);
 	exit(exit_code);
@@ -57,13 +57,13 @@ void	ft_commands(t_mini *mini)
 	char	**cmd_args;
 	char	**env;
 
+	cmd_args = token_to_cmd(&mini->first, mini);
+	if (!cmd_args || !cmd_args[0])
+		return (rb_free_all(mini->rb), exit(0));
 	env = var_to_envp(mini->env);
 	if (!env)
-		ft_error_exit("Error creating environment\n");
-	cmd_args = token_to_cmd(&mini->first, mini);
-	if (!cmd_args || !cmd_args[0] || cmd_args[0][0] == '\0')
-		destroy_tab(mini->env, NOT_CMD);
-	cmd_path = find_cmd_path(cmd_args[0], env, mini);
+		return (rb_free_all(mini->rb), ft_error_exit("Error environment\n"));
+	cmd_path = find_cmd_path(cmd_args[0], mini);
 	if (cmd_path)
 		commands_utils(cmd_path, cmd_args, env, mini);
 	else
