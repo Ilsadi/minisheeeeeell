@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/11 19:13:38 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 16:11:15 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	error_fd(t_pipex *pipex)
 {
+	// fprintf(stderr, "in : %d, out : %d\n", pipex->fd_in, pipex->fd_out);
 	if (pipex->fd_in < 0 || pipex->fd_out < 0)
 	{
 		close_all(pipex);
@@ -31,10 +32,13 @@ static void	error_fd(t_pipex *pipex)
 	}
 }
 
-static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini)
+static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini, t_token *tokens)
 {
 	char	*cmd_path;
+	t_token	*current;
 
+	// fprintf(stderr, "start child\n");
+	current = tokens;
 	if (!cmd_args || !cmd_args[0] || cmd_args[0][0] == '\0')
 	{
 		close_all(p);
@@ -42,6 +46,7 @@ static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini)
 		ft_error_exit("Pipex: command not found\n");
 	}
 	cmd_path = find_cmd_path(cmd_args[0], mini);
+	// fprintf(stderr, "%s\n", *cmd_args);
 	if (!cmd_path)
 	{
 		close_all(p);
@@ -53,9 +58,14 @@ static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini)
 	}
 	error_fd(p);
 	close_all(p);
-	execve(cmd_path, cmd_args, envp);
-	perror("execve");
-	free(cmd_path);
+	if (is_builtins(current))
+		builtin_with_redir(current, mini);
+	else
+	{
+		execve(cmd_path, cmd_args, envp);
+		perror("execve");
+		free(cmd_path);
+	}
 	exit(1);
 }
 
@@ -85,12 +95,13 @@ void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini)
 	current = tokens;
 	while (current)
 	{
-		handle_redirections(current, PIPE);
 		current_cmd = token_to_cmd(&current, mini);
 		setup_pipe(pipex, &current);
 		pipex->pid1 = fork();
 		if (pipex->pid1 == 0)
-			ft_child_pro(pipex, current_cmd, envp, mini);
+		{
+			ft_child_pro(pipex, current_cmd, envp, mini, current);
+		}
 		close_test(pipex->fd_in);
 		close_test(pipex->fd_out);
 		if (current)

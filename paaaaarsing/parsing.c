@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/11 19:51:47 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:49:39 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_printlist(t_token *token)
 void	restore_operators(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	while (str && str[i])
 	{
@@ -58,7 +58,7 @@ void	restore_operators(char *str)
 	}
 }
 
-int is_only_spaces(char *str)
+int	is_only_spaces(char *str)
 {
 	int	i;
 
@@ -74,44 +74,12 @@ int is_only_spaces(char *str)
 	return (1);
 }
 
-char	*remove_quotes(const char *str, t_mini *mini)
-{
-	int	i;
-	int	j;
-	int	state;
-	char	*res;
-	
-	i = 0;
-	j = 0;
-	state = 0;
-	res = rb_malloc(ft_strlen(str) + 1, mini->rb);
-	if (!res)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] == '"' && state == 0)
-			state = 1;
-		else if (str[i] == '"' && state == 1)
-			state = 0;
-		else if (str[i] == '\'' && state == 0)
-			state = 2;
-		else if (str[i] == '\'' && state == 2)
-			state = 0;
-		else
-			res[j++] = str[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
-	}
-
 static void	remove_spaces(t_token **head)
 {
 	t_token	*first;
 	t_token	*tmp;
 
 	first = *head;
-
 	if (!head || !*head)
 		return ;
 	while (first && first->next)
@@ -124,27 +92,19 @@ static void	remove_spaces(t_token **head)
 		first = first->next;
 	}
 }
-	
+
 static void	remove_empty_token(t_token **head, t_rb_list *rb)
 {
 	t_token	*first;
 	t_token	*tmp;
 
 	first = *head;
-
 	if (!head || !*head)
 		return ;
 	while (first && first->next)
 	{
 		tmp = first->next;
-		if (first->type == ARG && (first->str == NULL || *first->str == '\0') && first == *head)
-			*head = tmp;
-		// else if ((tmp->type == ARG && (tmp->str == NULL || *tmp->str == '\0')))
-		// {
-		// 	first->next = tmp->next;
-		// 	continue ;
-		// }
-		else if ((first->type == CMD || first->type == ARG) && tmp->type == ARG)
+		if (first->type == ARG && tmp->type == ARG)
 		{
 			first->str = rb_strfreejoin(first->str, tmp->str, rb);
 			first->next = tmp->next;
@@ -160,7 +120,6 @@ static void	find_commands(t_token **head)
 	int		expected;
 
 	first = *head;
-
 	if (!head || !*head)
 		return ;
 	expected = 1;
@@ -177,7 +136,6 @@ static void	find_commands(t_token **head)
 		{
 			first = first->next;
 			expected = 1;
-			// if (first->next)
 		}
 		first = first->next;
 	}
@@ -185,9 +143,8 @@ static void	find_commands(t_token **head)
 
 void	parsing(char *str, t_mini *mini)
 {
-	t_token	*first;
 	pid_t	pid;
-	int sig;
+	int		sig;
 
 	if (!pars_quotes(str))
 		return ;
@@ -198,33 +155,30 @@ void	parsing(char *str, t_mini *mini)
 	if (!pars_ampersand(str))
 		return ;
 	str = pars_expand(str, mini);
-	
 	restore_operators(str);
-	// str = remove_quotes(str, mini);
-	first = tokenize (str, mini);
-	// ft_printlist(first);
-	remove_empty_token(&first, mini->rb);
-	remove_spaces(&first);
-	find_commands(&first);
-	// ft_printlist(first);
-	mini->first = first;
-	if (!first)
+	mini->first = tokenize(str, mini);
+	// ft_printlist(mini->first);
+	remove_empty_token(&mini->first, mini->rb);
+	remove_spaces(&mini->first);
+	find_commands(&mini->first);
+	// ft_printlist(mini->first);
+	if (!mini->first)
 		return ;
-	if (has_pipe(first))
+	if (has_pipe(mini->first))
 	{
 		execute_pipeline(mini);
 		return ;
 	}
-	else if (is_builtins(first))
+	else if (is_builtins(mini->first))
 	{
-		builtin_with_redir(first, mini);
+		builtin_with_redir(mini->first, mini);
 		return ;
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		setup_child_signals();
-		handle_redirections(first, -1);
+		handle_redirections(mini->first, -1);
 		ft_commands(mini);
 		exit(EXIT_FAILURE);
 	}
@@ -232,6 +186,8 @@ void	parsing(char *str, t_mini *mini)
 	{
 		g_in_cmd = 1;
 		waitpid(pid, &mini->exit_status, 0);
+		if (mini->exit_status > 256)
+			mini->exit_status /= 256;
 		g_in_cmd = 0;
 		if (WIFSIGNALED(mini->exit_status))
 		{
@@ -239,7 +195,7 @@ void	parsing(char *str, t_mini *mini)
 			if (sig == SIGINT)
 				write(1, "\n", 1);
 			else if (sig == SIGQUIT)
-				write (1, "Quit (core dumped)\n", 20);
+				write(1, "Quit (core dumped)\n", 20);
 		}
 	}
 }

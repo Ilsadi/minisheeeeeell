@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-int	env(t_var	**var)
+int	env(t_mini *mini)
 {
-	print_tab(var);
+	update_or_add_var(mini, "_", "/usr/bin/env");
+	print_tab(mini->env);
 	return (0);
 }

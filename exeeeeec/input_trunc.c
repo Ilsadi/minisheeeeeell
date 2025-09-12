@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:12:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/11 19:13:56 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/11 20:20:10 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	is_append(t_token *current)
 	return (1);
 }
 
-static int	is_heredoc(int *pipefd, t_token *current, int last_heredoc_pipe)
+static int	is_heredoc(int *pipefd, t_token *current, int *last_heredoc_pipe)
 {
 	char	*line;
 
@@ -65,9 +65,9 @@ static int	is_heredoc(int *pipefd, t_token *current, int last_heredoc_pipe)
 	}
 	free(line);
 	close(pipefd[1]);
-	if (last_heredoc_pipe != -1)
-		close(last_heredoc_pipe);
-	last_heredoc_pipe = pipefd[0];
+	if (*last_heredoc_pipe != -1)
+		close(*last_heredoc_pipe);
+	*last_heredoc_pipe = pipefd[0];
 	return (1);
 }
 
@@ -88,7 +88,7 @@ int	handle_redirections(t_token *tokens, int stop)
 		else if (current->type == APPEND && current->next)
 			is_append(current);
 		else if (current->type == HEREDOC && current->next)
-			is_heredoc(pipefd, current, last_heredoc_pipe);
+			is_heredoc(pipefd, current, &last_heredoc_pipe);
 		current = current->next;
 	}
 	if (last_heredoc_pipe != -1)

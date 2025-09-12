@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 17:04:15 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 15:24:43 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*pars_expand(char *str, t_mini *mini)
 			{
 				tmp = rb_substr(str, last_pos, i - last_pos, mini->rb);
 				result = rb_strfreejoin(result, tmp, mini->rb);
-				tmp = rb_itoa(mini->exit_status / 256, mini->rb);
+				tmp = rb_itoa(mini->exit_status, mini->rb);
 				result = rb_strfreejoin(result, tmp, mini->rb);
 				last_pos = i + 2;
 				i += 2;

@@ -6,11 +6,11 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 16:27:45 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 13:39:16 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:55:25 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	ft_error(char *msg)
 {

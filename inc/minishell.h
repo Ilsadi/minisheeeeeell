@@ -2,7 +2,7 @@
 
 # define MINISHELL_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <dirent.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -134,7 +134,7 @@ int								ft_echo(t_token *token);
 
 // env.c
 
-int								env(t_var **var);
+int								env(t_mini *mini);
 
 // pwd.c
 
@@ -151,6 +151,9 @@ int								unset(t_token *token, t_mini *mini);
 
 // export.c
 
+void							update_or_add_var(t_mini *mini, char *name,
+									char *value);
+t_var							**add_var(t_var **tab, t_var *new_var);
 int								ft_export(t_token *token, t_mini *mini);
 
 // exit.c

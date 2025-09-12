@@ -6,11 +6,11 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 13:59:15 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/04 13:44:44 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 11:55:49 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 t_var	**unset_var(t_var **tab, char *name)
 {

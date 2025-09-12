@@ -6,14 +6,14 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:48:21 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 12:08:36 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 16:42:36 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 
-static t_var	**add_var(t_var **tab, t_var *new_var)
+t_var	**add_var(t_var **tab, t_var *new_var)
 {
 	t_var	**new_tab;
 	int		i;
@@ -50,7 +50,7 @@ static void	print_export_env(t_var **env)
 	}
 }
 
-static void	update_or_add_var(t_mini *mini, char *name, char *value)
+void	update_or_add_var(t_mini *mini, char *name, char *value)
 {
 	int		i;
 	t_var	*new_var;
@@ -82,6 +82,22 @@ static void	add_var_no_value(t_mini *mini, char *name)
 	mini->env = add_var(mini->env, new_var);
 }
 
+static int	vakud_bane(char *name)
+{
+	int	i;
+
+	i = 0;
+	while (name[i])
+	{
+		if (i == 0 && !ft_isalpha(name[i]) && name[i] != '_')
+			return (0);
+		else if (!ft_isalnum(name[i]) && name[i] != '_')
+			return (0);
+		i++;
+	}
+	return (i > 0);
+}
+
 int	ft_export(t_token *token, t_mini *mini)
 {
 	char	*equal_pos;
@@ -97,6 +113,14 @@ int	ft_export(t_token *token, t_mini *mini)
 	if (equal_pos)
 	{
 		name = ft_substr(token->next->str, 0, equal_pos - token->next->str);
+		if (!vakud_bane(name))
+		{
+			free(name);
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(token->next->str, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (1);
+		}
 		value = equal_pos + 1;
 		update_or_add_var(mini, name, value);
 		free(name);
@@ -104,6 +128,14 @@ int	ft_export(t_token *token, t_mini *mini)
 	else
 	{
 		name = ft_strdup(token->next->str);
+		if (!vakud_bane(name))
+		{
+			free(name);
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(token->next->str, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (1);
+		}
 		add_var_no_value(mini, name);
 		free(name);
 	}

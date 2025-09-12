@@ -2,7 +2,7 @@
 #                                  VARIABLES                                   #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror -g3 $(addprefix -I, $(INC))
+CFLAGS = -Wall -Wextra -Werror -g3 -I./inc
 
 SRCS = main.c \
 	paaaaarsing/redirections.c \

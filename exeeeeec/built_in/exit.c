@@ -6,11 +6,11 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 13:04:25 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/11 17:14:22 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/12 15:32:58 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
 int	is_numeric(char *str)
 {
@@ -52,12 +52,12 @@ int	ft_exit(t_token *token, t_mini *mini)
 	else if (arg->next && arg->next->type == ARG)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		return (0);
+		return (mini->exit_status = 1, 0);
 	}
 	else
 		code = ft_atoi(arg->str);
 	rb_free_all(mini->rb);
 	free(mini->rb);
 	destroy_tab(mini->env);
-	exit(code);
+	exit(code % 256);
 }
