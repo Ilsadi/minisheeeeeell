@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/16 18:22:30 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/18 19:43:03 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,20 @@ static void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini)
 {
 	char	*cmd_path;
 	char	**cmd_args;
+	int		exit_builtins;
 
 	error_fd(p);
-	handle_redirections(tokens, PIPE);
+	if (handle_redirections(tokens, PIPE) < 0)
+		return (rb_free_all(mini->rb), free(mini->rb), exit(1));
 	if (is_builtins_pipe(tokens))
 	{
 		ft_free_tab(envp);
 		close_all(p);
-		exit(builtin_with_redir(tokens, mini, p));
+		exit_builtins = builtin_with_redir(tokens, mini, p);
+		destroy_tab(mini->env);
+		rb_free_all(mini->rb);
+		free(mini->rb);
+		exit (exit_builtins);
 	}
 	cmd_args = token_to_cmd(&tokens, mini);
 	if (!cmd_args || !cmd_args[0] || cmd_args[0][0] == '\0')
@@ -74,9 +80,7 @@ static void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini)
 		free(mini->rb);
 		exit(127);
 	}
-	
 	execve(cmd_path, cmd_args, envp);
-	perror("[ft_child_pro] Erreur execve");
 	perror("execve");
 	ft_free_tab(envp);
 	free(cmd_path);

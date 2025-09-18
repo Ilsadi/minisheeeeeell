@@ -15,6 +15,14 @@
 
 static int	cd_error(t_token *token)
 {
+	if (token->next->str[0] == '-' && token->next->str[1])
+	{
+		token->next->str[2] = 0;
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(token->next->str, 2);
+		ft_putstr_fd(": invalid option\ncd: usage: cd [-L|[-P [-e]] [-@]] [dir]\n", 2);
+		return (2);
+	}
 	if (chdir(token->next->str))
 	{
 		ft_putstr_fd("cd: ", 2);
@@ -38,9 +46,13 @@ int	cd(t_token *token, t_var **var)
 		current = current->next;
 	}
 	if (mdr_args == 1)
+	{
+		if (!get_value(var, "HOME"))
+			return (ft_putstr_fd("cd: HOME not set\n", 2), 1);
 		chdir(get_value(var, "HOME"));
+	}
 	else if (mdr_args == 2)
-		cd_error(token);
+		return (cd_error(token));
 	else
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);

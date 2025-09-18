@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/11 18:48:07 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/18 20:26:50 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ static void	command_utils2(char **cmd_args, char **env,
 {
 	if (access(cmd_args[0], F_OK) != -1)
 	{
-		execve(cmd_args[0], cmd_args, env);
-		ft_putstr_fd(cmd_args[0], 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		free_command(env, mini, 1);
+		if (access(cmd_args[0], X_OK) != -1)
+		{
+			execve(cmd_args[0], cmd_args, env);
+			ft_putstr_fd(cmd_args[0], 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			free_command(env, mini, 1);
+		}
 	}
 }
 
@@ -70,7 +73,7 @@ void	ft_commands(t_mini *mini)
 	{
 		command_utils2(cmd_args, env, mini);
 		ft_putstr_fd(cmd_args[0], 2);
-		if (ft_strchr(cmd_args[0], '/'))
+		if (ft_strchr(cmd_args[0], '/') || !get_value(mini->env, "PATH"))
 			ft_putstr_fd(": No such file or directory\n", 2);
 		else
 			ft_putstr_fd(": command not found\n", 2);

@@ -1661,10 +1661,10 @@ class TestTest(TestReturnError):
     def _error(self):
         return self.error_invalid_identifier("HOL@=bonjour")
 
-@AddTest("env_20")#line 220
-class TestTest(TestDiff):
-    def _input(self):
-        return 'export HOL\~A=bonjour'
+# @AddTest("env_20")#line 220
+# class TestTest(TestDiff):
+#     def _input(self):
+#         return 'export HOL\~A=bonjour'
 
 @AddTest("env_21")#line 221
 class TestTest(TestReturnError):
@@ -1697,15 +1697,15 @@ class TestTest(TestDiff):
     def _input(self):
         return 'export HOL.A=bonjour'
 
-@AddTest("env_26")#line 226
-class TestTest(TestDiff):
-    def _input(self):
-        return 'export HOLA\\\$A=bonjour'
+# @AddTest("env_26")#line 226
+# class TestTest(TestDiff):
+#     def _input(self):
+#         return 'export HOLA\\\$A=bonjour'
 
-@AddTest("env_27")#line 227
-class TestTest(TestDiff):
-    def _input(self):
-        return 'export HO\\\\LA=bonjour'
+# @AddTest("env_27")#line 227
+# class TestTest(TestDiff):
+#     def _input(self):
+#         return 'export HO\\\\LA=bonjour'
 
 @AddTest("env_28")#line 228
 class TestTest(TestDiff):

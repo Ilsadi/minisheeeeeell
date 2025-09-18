@@ -12,10 +12,20 @@
 
 #include "minishell.h"
 
-int	pwd(void)
+int	pwd(t_token *tokens)
 {
 	char	*cwd;
+	t_token	*next;
 
+	next = tokens->next;
+	if (next && next->str[0] == '-' && next->str[1])
+	{
+		next->str[2] = 0;
+		ft_putstr_fd("pwd: ", 2);
+		ft_putstr_fd(next->str, 2);
+		ft_putstr_fd(": invalid option\npwd: usage: pwd [-LP]\n", 2);
+		return (2);
+	}
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{

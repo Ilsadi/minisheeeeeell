@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/16 20:58:17 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/18 19:42:52 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,12 +166,12 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	find_commands(&first);
 	mini->first = first;
 	// printf("%p\n", mini->first);
+	// ft_printlist(mini->first);
 	// exit(1);
 	if (!first)
 		return ;
 	if (has_pipe(first))
 	{
-		// ft_printlist(mini->first);
 		// printf("1 mini: %p\n", mini);
 		execute_pipeline(mini, p);
 		return ;
@@ -179,15 +179,17 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	else if (is_builtins(first))
 	{
 		mini->exit_status = builtin_with_redir(first, mini, p);
+		return ;
 		// builtin_with_redir(first, mini);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		setup_child_signals();
-		handle_redirections(first, -1);
+		if (handle_redirections(first, -1) < 0)
+			return (rb_free_all(mini->rb), free(mini->rb), exit(1));
 		ft_commands(mini);
-		exit(EXIT_FAILURE);
+		exit(3);
 	}
 	else if (pid > 0)
 	{
@@ -202,5 +204,6 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 			else if (sig == SIGQUIT)
 				write(1, "Quit (core dumped)\n", 20);
 		}
+		mini->exit_status = mini->exit_status / 256;
 	}
 }

@@ -146,7 +146,7 @@ int								env(t_mini *mini);
 
 // pwd.c
 
-int								pwd(void);
+int								pwd(t_token *tokens);
 
 // cd.c
 

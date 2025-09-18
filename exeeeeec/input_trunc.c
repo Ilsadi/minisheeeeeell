@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_trunc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:12:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/16 20:46:58 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/18 19:39:23 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,26 @@ static int	is_heredoc(int *pipefd, t_token *current, int *last_heredoc_pipe)
 int	handle_redirections(t_token *tokens, int stop)
 {
 	t_token	*current;
+	int		status;
 	int		pipefd[2];
 	int		last_heredoc_pipe;
 
 	last_heredoc_pipe = -1;
 	current = tokens;
+	status = 0;
 	while (current && current->type != stop)
 	{
 		if (current->type == INPUT && current->next)
-			is_input(current);
+			status = is_input(current);
 		else if (current->type == TRUNC && current->next)
-			is_trunc(current);
+			status = is_trunc(current);
 		else if (current->type == APPEND && current->next)
-			is_append(current);
+			status = is_append(current);
 		else if (current->type == HEREDOC && current->next)
-			is_heredoc(pipefd, current, &last_heredoc_pipe);
+			status = is_heredoc(pipefd, current, &last_heredoc_pipe);
 		current = current->next;
+		if (status < 0)
+			return (-1);
 	}
 	if (last_heredoc_pipe != -1)
 	{

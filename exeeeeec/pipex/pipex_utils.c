@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 17:22:37 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/10 15:45:56 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/18 17:55:01 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,20 @@ char	**var_to_envp(t_var **var)
 	int		i;
 	int		count;
 
-	count = size_var(var);
-	envp = malloc(sizeof(char *) * (count + 1));
+	envp = ft_calloc(sizeof(char *), (size_var(var) + 1));
 	if (!envp)
 		return (NULL);
-	i = 0;
-	while (var[i])
+	i = -1;
+	count = 0;
+	while (var[++i])
 	{
-		tmp = ft_strjoin(var[i]->name, "=");
-		envp[i] = ft_strjoin(tmp, var[i]->value);
-		free(tmp);
-		i++;
+		if ((var[i]->value))
+		{
+			tmp = ft_strjoin(var[i]->name, "=");
+			envp[i - count] = ft_strjoin(tmp, var[i]->value);
+			free(tmp);
+		}
+		else count += 1;
 	}
 	envp[i] = NULL;
 	return (envp);

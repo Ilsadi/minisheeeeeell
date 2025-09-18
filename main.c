@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/16 14:41:12 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/18 20:03:02 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int	main(int ac, char **av, char **envp)
 	mini = (t_mini){0};
 	// p = (t_pipex){0};
 	// ft_bzero(&mini, sizeof(t_mini));
-	mini.rb = malloc(sizeof(t_mini));
 	mini.rb = malloc(sizeof(t_rb_list));
 	mini.rb->head = NULL;
 	(void)ac;
 	(void)av;
 	mini.env = created_tab(envp);
+	update_or_add_var(&mini, "_", "/bin/env");
 	if (!mini.env)
 		return (1);
 	while (1)

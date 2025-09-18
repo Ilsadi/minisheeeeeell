@@ -101,21 +101,21 @@ int	has_pipe(t_token *tokens)
 
 static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 {
-	int status;
 	int i = 0;
 
 	while (tab_pid[i])
 	{
-		waitpid(tab_pid[i], &status, 0);
+		waitpid(tab_pid[i], &mini->exit_status, 0);
 		if (tab_pid[i + 1] == 0)
 		{
-			if (WIFEXITED(status))
-				mini->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				mini->exit_status = 128 + WTERMSIG(status);
+			if (WIFEXITED(mini->exit_status))
+				mini->exit_status = WEXITSTATUS(mini->exit_status);
+			else if (WIFSIGNALED(mini->exit_status))
+				mini->exit_status = 128 + WTERMSIG(mini->exit_status);
 			else
 				mini->exit_status = 1;
 		}
+		mini->exit_status = mini->exit_status % 256;
 		i++;
 	}
 }
