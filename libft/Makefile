@@ -6,11 +6,11 @@
 #    By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/24 12:44:34 by ilsadi            #+#    #+#              #
-#    Updated: 2025/07/22 14:21:33 by ilsadi           ###   ########.fr        #
+#    Updated: 2025/09/16 13:55:33 by ilsadi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 SRCS =  ft_isalpha.c \
 	ft_isdigit.c \

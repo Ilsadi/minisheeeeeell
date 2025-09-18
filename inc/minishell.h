@@ -26,10 +26,18 @@
 extern int						g_in_cmd;
 extern volatile sig_atomic_t	g_sig;
 
+// typedef struct s_redir
+// {
+// 	char						*str;
+// 	int							type;
+// 	struct t_redir				*next;
+// };
+
 typedef struct s_token
 {
 	char						*str;
 	int							type;
+	struct t_redir				*redir;
 	struct s_token				*next;
 }								t_token;
 
@@ -97,7 +105,7 @@ char							*find_cmd_path(char *cmd, t_mini *mini);
 // pipex_mini.c
 
 int								has_pipe(t_token *tokens);
-void							execute_pipeline(t_mini *mini);
+void							execute_pipeline(t_mini *mini, t_pipex *pipex);
 char							**token_to_cmd(t_token **current, t_mini *mini);
 
 // pipex_utils.c
@@ -111,7 +119,7 @@ char							**var_to_envp(t_var **var);
 // pipex_bonus.c
 
 void							ft_pipex_loop(t_pipex *pipex, t_token *tokens,
-									t_mini *mini);
+									t_mini *mini, pid_t *tab_pid);
 
 // pipex_utils.c
 
@@ -125,8 +133,8 @@ char							**var_to_envp(t_var **var);
 // built_in .c
 
 int								is_builtins(t_token *first);
-int								builtin_with_redir(t_token *first,
-									t_mini *mini);
+int								builtin_with_redir(t_token *first, t_mini *mini,
+									t_pipex *p);
 
 // echo.c
 
@@ -196,7 +204,7 @@ int								pars_pipe(char *str);
 
 // parsing.c
 
-void							parsing(char *str, t_mini *mini);
+void							parsing(char *str, t_mini *mini, t_pipex *p);
 void							free_token_list(t_token *token);
 void							restore_operators(char *str);
 char							*remove_quotes(const char *str, t_mini *mini);

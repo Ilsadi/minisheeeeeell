@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipex_mini.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/08/03 20:37:08 by ilsadi            #+#    #+#             */
 /*   Updated: 2025/08/03 20:37:08 by ilsadi           ###   ########.fr       */
 /*                                                                            */
@@ -12,16 +15,17 @@
 
 #include "minishell.h"
 
+
 static int	is_redir_token(int type)
 {
-	return (type == INPUT || type == TRUNC
-		|| type == APPEND || type == HEREDOC);
+	return (type == INPUT || type == TRUNC || type == APPEND
+		|| type == HEREDOC);
 }
 
 static int	count_cmd_args(t_token *start)
 {
-	t_token	*tmp;
-	int		count;
+	t_token *tmp;
+	int count;
 
 	tmp = start;
 	count = 0;
@@ -43,8 +47,8 @@ static int	count_cmd_args(t_token *start)
 
 static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
 {
-	t_token	*tmp;
-	int		i;
+	t_token *tmp;
+	int i;
 
 	tmp = start;
 	i = 0;
@@ -66,9 +70,9 @@ static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
 
 char	**token_to_cmd(t_token **current, t_mini *mini)
 {
-	t_token	*start;
-	int		count;
-	char	**cmd;
+	t_token *start;
+	int count;
+	char **cmd;
 
 	start = *current;
 	count = count_cmd_args(start);
@@ -83,43 +87,51 @@ char	**token_to_cmd(t_token **current, t_mini *mini)
 
 int	has_pipe(t_token *tokens)
 {
+	int number;
+
+	number = 0;
 	while (tokens)
 	{
 		if (tokens->type == PIPE)
-			return (1);
+			number += 1;
 		tokens = tokens->next;
 	}
-	return (0);
+	return (number);
 }
 
-static int	wait_pipeline(void)
+static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 {
-	int		status;
-	int		last_status;
-	pid_t	waited_pid;
+	int status;
+	int i = 0;
 
-	last_status = 0;
-	waited_pid = 0;
-	while (1)
+	while (tab_pid[i])
 	{
-		waited_pid = wait(&status);
-		if (waited_pid <= 0)
-			break ;
-		if (WIFEXITED(status))
-			last_status = WEXITSTATUS(status);
+		waitpid(tab_pid[i], &status, 0);
+		if (tab_pid[i + 1] == 0)
+		{
+			if (WIFEXITED(status))
+				mini->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				mini->exit_status = 128 + WTERMSIG(status);
+			else
+				mini->exit_status = 1;
+		}
+		i++;
 	}
-	return (last_status);
 }
 
-void	execute_pipeline(t_mini *mini)
+void	execute_pipeline(t_mini *mini, t_pipex *pipex)
 {
-	t_pipex	pipex;
+	pid_t *tab_pid;
 
-	ft_memset(&pipex, 0, sizeof(t_pipex));
-	pipex.infile = STDIN_FILENO;
-	pipex.outfile = STDOUT_FILENO;
+	// printf("2 mini: %p\nfirst: %p\n", mini, mini->first);
+	// ft_memset(&pipex, 0, sizeof(t_pipex));
+	// printf("3 mini: %p\nfirst: %p\n", mini, mini->first);
+	tab_pid = rb_calloc(has_pipe(mini->first) + 2, sizeof(pid_t), mini->rb);
+	pipex->infile = STDIN_FILENO;
+	pipex->outfile = STDOUT_FILENO;
 	if (mini->first && mini->first->type == PIPE)
 		mini->first = mini->first->next;
-	ft_pipex_loop(&pipex, mini->first, mini);
-	mini->exit_status = wait_pipeline();
+	ft_pipex_loop(pipex, mini->first, mini, tab_pid);
+	wait_pipeline(mini, tab_pid);
 }

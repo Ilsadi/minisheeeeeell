@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/12 17:49:39 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/16 20:58:17 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,15 @@ static void	find_commands(t_token **head)
 		{
 			first = first->next;
 			expected = 1;
+			// if (first->next)
 		}
 		first = first->next;
 	}
 }
 
-void	parsing(char *str, t_mini *mini)
+void	parsing(char *str, t_mini *mini, t_pipex *p)
 {
+	t_token	*first;
 	pid_t	pid;
 	int		sig;
 
@@ -155,30 +157,35 @@ void	parsing(char *str, t_mini *mini)
 	if (!pars_ampersand(str))
 		return ;
 	str = pars_expand(str, mini);
+	// printf("After expansion: %s\n", str);
 	restore_operators(str);
-	mini->first = tokenize(str, mini);
-	// ft_printlist(mini->first);
-	remove_empty_token(&mini->first, mini->rb);
-	remove_spaces(&mini->first);
-	find_commands(&mini->first);
-	// ft_printlist(mini->first);
-	if (!mini->first)
+	// str = remove_quotes(str, mini);
+	first = tokenize(str, mini);
+	remove_empty_token(&first, mini->rb);
+	remove_spaces(&first);
+	find_commands(&first);
+	mini->first = first;
+	// printf("%p\n", mini->first);
+	// exit(1);
+	if (!first)
 		return ;
-	if (has_pipe(mini->first))
+	if (has_pipe(first))
 	{
-		execute_pipeline(mini);
+		// ft_printlist(mini->first);
+		// printf("1 mini: %p\n", mini);
+		execute_pipeline(mini, p);
 		return ;
 	}
-	else if (is_builtins(mini->first))
+	else if (is_builtins(first))
 	{
-		builtin_with_redir(mini->first, mini);
-		return ;
+		mini->exit_status = builtin_with_redir(first, mini, p);
+		// builtin_with_redir(first, mini);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		setup_child_signals();
-		handle_redirections(mini->first, -1);
+		handle_redirections(first, -1);
 		ft_commands(mini);
 		exit(EXIT_FAILURE);
 	}
@@ -186,8 +193,6 @@ void	parsing(char *str, t_mini *mini)
 	{
 		g_in_cmd = 1;
 		waitpid(pid, &mini->exit_status, 0);
-		if (mini->exit_status > 256)
-			mini->exit_status /= 256;
 		g_in_cmd = 0;
 		if (WIFSIGNALED(mini->exit_status))
 		{

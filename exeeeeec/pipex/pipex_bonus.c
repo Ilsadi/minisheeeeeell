@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/12 16:11:15 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/16 18:22:30 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	error_fd(t_pipex *pipex)
 {
-	// fprintf(stderr, "in : %d, out : %d\n", pipex->fd_in, pipex->fd_out);
+
 	if (pipex->fd_in < 0 || pipex->fd_out < 0)
 	{
 		close_all(pipex);
@@ -22,23 +22,42 @@ static void	error_fd(t_pipex *pipex)
 	}
 	if (dup2(pipex->fd_in, 0) == -1)
 	{
+		close(pipex->fd_in);
+		pipex->fd_in = 0;
 		close_all(pipex);
 		exit(1);
 	}
 	if (dup2(pipex->fd_out, 1) == -1)
 	{
+		pipex->fd_out = 1;
 		close_all(pipex);
 		exit(1);
 	}
+	close(pipex->pipefd[0]);
+	close(pipex->pipefd[1]);
 }
 
-static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini, t_token *tokens)
+static int	is_builtins_pipe(t_token *tokens)
+{
+	while (tokens && tokens->type != CMD && tokens->type != PIPE)
+		tokens = tokens->next;
+	return (is_builtins(tokens));
+}
+
+static void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini)
 {
 	char	*cmd_path;
-	t_token	*current;
+	char	**cmd_args;
 
-	// fprintf(stderr, "start child\n");
-	current = tokens;
+	error_fd(p);
+	handle_redirections(tokens, PIPE);
+	if (is_builtins_pipe(tokens))
+	{
+		ft_free_tab(envp);
+		close_all(p);
+		exit(builtin_with_redir(tokens, mini, p));
+	}
+	cmd_args = token_to_cmd(&tokens, mini);
 	if (!cmd_args || !cmd_args[0] || cmd_args[0][0] == '\0')
 	{
 		close_all(p);
@@ -46,7 +65,6 @@ static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini,
 		ft_error_exit("Pipex: command not found\n");
 	}
 	cmd_path = find_cmd_path(cmd_args[0], mini);
-	// fprintf(stderr, "%s\n", *cmd_args);
 	if (!cmd_path)
 	{
 		close_all(p);
@@ -56,38 +74,44 @@ static void	ft_child_pro(t_pipex *p, char **cmd_args, char **envp, t_mini *mini,
 		free(mini->rb);
 		exit(127);
 	}
-	error_fd(p);
-	close_all(p);
-	if (is_builtins(current))
-		builtin_with_redir(current, mini);
-	else
-	{
-		execve(cmd_path, cmd_args, envp);
-		perror("execve");
-		free(cmd_path);
-	}
+	
+	execve(cmd_path, cmd_args, envp);
+	perror("[ft_child_pro] Erreur execve");
+	perror("execve");
+	ft_free_tab(envp);
+	free(cmd_path);
 	exit(1);
 }
 
-static void	setup_pipe(t_pipex *pipex, t_token **current)
+static void	setup_pipe(t_pipex *pipex, int to_pipe)
 {
-	if (*current && (*current)->type == PIPE)
+	if (to_pipe)
 	{
 		if (pipe(pipex->pipefd) == -1)
 			ft_error_exit("pipe error");
 		pipex->fd_out = pipex->pipefd[1];
-		*current = (*current)->next;
 	}
 	else
 		pipex->fd_out = pipex->outfile;
 }
 
-void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini)
+static void	advance_until_pipe(t_token **current)
+{
+	while (*current && (*current)->type != PIPE)
+		*current = (*current)->next;
+	if (*current)
+		*current = (*current)->next;
+}
+
+void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini, pid_t *tab_pid)
 {
 	char	**envp;
 	t_token	*current;
-	char	**current_cmd;
+	int		i;
+	int		number_of_pipes;
 
+	i = 0;
+	number_of_pipes = has_pipe(mini->first);
 	pipex->fd_in = pipex->infile;
 	envp = var_to_envp(mini->env);
 	if (!envp)
@@ -95,17 +119,17 @@ void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini)
 	current = tokens;
 	while (current)
 	{
-		current_cmd = token_to_cmd(&current, mini);
-		setup_pipe(pipex, &current);
+		setup_pipe(pipex, i < number_of_pipes);
 		pipex->pid1 = fork();
 		if (pipex->pid1 == 0)
-		{
-			ft_child_pro(pipex, current_cmd, envp, mini, current);
-		}
+			ft_child_pro(pipex, current, envp, mini);
+		tab_pid[i] = pipex->pid1;
+		advance_until_pipe(&current);
 		close_test(pipex->fd_in);
 		close_test(pipex->fd_out);
 		if (current)
 			pipex->fd_in = pipex->pipefd[0];
+		i++;
 	}
 	ft_free_tab(envp);
 }
