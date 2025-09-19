@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/18 20:26:50 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:53:28 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static void	free_command(char **env, t_mini *mini, int exit_code)
 	exit(exit_code);
 }
 
-static void	commands_utils(char *cmd_path, char **cmd_args, char **env,
-		t_mini *mini)
+static void	commands_utils(char *cmd_path, char **cmd_args, char **env, t_mini *mini)
 {
 	DIR	*dir;
 
@@ -32,14 +31,31 @@ static void	commands_utils(char *cmd_path, char **cmd_args, char **env,
 		ft_putstr_fd(cmd_args[0], 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 		closedir(dir);
-		free_command(env, mini, 126);
+		free_command(env, mini, 126); 
 	}
 	execve(cmd_path, cmd_args, env);
 	perror(cmd_path);
-	free_command(env, mini, 1);
+	free_command(env, mini, 126);  
 }
+// static void	commands_utils(char *cmd_path, char **cmd_args, char **env,
+// 		t_mini *mini)
+// {
+// 	DIR	*dir;
 
-static void	command_utils2(char **cmd_args, char **env,
+// 	dir = opendir(cmd_path);
+// 	if (dir)
+// 	{
+// 		ft_putstr_fd(cmd_args[0], 2);
+// 		ft_putstr_fd(": Is a directory\n", 2);
+// 		closedir(dir);
+// 		free_command(env, mini, 126);
+// 	}
+// 	execve(cmd_path, cmd_args, env);
+// 	perror(cmd_path);
+// 	free_command(env, mini, 1);
+// }
+
+static void command_utils2(char **cmd_args, char **env,
 		t_mini *mini)
 {
 	if (access(cmd_args[0], F_OK) != -1)
@@ -74,7 +90,9 @@ void	ft_commands(t_mini *mini)
 		command_utils2(cmd_args, env, mini);
 		ft_putstr_fd(cmd_args[0], 2);
 		if (ft_strchr(cmd_args[0], '/') || !get_value(mini->env, "PATH"))
+		{
 			ft_putstr_fd(": No such file or directory\n", 2);
+		}
 		else
 			ft_putstr_fd(": command not found\n", 2);
 		free_command(env, mini, 127);

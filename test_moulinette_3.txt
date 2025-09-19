@@ -1,0 +1,21 @@
+echo_export_13
+cd_18 ==> pas sur que celui obligatoire
+composite_1
+composite_2
+composite_3
+composite_4
+composite_5
+permissions_4 => celui pas compris
+permissions_5 => celui non plus
+more_error_7
+even_more_redirs_3 ==> tests tres pousser a voir si on garde ou pas
+even_more_redirs_6
+even_more_redirs_7
+even_more_redirs_8
+even_more_redirs_11 => celui ci segfault
+
+
+alors juste j ai rajoute limits.h => a verifier si possible
++ les signaux pas encore regle (heredoc + la globale la)
+
+

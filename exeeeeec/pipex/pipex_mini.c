@@ -16,7 +16,7 @@
 #include "minishell.h"
 
 
-static int	is_redir_token(int type)
+int	is_redir_token(int type)
 {
 	return (type == INPUT || type == TRUNC || type == APPEND
 		|| type == HEREDOC);
@@ -132,6 +132,8 @@ void	execute_pipeline(t_mini *mini, t_pipex *pipex)
 	pipex->outfile = STDOUT_FILENO;
 	if (mini->first && mini->first->type == PIPE)
 		mini->first = mini->first->next;
+	mini->in_pipeline = 1;
 	ft_pipex_loop(pipex, mini->first, mini, tab_pid);
+	mini->in_pipeline = 0;
 	wait_pipeline(mini, tab_pid);
 }

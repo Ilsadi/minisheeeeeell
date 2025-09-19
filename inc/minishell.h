@@ -9,6 +9,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <termios.h> // a verifier si autorise
+# include <limits.h> // a verifier si autorise
 
 # define CMD 1
 # define ARG 2
@@ -67,6 +68,7 @@ typedef struct s_mini
 	struct s_rb_list			*rb;
 	struct s_var				**env;
 	int							exit_status;
+	int							in_pipeline;
 }								t_mini;
 
 typedef struct s_rb_node
@@ -103,7 +105,7 @@ int								handle_redirections(t_token *tokens, int stop);
 char							*find_cmd_path(char *cmd, t_mini *mini);
 
 // pipex_mini.c
-
+int								is_redir_token(int type);
 int								has_pipe(t_token *tokens);
 void							execute_pipeline(t_mini *mini, t_pipex *pipex);
 char							**token_to_cmd(t_token **current, t_mini *mini);
