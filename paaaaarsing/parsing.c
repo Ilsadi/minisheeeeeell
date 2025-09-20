@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/19 18:23:08 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/20 20:55:22 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,37 @@ static void	remove_spaces(t_token **head)
 	}
 }
 
+// static void	remove_empty_token(t_token **head, t_rb_list *rb)
+// {
+// 	t_token	*first;
+// 	t_token	*tmp;
+
+// 	first = *head;
+// 	if (!head || !*head)
+// 		return ;
+// 	while (first && first->next)
+// 	{
+// 		tmp = first->next;
+// 		if (first->type == ARG && tmp->type == ARG)
+// 		{
+// 			first->str = rb_strfreejoin(first->str, tmp->str, rb);
+// 			first->next = tmp->next;
+// 			continue ;
+// 		}
+// 		first = first->next;
+// 	}
+// }
+
+int	str_ends_with_slash(char *s)
+{
+	int	len;
+
+	if (!s)
+		return (0);
+	len = ft_strlen(s);
+	return (len > 0 && s[len - 1] == '/');
+}
+
 static void	remove_empty_token(t_token **head, t_rb_list *rb)
 {
 	t_token	*first;
@@ -104,7 +135,9 @@ static void	remove_empty_token(t_token **head, t_rb_list *rb)
 	while (first && first->next)
 	{
 		tmp = first->next;
-		if (first->type == ARG && tmp->type == ARG)
+
+		// Empêche de concaténer si le premier se termine par /
+		if (first->type == ARG && tmp->type == ARG && !str_ends_with_slash(first->str))
 		{
 			first->str = rb_strfreejoin(first->str, tmp->str, rb);
 			first->next = tmp->next;
@@ -114,14 +147,46 @@ static void	remove_empty_token(t_token **head, t_rb_list *rb)
 	}
 }
 
-static void	find_commands(t_token **head)
+// static void	find_commands(t_token **head)
+// {
+// 	t_token	*first;
+// 	int		expected;
+
+// 	first = *head;
+// 	if (!head || !*head)
+// 		return ;
+// 	expected = 1;
+// 	while (first)
+// 	{
+// 		if (first->type == ARG && expected)
+// 		{
+// 			first->type = CMD;
+// 			expected = 0;
+// 		}
+// 		else if (first->type == PIPE)
+// 			expected = 1;
+// 		else if (first->type >= HEREDOC)
+// 		{
+// 			if (!first->next)
+// 			{
+// 				ft_putstr_fd("ambiguous redirect\n", 2);
+// 				return ;
+// 			}
+// 			first = first->next;
+// 			expected = 1;
+// 		}
+// 		first = first->next;
+// 	}
+// }
+
+static int	find_commands(t_token **head, t_mini *mini)
 {
 	t_token	*first;
 	int		expected;
 
 	first = *head;
 	if (!head || !*head)
-		return ;
+		return (0);
 	expected = 1;
 	while (first)
 	{
@@ -134,13 +199,20 @@ static void	find_commands(t_token **head)
 			expected = 1;
 		else if (first->type >= HEREDOC)
 		{
+			if (!first->next || !first->next->str || first->next->str[0] == '\0')
+			{
+				ft_putstr_fd("$e: ambiguous redirect\n", 2);
+				mini->exit_status = 1;  // ✅ mettre le bon code d'erreur
+				return (1);             // ✅ signaler qu'on a eu une erreur
+			}
 			first = first->next;
 			expected = 1;
-			// if (first->next)
 		}
 		first = first->next;
 	}
+	return (0);
 }
+
 
 void	parsing(char *str, t_mini *mini, t_pipex *p)
 {
@@ -157,14 +229,20 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	if (!pars_ampersand(str))
 		return ;
 	str = pars_expand(str, mini);
-	// printf("After expansion: %s\n", str);
 	restore_operators(str);
 	// str = remove_quotes(str, mini);
 	first = tokenize(str, mini);
+	// expand_tokens(&first, mini);
+	
 	remove_empty_token(&first, mini->rb);
 	remove_spaces(&first);
-	find_commands(&first);
-	mini->first = first;
+	// find_commands(&first, mini);
+	if (find_commands(&first, mini))
+	{
+		mini->first = NULL;
+		return;
+	}	
+		mini->first = first;
 	// printf("%p\n", mini->first);
 	// ft_printlist(mini->first);
 	// exit(1);
@@ -187,7 +265,9 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	{
 		setup_child_signals();
 		if (handle_redirections(first, -1) < 0)
+		{
 			return (rb_free_all(mini->rb), free(mini->rb), exit(1));
+		}
 		ft_commands(mini);
 		exit(3);
 	}
@@ -207,3 +287,4 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 		mini->exit_status = mini->exit_status / 256;
 	}
 }
+

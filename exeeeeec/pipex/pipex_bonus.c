@@ -6,36 +6,36 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/19 21:30:28 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/20 20:20:48 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	error_fd(t_pipex *pipex)
-{
+// static void	error_fd(t_pipex *pipex)
+// {
 
-	if (pipex->fd_in < 0 || pipex->fd_out < 0)
-	{
-		close_all(pipex);
-		exit(1);
-	}
-	if (dup2(pipex->fd_in, 0) == -1)
-	{
-		close(pipex->fd_in);
-		pipex->fd_in = 0;
-		close_all(pipex);
-		exit(1);
-	}
-	if (dup2(pipex->fd_out, 1) == -1)
-	{
-		pipex->fd_out = 1;
-		close_all(pipex);
-		exit(1);
-	}
-	close(pipex->pipefd[0]);
-	close(pipex->pipefd[1]);
-}
+// 	if (pipex->fd_in < 0 || pipex->fd_out < 0)
+// 	{
+// 		close_all(pipex);
+// 		exit(1);
+// 	}
+// 	if (dup2(pipex->fd_in, 0) == -1)
+// 	{
+// 		close(pipex->fd_in);
+// 		pipex->fd_in = 0;
+// 		close_all(pipex);
+// 		exit(1);
+// 	}
+// 	if (dup2(pipex->fd_out, 1) == -1)
+// 	{
+// 		pipex->fd_out = 1;
+// 		close_all(pipex);
+// 		exit(1);
+// 	}
+// 	close(pipex->pipefd[0]);
+// 	close(pipex->pipefd[1]);
+// }
 
 static int	is_builtins_pipe(t_token *tokens)
 {
@@ -54,6 +54,27 @@ static int redirection_before_pipe(t_token *tokens)
     }
     return 0;
 }
+
+int	has_input_redirection(t_token *tokens)
+{
+	while (tokens && tokens->type != PIPE)
+	{
+		if (tokens->type == INPUT || tokens->type == HEREDOC)
+			return (1);
+		tokens = tokens->next;
+	}
+	return (0);
+}
+int	has_output_redirection(t_token *tokens)
+{
+	while (tokens && tokens->type != PIPE)
+	{
+		if (tokens->type == APPEND || tokens->type == TRUNC)
+			return (1);
+		tokens = tokens->next;
+	}
+	return (0);
+}
 static void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini)
 {
 	char	*cmd_path;
@@ -62,9 +83,42 @@ static void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini)
 	int		redir_only_before_pipe;
 	int		redir_only;
 
-	error_fd(p);
+	// error_fd(p);
 	if (handle_redirections(tokens, PIPE) < 0)
 		return (rb_free_all(mini->rb), free(mini->rb), exit(1));
+
+	if (!has_input_redirection(tokens))
+	{
+		if (p->fd_in < 0)
+		{
+			close_all(p);
+			exit(1);
+		}
+		if (dup2(p->fd_in, STDIN_FILENO) == -1)
+		{
+			close(p->fd_in);
+			close_all(p);
+			exit(1);
+		}
+	}
+
+	if (!has_output_redirection(tokens))
+	{
+		if (p->fd_out < 0)
+		{
+			close_all(p);
+			exit(1);
+		}
+		if (dup2(p->fd_out, STDOUT_FILENO) == -1)
+		{
+			close_all(p);
+			exit(1);
+		}
+	}
+	close(p->pipefd[0]);
+	close(p->pipefd[1]);
+	
+	// error_fd(p);
 	if (is_builtins_pipe(tokens))
 	{
 		ft_free_tab(envp);
@@ -168,4 +222,61 @@ void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini, pid_t *tab_pid
 	}
 	ft_free_tab(envp);
 }
+
+// void	ft_pipex_loop(t_pipex *pipex, t_token *tokens, t_mini *mini, pid_t *tab_pid)
+// {
+// 	char	**envp;
+// 	t_token	*current;
+// 	int		i;
+// 	int		number_of_pipes;
+
+// 	i = 0;
+// 	number_of_pipes = has_pipe(mini->first);
+// 	pipex->fd_in = pipex->infile;
+// 	envp = var_to_envp(mini->env);
+// 	if (!envp)
+// 		ft_error_exit("Error: var_to_envp");
+// 	current = tokens;
+// 	while (current)
+// 	{
+// 		t_token *segment_start = current;
+// 		t_token *segment_end = current;
+
+// 		// Avance jusqu’au prochain pipe ou fin
+// 		while (segment_end && segment_end->type != PIPE)
+// 			segment_end = segment_end->next;
+
+// 		// On isole le segment en coupant temporairement
+// 		if (segment_end)
+// 		{
+// 			t_token *next = segment_end->next;
+// 			segment_end->next = NULL;
+
+// 			setup_pipe(pipex, i < number_of_pipes);
+// 			pipex->pid1 = fork();
+// 			if (pipex->pid1 == 0)
+// 				ft_child_pro(pipex, segment_start, envp, mini);
+// 			tab_pid[i] = pipex->pid1;
+
+// 			segment_end->next = next; // restaure la liste
+// 			current = next;
+// 		}
+// 		else
+// 		{
+// 			setup_pipe(pipex, i < number_of_pipes);
+// 			pipex->pid1 = fork();
+// 			if (pipex->pid1 == 0)
+// 				ft_child_pro(pipex, segment_start, envp, mini);
+// 			tab_pid[i] = pipex->pid1;
+
+// 			current = NULL;
+// 		}
+// 		close_test(pipex->fd_in);
+// 		close_test(pipex->fd_out);
+// 		if (current)
+// 			pipex->fd_in = pipex->pipefd[0];
+// 		i++;
+// 	}
+// 	ft_free_tab(envp);
+// }
 

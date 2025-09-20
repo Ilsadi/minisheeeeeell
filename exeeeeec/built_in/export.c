@@ -6,12 +6,11 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:48:21 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/18 19:23:30 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/20 20:51:43 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 t_var	**add_var(t_var **tab, t_var *new_var)
 {

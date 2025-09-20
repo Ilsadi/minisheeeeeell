@@ -1,21 +1,37 @@
 echo_export_13
-cd_18 ==> pas sur que celui obligatoire
-composite_1
-composite_2
-composite_3
-composite_4
-composite_5
-permissions_4 => celui pas compris
-permissions_5 => celui non plus
+cd_18 ==> celui la il passe quand il est lance tout seul
+permissions_4
+permissions_5
 more_error_7
-even_more_redirs_3 ==> tests tres pousser a voir si on garde ou pas
+even_more_redirs_3
 even_more_redirs_6
 even_more_redirs_7
 even_more_redirs_8
-even_more_redirs_11 => celui ci segfault
+
+
 
 
 alors juste j ai rajoute limits.h => a verifier si possible
 + les signaux pas encore regle (heredoc + la globale la)
+
+pour essayer de normer, les fichiers/fonctions les + longues et sensibles:
+.export 
+.cd
+
+dans pipex:
+.ft_child_pro
+
+dans parsing:
+.pars_expand
+.parsing (mais attention a celle la!! delicat)
+.pars_redir
+.tokenize
+
+la suis en train de fixe les even_more_redir; peut etre ce serais pas mal de faire un prev, dans la structure de token?
+
+.la tokenisation bcp change
+.parsing un peu mais pas tant 
+.pipex bonus bcp
+
 
 

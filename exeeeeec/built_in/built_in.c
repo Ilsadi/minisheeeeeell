@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/19 20:44:25 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/20 00:28:23 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	builtin_with_redir(t_token *first, t_mini *mini, t_pipex *p)
 	else if (ft_strcmp(first->str, "unset") == 0)
 		ret = unset(first, mini);
 	else if (ft_strcmp(first->str, "cd") == 0)
-		ret = cd(first, mini->env);
+		ret = cd(first, mini);
 	else if (ft_strcmp(first->str, "pwd") == 0)
 		ret = pwd(first);
 	else if (ft_strcmp(first->str, "echo") == 0)

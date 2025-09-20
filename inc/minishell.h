@@ -152,7 +152,7 @@ int								pwd(t_token *tokens);
 
 // cd.c
 
-int								cd(t_token *token, t_var **var);
+int								cd(t_token *token, t_mini *mini);
 
 // unset.c
 
@@ -160,7 +160,7 @@ t_var							**unset_var(t_var **tab, char *name);
 int								unset(t_token *token, t_mini *mini);
 
 // export.c
-
+void							expand_tokens(t_token **tokens, t_mini *mini);
 void							update_or_add_var(t_mini *mini, char *name,
 									char *value);
 t_var							**add_var(t_var **tab, t_var *new_var);
@@ -205,7 +205,7 @@ int								pars_slash(char *str);
 int								pars_pipe(char *str);
 
 // parsing.c
-
+int								str_ends_with_slash(char *s);
 void							parsing(char *str, t_mini *mini, t_pipex *p);
 void							free_token_list(t_token *token);
 void							restore_operators(char *str);
