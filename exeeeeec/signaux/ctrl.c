@@ -7,20 +7,26 @@
 // EOF (Ctrl+D) : Indique la fin de l'entrée standard
 
 volatile sig_atomic_t g_sig = 0; // Variable atomique pour les signaux
-int g_in_cmd = 0; // Variable pour suivre si nous sommes dans une commande
+// int g_in_cmd = 0; // Variable pour suivre si nous sommes dans une commande
 //sig_atomic_t => permet de l'atomicite, c est a dire pas d interruption pendant l'execution
+
+// void sigint_handler(int sig)
+// {
+// 	(void)sig;
+// 	g_sig = SIGINT;
+// 	if (!g_in_cmd)  // Si on n'est PAS dans une commande (au prompt)
+// 	{
+// 		write(STDOUT_FILENO, "\n", 1); // Affiche un saut de ligne
+// 		// rl_replace_line("", 0); // Remplace la ligne courante dans readline
+// 		rl_on_new_line(); // Passe à la nouvelle ligne
+// 		rl_redisplay(); // Redessine la ligne courante
+// 	}
+// }
 
 void sigint_handler(int sig)
 {
 	(void)sig;
 	g_sig = SIGINT;
-	if (!g_in_cmd)  // Si on n'est PAS dans une commande (au prompt)
-	{
-		write(STDOUT_FILENO, "\n", 1); // Affiche un saut de ligne
-		rl_replace_line("", 0); // Remplace la ligne courante dans readline
-		rl_on_new_line(); // Passe à la nouvelle ligne
-		rl_redisplay(); // Redessine la ligne courante
-	}
 }
 
 void setup_signals(void)

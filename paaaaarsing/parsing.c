@@ -273,9 +273,9 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	}
 	else if (pid > 0)
 	{
-		g_in_cmd = 1;
-		waitpid(pid, &mini->exit_status, 0);
-		g_in_cmd = 0;
+		// g_in_cmd = 1;
+		// waitpid(pid, &mini->exit_status, 0);
+		// g_in_cmd = 0;
 		if (WIFSIGNALED(mini->exit_status))
 		{
 			sig = WTERMSIG(mini->exit_status);

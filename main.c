@@ -33,6 +33,14 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	while (1)
 	{
+		if (g_sig == SIGINT)
+		{
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_on_new_line();
+			rl_redisplay();
+			g_sig = 0;
+		}
 		line = readline(">Minisheeeeel : ");
 		if (!line)
 		{
