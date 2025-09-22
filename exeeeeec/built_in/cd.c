@@ -19,7 +19,7 @@ static int	cd_error(t_token *token)
 		token->next->str[2] = 0;
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(token->next->str, 2);
-		ft_putstr_fd(": invalid option\ncd: usage:"
+		ft_putstr_fd(": invalid option\ncd: usage: "
 			"cd [-L|[-P [-e]] [-@]] [dir]\n", 2);
 		return (2);
 	}

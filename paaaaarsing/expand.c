@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:52:04 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/22 16:14:24 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/22 19:59:15 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ static int	expand_invalid_name(t_exp *exp, char *str, t_mini *mini)
 
 static void	expand_utils(t_exp *exp, t_mini *mini, char *str)
 {
+	int	i;
+
+	i = -1;
 	if (exp->i == exp->start)
 	{
 		dollar_no_var(exp, str, mini);
@@ -101,7 +104,12 @@ static void	expand_utils(t_exp *exp, t_mini *mini, char *str)
 	exp->varname = rb_substr(str, exp->start, exp->i - exp->start, mini->rb);
 	exp->tmp = get_value(mini->env, exp->varname);
 	if (exp->tmp)
+	{
+		while (exp->tmp[++i])
+			if (char_is_operator(exp->tmp[i]))
+				exp->tmp[i] *= -1;
 		exp->result = rb_strfreejoin(exp->result, exp->tmp, mini->rb);
+	}
 	exp->last_pos = exp->i;
 }
 

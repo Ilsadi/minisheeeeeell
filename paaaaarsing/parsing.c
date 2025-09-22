@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/22 16:12:47 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/22 19:57:48 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,27 @@ static void	remove_empty_token(t_token **head, t_rb_list *rb)
 // 	}
 // }
 
+static void get_good_value(t_token **first)
+{
+	t_token *value;
+	int i;
+	
+	value = *first;
+	while(value)
+	{
+		if (value->type == ARG)
+		{
+			i = 0;
+			while (value->str[i])
+			{
+				if (value->str[i] < 0)
+					value->str[i] *= -1;
+				i++;
+			}
+		}
+		value = value->next;	
+	}
+}
 static int	find_commands(t_token **head, t_mini *mini)
 {
 	t_token	*first;
@@ -236,6 +257,7 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	
 	remove_empty_token(&first, mini->rb);
 	remove_spaces(&first);
+	get_good_value(&first);	
 	// find_commands(&first, mini);
 	if (find_commands(&first, mini))
 	{
