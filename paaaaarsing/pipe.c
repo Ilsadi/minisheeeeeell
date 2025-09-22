@@ -6,19 +6,18 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:04:13 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/17 15:14:40 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/22 16:32:09 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	pars_pipe(char *str)
+
+static int	error_pipe(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
 	if (str[i] == '|' && str[i + 1] == '|')
 	{
 		ft_putstr_fd("syntax error near unexpected token `||'\n", 2);
@@ -29,6 +28,17 @@ int	pars_pipe(char *str)
 		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 		return (0);
 	}
+	return (1);
+}
+int	pars_pipe(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	if (!error_pipe(str))
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '|')

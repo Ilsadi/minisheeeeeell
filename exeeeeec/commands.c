@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/20 17:07:06 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/22 17:29:39 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	free_command(char **env, t_mini *mini, int exit_code)
 	exit(exit_code);
 }
 
-static void	commands_utils(char *cmd_path, char **cmd_args, char **env, t_mini *mini)
+static void	commands_utils(char *cmd_path, char **cmd_args,
+		char **env, t_mini *mini)
 {
 	DIR	*dir;
 
@@ -31,31 +32,15 @@ static void	commands_utils(char *cmd_path, char **cmd_args, char **env, t_mini *
 		ft_putstr_fd(cmd_args[0], 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 		closedir(dir);
-		free_command(env, mini, 126); 
+		free_command(env, mini, 126);
 	}
 	execve(cmd_path, cmd_args, env);
 	perror(cmd_path);
-	free_command(env, mini, 126);  
+	free_command(env, mini, 126);
 }
-// static void	commands_utils(char *cmd_path, char **cmd_args, char **env,
-// 		t_mini *mini)
-// {
-// 	DIR	*dir;
 
-// 	dir = opendir(cmd_path);
-// 	if (dir)
-// 	{
-// 		ft_putstr_fd(cmd_args[0], 2);
-// 		ft_putstr_fd(": Is a directory\n", 2);
-// 		closedir(dir);
-// 		free_command(env, mini, 126);
-// 	}
-// 	execve(cmd_path, cmd_args, env);
-// 	perror(cmd_path);
-// 	free_command(env, mini, 1);
-// }
 
-static void command_utils2(char **cmd_args, char **env,
+static void	command_utils2(char **cmd_args, char **env,
 		t_mini *mini)
 {
 	if (access(cmd_args[0], F_OK) != -1)

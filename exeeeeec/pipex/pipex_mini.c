@@ -24,8 +24,8 @@ int	is_redir_token(int type)
 
 static int	count_cmd_args(t_token *start)
 {
-	t_token *tmp;
-	int count;
+	t_token	*tmp;
+	int		count;
 
 	tmp = start;
 	count = 0;
@@ -47,8 +47,8 @@ static int	count_cmd_args(t_token *start)
 
 static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
 {
-	t_token *tmp;
-	int i;
+	t_token	*tmp;
+	int		i;
 
 	tmp = start;
 	i = 0;
@@ -70,9 +70,9 @@ static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
 
 char	**token_to_cmd(t_token **current, t_mini *mini)
 {
-	t_token *start;
-	int count;
-	char **cmd;
+	t_token	*start;
+	int		count;
+	char	**cmd;
 
 	start = *current;
 	count = count_cmd_args(start);
@@ -87,7 +87,7 @@ char	**token_to_cmd(t_token **current, t_mini *mini)
 
 int	has_pipe(t_token *tokens)
 {
-	int number;
+	int	number;
 
 	number = 0;
 	while (tokens)
@@ -101,8 +101,9 @@ int	has_pipe(t_token *tokens)
 
 static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (tab_pid[i])
 	{
 		waitpid(tab_pid[i], &mini->exit_status, 0);
@@ -122,11 +123,8 @@ static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 
 void	execute_pipeline(t_mini *mini, t_pipex *pipex)
 {
-	pid_t *tab_pid;
+	pid_t	*tab_pid;
 
-	// printf("2 mini: %p\nfirst: %p\n", mini, mini->first);
-	// ft_memset(&pipex, 0, sizeof(t_pipex));
-	// printf("3 mini: %p\nfirst: %p\n", mini, mini->first);
 	tab_pid = rb_calloc(has_pipe(mini->first) + 2, sizeof(pid_t), mini->rb);
 	pipex->infile = STDIN_FILENO;
 	pipex->outfile = STDOUT_FILENO;

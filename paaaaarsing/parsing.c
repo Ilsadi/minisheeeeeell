@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/20 20:55:22 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/22 16:12:47 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,7 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	else if (pid > 0)
 	{
 		// g_in_cmd = 1;
-		// waitpid(pid, &mini->exit_status, 0);
+		waitpid(pid, &mini->exit_status, 0);
 		// g_in_cmd = 0;
 		if (WIFSIGNALED(mini->exit_status))
 		{
