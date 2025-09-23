@@ -15,14 +15,7 @@
 
 #include "minishell.h"
 
-
-int	is_redir_token(int type)
-{
-	return (type == INPUT || type == TRUNC || type == APPEND
-		|| type == HEREDOC);
-}
-
-static int	count_cmd_args(t_token *start)
+int	count_cmd_args(t_token *start)
 {
 	t_token	*tmp;
 	int		count;
@@ -45,7 +38,7 @@ static int	count_cmd_args(t_token *start)
 	return (count);
 }
 
-static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
+void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
 {
 	t_token	*tmp;
 	int		i;
@@ -66,23 +59,6 @@ static void	fill_cmd_args(char **cmd, t_token *start, t_mini *mini)
 		tmp = tmp->next;
 	}
 	cmd[i] = NULL;
-}
-
-char	**token_to_cmd(t_token **current, t_mini *mini)
-{
-	t_token	*start;
-	int		count;
-	char	**cmd;
-
-	start = *current;
-	count = count_cmd_args(start);
-	cmd = rb_calloc(count + 1, sizeof(char *), mini->rb);
-	if (!cmd)
-		return (NULL);
-	fill_cmd_args(cmd, start, mini);
-	while (*current && (*current)->type != PIPE)
-		*current = (*current)->next;
-	return (cmd);
 }
 
 int	has_pipe(t_token *tokens)

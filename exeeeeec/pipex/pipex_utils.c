@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 17:22:37 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/18 17:55:01 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/23 21:16:07 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,6 @@ void	ft_error_exit(const char *msg)
 	exit(127);
 }
 
-int	choose_out(t_pipex *pipex)
-{
-	if (pipex->cmd2)
-		return (pipex->pipefd[1]);
-	else
-		return (pipex->outfile);
-}
-
 char	**var_to_envp(t_var **var)
 {
 	char	**envp;
@@ -62,7 +54,8 @@ char	**var_to_envp(t_var **var)
 			envp[i - count] = ft_strjoin(tmp, var[i]->value);
 			free(tmp);
 		}
-		else count += 1;
+		else
+			count += 1;
 	}
 	envp[i] = NULL;
 	return (envp);

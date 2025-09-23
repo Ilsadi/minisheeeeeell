@@ -6,11 +6,34 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 19:34:11 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/19 16:59:06 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/23 21:23:55 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_redir_token(int type)
+{
+	return (type == INPUT || type == TRUNC || type == APPEND
+		|| type == HEREDOC);
+}
+
+char	**token_to_cmd(t_token **current, t_mini *mini)
+{
+	t_token	*start;
+	int		count;
+	char	**cmd;
+
+	start = *current;
+	count = count_cmd_args(start);
+	cmd = rb_calloc(count + 1, sizeof(char *), mini->rb);
+	if (!cmd)
+		return (NULL);
+	fill_cmd_args(cmd, start, mini);
+	while (*current && (*current)->type != PIPE)
+		*current = (*current)->next;
+	return (cmd);
+}
 
 static char	*find_cmd_in_paths(char **paths, char *cmd, t_mini *mini)
 {
@@ -30,7 +53,7 @@ static char	*find_cmd_in_paths(char **paths, char *cmd, t_mini *mini)
 	return (NULL);
 }
 
-static char	*handle_path_cmd(char *cmd,t_mini *mini)
+static	char	*handle_path_cmd(char *cmd, t_mini *mini)
 {
 	if (access(cmd, F_OK) == 0)
 		return (rb_strdup(cmd, mini->rb));

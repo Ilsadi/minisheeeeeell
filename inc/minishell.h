@@ -90,6 +90,35 @@ typedef struct s_export_ctx
 	int		status;
 }			t_export_ctx;
 
+typedef struct s_child_ctx
+{
+	t_pipex	*p;
+	t_token	*tokens;
+	t_mini	*mini;
+	char	**envp;
+	char	**cmd_args;
+	char	*cmd_path;
+}	t_child_ctx;
+
+typedef struct s_loop_ctx
+{
+	t_pipex		*pipex;
+	t_token		*current;
+	t_mini		*mini;
+	pid_t		*tab_pid;
+	char		**envp;
+	int			nb_pipes;
+	int			i;
+}	t_loop_ctx;
+
+typedef struct s_loop_init
+{
+	t_pipex	*pipex;
+	t_token	*tokens;
+	t_mini	*mini;
+	pid_t	*tab_pid;
+}	t_loop_init;
+
 //		EXEEEEEC
 
 //	signaux
@@ -114,6 +143,8 @@ int								handle_redirections(t_token *tokens, int stop);
 char							*find_cmd_path(char *cmd, t_mini *mini);
 
 // pipex_mini.c
+void							fill_cmd_args(char **cmd, t_token *start, t_mini *mini);
+int								count_cmd_args(t_token *start);
 int								is_redir_token(int type);
 int								has_pipe(t_token *tokens);
 void							execute_pipeline(t_mini *mini, t_pipex *pipex);
@@ -128,7 +159,7 @@ int								choose_out(t_pipex *pipex);
 char							**var_to_envp(t_var **var);
 
 // pipex_bonus.c
-
+void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini);
 void							ft_pipex_loop(t_pipex *pipex, t_token *tokens,
 									t_mini *mini, pid_t *tab_pid);
 

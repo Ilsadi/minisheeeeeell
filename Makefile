@@ -22,6 +22,7 @@ SRCS = main.c \
 	exeeeeec/built_in/unset.c \
 	exeeeeec/built_in/export.c \
 	exeeeeec/pipex/pipex_bonus.c \
+	exeeeeec/pipex/pipex_loop.c \
 	exeeeeec/pipex/pipex_utils.c \
 	exeeeeec/pipex/pipex_mini.c \
 	exeeeeec/pipex/pipex_pars.c \
