@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/22 19:57:48 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/23 17:38:07 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ void	parsing(char *str, t_mini *mini, t_pipex *p)
 	if (!pars_ampersand(str))
 		return ;
 	str = pars_expand(str, mini);
-	restore_operators(str);
+	// restore_operators(str);
 	// str = remove_quotes(str, mini);
 	first = tokenize(str, mini);
 	// expand_tokens(&first, mini);

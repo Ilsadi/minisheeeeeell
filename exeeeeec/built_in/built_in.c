@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:44:18 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/22 19:41:16 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/23 17:52:21 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	builtin_with_redir(t_token *first, t_mini *mini, t_pipex *p)
 	(void)p;
 	ret = 0;
 	if (ft_strcmp(first->str, "exit") == 0)
-		return(ft_exit(first, mini));
+		return (ft_exit(first, mini));
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (handle_redirections(first, -1) < 0)

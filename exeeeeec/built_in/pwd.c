@@ -52,11 +52,11 @@ int	pwd(t_token *tokens)
 		ft_putstr_fd(": invalid option\npwd: usage: pwd [-LP]\n", 2);
 		return (2);
 	}
-
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_putstr_fd("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
+		ft_putstr_fd("pwd: error retrieving current directory: "
+			"getcwd: cannot access parent directories: No such file or directory\n", 2);
 		return (1);
 	}
 	ft_printf("%s\n", cwd);

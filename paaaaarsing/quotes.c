@@ -6,13 +6,13 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:45:46 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/04 18:17:34 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/23 17:38:23 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	char_is_operator(char c)
+int	char_is_operator(char c)
 {
 	if (c == '<' || c == '>')
 		return (1);

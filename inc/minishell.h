@@ -82,6 +82,14 @@ typedef struct s_rb_list
 	t_rb_node					*head;
 }								t_rb_list;
 
+typedef struct s_export_ctx
+{
+	char	*equal_pos;
+	char	*name;
+	char	*value;
+	int		status;
+}			t_export_ctx;
+
 //		EXEEEEEC
 
 //	signaux
@@ -91,6 +99,7 @@ void							sigint_handler(int sig);
 void							setup_signals(void);
 void							setup_child_signals(void);
 int								execute_command(char **args, char **envp);
+int								print_exit_error(char *str, int code);
 
 // echo_terms.c
 void							disable_signal_echo(void);
@@ -189,6 +198,7 @@ void							is_a_directory(char *cmd);
 // quotes.c
 
 int								pars_quotes(char *str);
+int								char_is_operator(char c);
 
 // redirections.c
 
