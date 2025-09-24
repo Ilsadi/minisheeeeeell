@@ -6,20 +6,20 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 16:57:42 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/24 18:47:45 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_sigint_prompt(void)
-{
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	g_sig = 0;
-}
+// static void	handle_sigint_prompt(void)
+// {
+// 	write(1, "\n", 1);
+// 	rl_replace_line("", 0);
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// 	g_sig = 0;
+// }
 
 static void	process_nonempty_line(char *line, t_mini *mini, t_pipex *p)
 {
@@ -31,9 +31,16 @@ static void	process_nonempty_line(char *line, t_mini *mini, t_pipex *p)
 static int	shell_iteration(t_mini *mini, t_pipex *p)
 {
 	char	*line;
-
+	setup_signals();
+	
 	if (g_sig == SIGINT)
-		handle_sigint_prompt();
+		{
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_on_new_line();
+			rl_redisplay();
+			g_sig = 0;
+		}
 	line = readline(">Minisheeeeel : ");
 	if (!line)
 	{

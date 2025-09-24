@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_term.c                                        :+:      :+:    :+:   */
+/*   export_validate.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/24 20:05:09 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 20:05:10 by ilsadi           ###   ########.fr       */
+/*   Created: 2025/09/24 17:23:25 by ilsadi            #+#    #+#             */
+/*   Updated: 2025/09/24 17:59:09 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	disable_signal_echo(void)
+int	export_option_error(char *str, t_mini *mini)
 {
-	struct termios	term;
-
-	if (tcgetattr(STDIN_FILENO, &term) == -1)
-		return ;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	ft_putstr_fd("export: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": invalid option\n", 2);
+	ft_putstr_fd("export: usage: export [-fn] "
+		"[name[=value] ...] or export -p\n", 2);
+	mini->exit_status = 2;
+	return (2);
 }

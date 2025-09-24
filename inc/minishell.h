@@ -36,11 +36,11 @@ extern volatile sig_atomic_t	g_sig;
 
 typedef struct s_token
 {
-	char						*str;
-	int							type;
-	struct t_redir				*redir;
-	struct s_token				*next;
-}								t_token;
+	char							*str;
+	int								type;
+	struct t_redir					*redir;
+	struct s_token					*next;
+}t_token;
 
 typedef struct s_pipex
 {
@@ -125,6 +125,17 @@ typedef struct s_tokctx
 	t_token	**cur;
 } t_tokctx;
 
+typedef struct s_exp
+{
+	int		i;
+	int		start;
+	char	*varname;
+	char	*result;
+	char	*tmp;
+	int		last_pos;
+	int		state;
+}t_exp;
+
 //		EXEEEEEC
 
 //	signaux
@@ -196,8 +207,17 @@ int								env(t_mini *mini);
 
 int								pwd(t_token *tokens);
 
-// cd.c
+// cd helpers (split across files)
+int								handle_getcwd_error(void);
+int								count_arguments(t_token *token);
+char							*get_target_directory(t_token *token, t_mini *mini,
+									int mdr_args);
+char							*concat_paths(const char *base, const char *sub);
+char							*remove_trailing_slash(const char *path);
+char							*build_logical_path(char *target, t_mini *mini);
+int								update_pwd_variables(char *target, t_mini *mini);
 
+// cd.c
 int								cd(t_token *token, t_mini *mini);
 
 // unset.c
@@ -205,20 +225,25 @@ int								cd(t_token *token, t_mini *mini);
 t_var							**unset_var(t_var **tab, char *name);
 int								unset(t_token *token, t_mini *mini);
 
-// export.c
-void							expand_tokens(t_token **tokens, t_mini *mini);
-void							update_or_add_var(t_mini *mini, char *name,
+// export split
+void								print_export_env(t_var **env, t_mini *mini);
+void								update_or_add_var(t_mini *mini, char *name,
 									char *value);
-t_var							**add_var(t_var **tab, t_var *new_var);
+t_var								**add_var(t_var **tab, t_var *new_var);
+void								add_var_no_value(t_mini *mini, char *name);
+int								export_handle_arg(t_token *arg, t_mini *mini,
+									t_export_ctx *ctx);
+int								export_option_error(char *str, t_mini *mini);
 int								ft_export(t_token *token, t_mini *mini);
 
-// exit.c
-
+// exit split
+int								is_numeric(char *str);
+int								print_exit_error(char *str, int code);
 int								ft_exit(t_token *token, t_mini *mini);
 
 //	commands.c
 
-void							ft_commands(t_mini *mini);
+void								ft_commands(t_mini *mini);
 
 //		PAAAAAARSING
 
@@ -261,7 +286,11 @@ int								is_only_spaces(char *str);
 
 // expand.c
 
-char							*pars_expand(char *str, t_mini *mini);
+char								*pars_expand(char *str, t_mini *mini);
+void								dollar_no_var(t_exp *exp, char *str,
+									t_mini *mini);
+void								expand_utils(t_exp *exp, t_mini *mini,
+									char *str);
 
 // token.c
 
@@ -272,6 +301,16 @@ void							add_token(t_token **head, t_token **last,
 t_token							*tokenize(char *line, t_mini *mini);
 void							ft_printlist(t_token *token);
 void							free_token(t_token *token);
+
+// token constructors
+ t_token							*create_token(char *str, int type, t_mini *mini);
+void								add_token(t_token **head, t_token **last,
+									t_token *new_token);
+
+// tokenizer ops
+ t_token							*quotes(char *line, int *i, t_mini *mini);
+ t_token							*operator(char *line, int *i, t_mini *mini);
+ t_token							*tokenize(char *line, t_mini *mini);
 
 //		SETUP
 
@@ -305,5 +344,24 @@ char							*rb_itoa(int n, t_rb_list *rb);
 
 void							rb_free_all(t_rb_list *rb);
 void							*rb_malloc(size_t size, t_rb_list *rb);
+
+// pipex_child_utils.c
+void								exit_with_rb(t_mini *mini, int code);
+void								clean_exit(t_pipex *p, t_mini *mini, char **envp,
+									int code);
+void								child_prepare_io(t_pipex *p, t_token *tokens,
+									t_mini *mini);
+
+// pipex_redir_utils.c
+int									redirection_before_pipe(t_token *tokens);
+int									has_input_redirection(t_token *tokens);
+int									has_output_redirection(t_token *tokens);
+
+// redirs split
+int									is_input(t_token *current);
+int									is_trunc(t_token *current);
+int									is_append(t_token *current);
+int									is_heredoc(int *pipefd, t_token *current,
+										int *last_heredoc_pipe);
 
 #endif

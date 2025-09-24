@@ -10,23 +10,37 @@ SRCS = main.c \
 	paaaaarsing/parsing.c \
 	paaaaarsing/pipe.c \
 	paaaaarsing/expand.c \
+	paaaaarsing/expand_utils.c \
 	paaaaarsing/error.c \
 	paaaaarsing/ampersand.c \
 	paaaaarsing/token.c \
+	paaaaarsing/token_ops.c \
+	paaaaarsing/token_lex.c \
 	exeeeeec/built_in/built_in.c \
 	exeeeeec/built_in/pwd.c \
 	exeeeeec/built_in/echo.c \
 	exeeeeec/built_in/env.c \
 	exeeeeec/built_in/cd.c \
+	exeeeeec/built_in/cd_path_utils.c \
+	exeeeeec/built_in/cd_env_utils.c \
 	exeeeeec/built_in/exit.c \
+	exeeeeec/built_in/exit_numeric.c \
 	exeeeeec/built_in/unset.c \
 	exeeeeec/built_in/export.c \
+	exeeeeec/built_in/export_print.c \
+	exeeeeec/built_in/export_vars.c \
+	exeeeeec/built_in/export_assign.c \
+	exeeeeec/built_in/export_validate.c \
 	exeeeeec/pipex/pipex_bonus.c \
+	exeeeeec/pipex/pipex_child_utils.c \
+	exeeeeec/pipex/pipex_redir_utils.c \
 	exeeeeec/pipex/pipex_loop.c \
 	exeeeeec/pipex/pipex_utils.c \
 	exeeeeec/pipex/pipex_mini.c \
 	exeeeeec/pipex/pipex_pars.c \
 	exeeeeec/commands.c \
+	exeeeeec/redirs/redir_io.c \
+	exeeeeec/redirs/heredoc.c \
 	exeeeeec/input_trunc.c \
 	exeeeeec/signaux/ctrl.c \
 	exeeeeec/signaux/echo_term.c \
