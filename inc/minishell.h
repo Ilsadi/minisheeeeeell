@@ -119,6 +119,12 @@ typedef struct s_loop_init
 	pid_t	*tab_pid;
 }	t_loop_init;
 
+typedef struct s_tokctx
+{
+	t_token	**head;
+	t_token	**cur;
+} t_tokctx;
+
 //		EXEEEEEC
 
 //	signaux

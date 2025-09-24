@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_trunc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:12:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/18 19:39:23 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/24 14:58:11 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,20 @@ static int	is_heredoc(int *pipefd, t_token *current, int *last_heredoc_pipe)
 	return (1);
 }
 
+static int	process_redir(t_token *current, int pipefd[2],
+		int *last_heredoc_pipe)
+{
+	if (current->type == INPUT && current->next)
+		return (is_input(current));
+	if (current->type == TRUNC && current->next)
+		return (is_trunc(current));
+	if (current->type == APPEND && current->next)
+		return (is_append(current));
+	if (current->type == HEREDOC && current->next)
+		return (is_heredoc(pipefd, current, last_heredoc_pipe));
+	return (0);
+}
+
 int	handle_redirections(t_token *tokens, int stop)
 {
 	t_token	*current;
@@ -78,22 +92,15 @@ int	handle_redirections(t_token *tokens, int stop)
 	int		pipefd[2];
 	int		last_heredoc_pipe;
 
-	last_heredoc_pipe = -1;
 	current = tokens;
 	status = 0;
+	last_heredoc_pipe = -1;
 	while (current && current->type != stop)
 	{
-		if (current->type == INPUT && current->next)
-			status = is_input(current);
-		else if (current->type == TRUNC && current->next)
-			status = is_trunc(current);
-		else if (current->type == APPEND && current->next)
-			status = is_append(current);
-		else if (current->type == HEREDOC && current->next)
-			status = is_heredoc(pipefd, current, &last_heredoc_pipe);
-		current = current->next;
+		status = process_redir(current, pipefd, &last_heredoc_pipe);
 		if (status < 0)
 			return (-1);
+		current = current->next;
 	}
 	if (last_heredoc_pipe != -1)
 	{

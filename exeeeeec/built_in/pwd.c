@@ -55,8 +55,9 @@ int	pwd(t_token *tokens)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_putstr_fd("pwd: error retrieving current directory: "
-			"getcwd: cannot access parent directories: No such file or directory\n", 2);
+		ft_putstr_fd("pwd: error retrieving current directory: ", 2);
+		ft_putstr_fd("getcwd: cannot access parent directories: ", 2);
+		ft_putstr_fd("No such file or directory\n", 2);
 		return (1);
 	}
 	ft_printf("%s\n", cwd);

@@ -6,7 +6,7 @@
 /*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/23 17:38:07 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/24 16:46:01 by ilsadi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,27 +93,6 @@ static void	remove_spaces(t_token **head)
 	}
 }
 
-// static void	remove_empty_token(t_token **head, t_rb_list *rb)
-// {
-// 	t_token	*first;
-// 	t_token	*tmp;
-
-// 	first = *head;
-// 	if (!head || !*head)
-// 		return ;
-// 	while (first && first->next)
-// 	{
-// 		tmp = first->next;
-// 		if (first->type == ARG && tmp->type == ARG)
-// 		{
-// 			first->str = rb_strfreejoin(first->str, tmp->str, rb);
-// 			first->next = tmp->next;
-// 			continue ;
-// 		}
-// 		first = first->next;
-// 	}
-// }
-
 int	str_ends_with_slash(char *s)
 {
 	int	len;
@@ -135,9 +114,8 @@ static void	remove_empty_token(t_token **head, t_rb_list *rb)
 	while (first && first->next)
 	{
 		tmp = first->next;
-
-		// Empêche de concaténer si le premier se termine par /
-		if (first->type == ARG && tmp->type == ARG && !str_ends_with_slash(first->str))
+		if (first->type == ARG && tmp->type == ARG
+			&& !str_ends_with_slash(first->str))
 		{
 			first->str = rb_strfreejoin(first->str, tmp->str, rb);
 			first->next = tmp->next;
@@ -147,45 +125,13 @@ static void	remove_empty_token(t_token **head, t_rb_list *rb)
 	}
 }
 
-// static void	find_commands(t_token **head)
-// {
-// 	t_token	*first;
-// 	int		expected;
-
-// 	first = *head;
-// 	if (!head || !*head)
-// 		return ;
-// 	expected = 1;
-// 	while (first)
-// 	{
-// 		if (first->type == ARG && expected)
-// 		{
-// 			first->type = CMD;
-// 			expected = 0;
-// 		}
-// 		else if (first->type == PIPE)
-// 			expected = 1;
-// 		else if (first->type >= HEREDOC)
-// 		{
-// 			if (!first->next)
-// 			{
-// 				ft_putstr_fd("ambiguous redirect\n", 2);
-// 				return ;
-// 			}
-// 			first = first->next;
-// 			expected = 1;
-// 		}
-// 		first = first->next;
-// 	}
-// }
-
-static void get_good_value(t_token **first)
+static void	get_good_value(t_token **first)
 {
-	t_token *value;
-	int i;
-	
+	t_token	*value;
+	int		i;
+
 	value = *first;
-	while(value)
+	while (value)
 	{
 		if (value->type == ARG)
 		{
@@ -197,116 +143,155 @@ static void get_good_value(t_token **first)
 				i++;
 			}
 		}
-		value = value->next;	
+		value = value->next;
 	}
 }
-static int	find_commands(t_token **head, t_mini *mini)
-{
-	t_token	*first;
-	int		expected;
 
-	first = *head;
-	if (!head || !*head)
-		return (0);
-	expected = 1;
-	while (first)
+static int	is_redir_tok(int type)
+{
+	return (type >= HEREDOC);
+}
+
+static int	validate_redir_target(t_token *tok, t_mini *mini)
+{
+	if (!tok->next || !tok->next->str || tok->next->str[0] == '\0')
 	{
-		if (first->type == ARG && expected)
-		{
-			first->type = CMD;
-			expected = 0;
-		}
-		else if (first->type == PIPE)
-			expected = 1;
-		else if (first->type >= HEREDOC)
-		{
-			if (!first->next || !first->next->str || first->next->str[0] == '\0')
-			{
-				ft_putstr_fd("$e: ambiguous redirect\n", 2);
-				mini->exit_status = 1;  // ✅ mettre le bon code d'erreur
-				return (1);             // ✅ signaler qu'on a eu une erreur
-			}
-			first = first->next;
-			expected = 1;
-		}
-		first = first->next;
+		ft_putstr_fd("$e: ambiguous redirect\n", 2);
+		mini->exit_status = 1;
+		return (0);
 	}
+	return (1);
+}
+
+static int	handle_find_step(t_token **cur, int *expected, t_mini *mini)
+{
+	if ((*cur)->type == ARG && *expected)
+	{
+		(*cur)->type = CMD;
+		*expected = 0;
+	}
+	else if ((*cur)->type == PIPE)
+		*expected = 1;
+	else if (is_redir_tok((*cur)->type))
+	{
+		if (!validate_redir_target(*cur, mini))
+			return (1);
+		*expected = 1;
+		*cur = (*cur)->next;
+		return (0);
+	}
+	*cur = (*cur)->next;
 	return (0);
 }
 
+static int	find_commands(t_token **head, t_mini *mini)
+{
+	t_token	*cur;
+	int		expected;
+
+	if (!head || !*head)
+		return (0);
+	cur = *head;
+	expected = 1;
+	while (cur)
+		if (handle_find_step(&cur, &expected, mini))
+			return (1);
+	return (0);
+}
+
+static char	*prepare_input(char *str, t_mini *mini)
+{
+	if (!pars_quotes(str))
+		return (NULL);
+	if (!pars_pipe(str))
+		return (NULL);
+	if (!pars_redir(str))
+		return (NULL);
+	if (!pars_ampersand(str))
+		return (NULL);
+	return (pars_expand(str, mini));
+}
+
+static t_token	*build_tokens(char *str, t_mini *mini)
+{
+	t_token	*first;
+
+	first = tokenize(str, mini);
+	remove_empty_token(&first, mini->rb);
+	remove_spaces(&first);
+	get_good_value(&first);
+	if (find_commands(&first, mini))
+		return (NULL);
+	return (first);
+}
+
+static void	run_child_branch(t_token *first, t_mini *mini)
+{
+	setup_child_signals();
+	if (handle_redirections(first, -1) < 0)
+	{
+		rb_free_all(mini->rb);
+		free(mini->rb);
+		exit(1);
+	}
+	ft_commands(mini);
+	exit(3);
+}
+
+static void	run_parent_branch(t_mini *mini, pid_t pid)
+{
+	int	status;
+	int	sig;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		mini->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		mini->exit_status = 128 + sig;
+		if (sig == SIGQUIT)
+			write(2, "Quit (core dumped)\n", 19);
+		else if (sig == SIGINT)
+			write(2, "\n", 1);
+	}
+}
+
+static int	handle_no_fork_cases(t_token *first, t_mini *mini, t_pipex *p)
+{
+	if (has_pipe(first))
+	{
+		execute_pipeline(mini, p);
+		return (1);
+	}
+	if (is_builtins(first))
+	{
+		mini->exit_status = builtin_with_redir(first, mini, p);
+		return (1);
+	}
+	return (0);
+}
 
 void	parsing(char *str, t_mini *mini, t_pipex *p)
 {
 	t_token	*first;
 	pid_t	pid;
-	int		sig;
 
-	if (!pars_quotes(str))
+	str = prepare_input(str, mini);
+	if (!str)
 		return ;
-	if (!pars_pipe(str))
-		return ;
-	if (!pars_redir(str))
-		return ;
-	if (!pars_ampersand(str))
-		return ;
-	str = pars_expand(str, mini);
-	// restore_operators(str);
-	// str = remove_quotes(str, mini);
-	first = tokenize(str, mini);
-	// expand_tokens(&first, mini);
-	
-	remove_empty_token(&first, mini->rb);
-	remove_spaces(&first);
-	get_good_value(&first);	
-	// find_commands(&first, mini);
-	if (find_commands(&first, mini))
+	first = build_tokens(str, mini);
+	if (!first)
 	{
 		mini->first = NULL;
-		return;
-	}	
-		mini->first = first;
-	// printf("%p\n", mini->first);
-	// ft_printlist(mini->first);
-	// exit(1);
-	if (!first)
-		return ;
-	if (has_pipe(first))
-	{
-		// printf("1 mini: %p\n", mini);
-		execute_pipeline(mini, p);
 		return ;
 	}
-	else if (is_builtins(first))
-	{
-		mini->exit_status = builtin_with_redir(first, mini, p);
+	mini->first = first;
+	if (handle_no_fork_cases(first, mini, p))
 		return ;
-		// builtin_with_redir(first, mini);
-	}
 	pid = fork();
 	if (pid == 0)
-	{
-		setup_child_signals();
-		if (handle_redirections(first, -1) < 0)
-		{
-			return (rb_free_all(mini->rb), free(mini->rb), exit(1));
-		}
-		ft_commands(mini);
-		exit(3);
-	}
+		run_child_branch(first, mini);
 	else if (pid > 0)
-	{
-		// g_in_cmd = 1;
-		waitpid(pid, &mini->exit_status, 0);
-		// g_in_cmd = 0;
-		if (WIFSIGNALED(mini->exit_status))
-		{
-			sig = WTERMSIG(mini->exit_status);
-			if (sig == SIGINT)
-				write(1, "\n", 1);
-			else if (sig == SIGQUIT)
-				write(1, "Quit (core dumped)\n", 20);
-		}
-		mini->exit_status = mini->exit_status / 256;
-	}
+		run_parent_branch(mini, pid);
 }
-
