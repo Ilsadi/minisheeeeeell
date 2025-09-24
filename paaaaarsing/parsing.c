@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 18:39:40 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/24 22:13:59 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,9 @@ static void	run_parent_branch(t_mini *mini, pid_t pid)
 	int	status;
 	int	sig;
 
+	g_state = STATE_IN_CMD;
 	waitpid(pid, &status, 0);
+	g_state = STATE_IDLE;
 	if (WIFEXITED(status))
 		mini->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

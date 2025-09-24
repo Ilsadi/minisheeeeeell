@@ -10,6 +10,8 @@
 # include <sys/wait.h>
 # include <termios.h> // a verifier si autorise
 # include <limits.h> // a verifier si autorise
+# include <errno.h> // pareil verifier
+# include <setjmp.h>
 
 # define CMD 1
 # define ARG 2
@@ -20,12 +22,15 @@
 # define TRUNC 7
 # define TMP_SPACE 8
 
+#define STATE_IDLE 0 
+#define STATE_IN_CMD 1 
+#define STATE_SIGINT 2
+
 # define NOT_CMD ": command not found\n"
 # define ERROR_NEWLINE "syntax error near unexpected token `newline'\n"
 # define ERROR_ENEXPECTED_SLASH "\n"
 
-extern int						g_in_cmd;
-extern volatile sig_atomic_t	g_sig;
+extern int						g_state;
 
 // typedef struct s_redir
 // {

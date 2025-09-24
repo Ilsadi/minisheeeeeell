@@ -6,18 +6,25 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 19:07:53 by cbrice            #+#    #+#             */
-/*   Updated: 2025/09/23 19:11:50 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/24 22:37:24 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_sig = 0;
+int	g_state = 0;
 
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	g_sig = SIGINT;
+	if (g_state == STATE_IDLE)
+	{
+		g_state = STATE_SIGINT;
+		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 void	setup_signals(void)
@@ -26,7 +33,7 @@ void	setup_signals(void)
 
 	sa.sa_handler = sigint_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }

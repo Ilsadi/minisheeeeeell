@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 20:04:42 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/24 21:09:05 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_child_pro(t_pipex *p, t_token *tokens, char **envp, t_mini *mini)
 	char	**cmd_args;
 	int		redir_only;
 
+	setup_child_signals();
 	child_prepare_io(p, tokens, mini);
 	if (is_builtins_pipe(tokens))
 		clean_exit(p, mini, envp, builtin_with_redir(tokens, mini, p));

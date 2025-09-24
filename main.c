@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 18:47:45 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/24 22:19:25 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static void	handle_sigint_prompt(void)
-// {
-// 	write(1, "\n", 1);
-// 	rl_replace_line("", 0);
-// 	rl_on_new_line();
-// 	rl_redisplay();
-// 	g_sig = 0;
-// }
 
 static void	process_nonempty_line(char *line, t_mini *mini, t_pipex *p)
 {
@@ -31,17 +22,17 @@ static void	process_nonempty_line(char *line, t_mini *mini, t_pipex *p)
 static int	shell_iteration(t_mini *mini, t_pipex *p)
 {
 	char	*line;
-	setup_signals();
-	
-	if (g_sig == SIGINT)
-		{
-			write(1, "\n", 1);
-			rl_replace_line("", 0);
-			rl_on_new_line();
-			rl_redisplay();
-			g_sig = 0;
-		}
+
+	g_state = STATE_IDLE;
 	line = readline(">Minisheeeeel : ");
+	if (g_state == STATE_SIGINT)
+	{
+		mini->exit_status = 130;
+        g_state = STATE_IDLE;
+        if (line)
+            free(line);
+        return 0;
+	}
 	if (!line)
 	{
 		ft_printf("exit\n");

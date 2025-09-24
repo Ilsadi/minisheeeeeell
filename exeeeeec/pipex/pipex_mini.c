@@ -78,6 +78,7 @@ int	has_pipe(t_token *tokens)
 static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 {
 	int	i;
+	int	sig;
 
 	i = 0;
 	while (tab_pid[i])
@@ -88,7 +89,14 @@ static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 			if (WIFEXITED(mini->exit_status))
 				mini->exit_status = WEXITSTATUS(mini->exit_status);
 			else if (WIFSIGNALED(mini->exit_status))
-				mini->exit_status = 128 + WTERMSIG(mini->exit_status);
+			{
+				sig = WTERMSIG(mini->exit_status);
+				mini->exit_status = 128 + sig;
+				if (sig == SIGQUIT)
+					write(2, "Quit (core dumped)\n", 19);
+				else if (sig == SIGINT)
+					write(2, "\n", 1);
+			}
 			else
 				mini->exit_status = 1;
 		}
@@ -101,6 +109,7 @@ void	execute_pipeline(t_mini *mini, t_pipex *pipex)
 {
 	pid_t	*tab_pid;
 
+	g_state = STATE_IN_CMD;
 	tab_pid = rb_calloc(has_pipe(mini->first) + 2, sizeof(pid_t), mini->rb);
 	pipex->infile = STDIN_FILENO;
 	pipex->outfile = STDOUT_FILENO;
@@ -110,4 +119,5 @@ void	execute_pipeline(t_mini *mini, t_pipex *pipex)
 	ft_pipex_loop(pipex, mini->first, mini, tab_pid);
 	mini->in_pipeline = 0;
 	wait_pipeline(mini, tab_pid);
+	g_state = STATE_IDLE;
 }
