@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 22:19:25 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/25 17:00:05 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, char **av, char **envp)
 	t_pipex	p;
 
 	setup_signals();
-	disable_signal_echo();
+	// disable_signal_echo();
 	ft_bzero(&mini, sizeof(t_mini));
 	mini.rb = malloc(sizeof(t_rb_list));
 	if (!mini.rb)
