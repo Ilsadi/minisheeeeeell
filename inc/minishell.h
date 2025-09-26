@@ -8,7 +8,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <sys/wait.h>
-# include <termios.h> // a verifier si autorise
+// # include <termios.h> // a verifier si autorise
 # include <limits.h> // a verifier si autorise
 # include <errno.h> // pareil verifier
 # include <setjmp.h>
@@ -146,6 +146,7 @@ typedef struct s_exp
 //	signaux
 
 // ctrl.c
+void							setup_parent_signals(void);
 void							sigint_handler(int sig);
 void							setup_signals(void);
 void							setup_child_signals(void);

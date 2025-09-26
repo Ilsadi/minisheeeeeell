@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:44:26 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 22:13:59 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/26 18:51:25 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,9 @@ static void	run_parent_branch(t_mini *mini, pid_t pid)
 	int	status;
 	int	sig;
 
+	sig = 0;
+	status = 0;
+	setup_parent_signals();
 	g_state = STATE_IN_CMD;
 	waitpid(pid, &status, 0);
 	g_state = STATE_IDLE;
@@ -257,6 +260,9 @@ static void	run_parent_branch(t_mini *mini, pid_t pid)
 		else if (sig == SIGINT)
 			write(2, "\n", 1);
 	}
+	if (!sig)
+		mini->exit_status = 128 + sig;
+	setup_signals();
 }
 
 static int	handle_no_fork_cases(t_token *first, t_mini *mini, t_pipex *p)
