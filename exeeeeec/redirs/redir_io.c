@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redir_io.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 20:44:35 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 20:07:25 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/27 19:48:56 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
-#include <unistd.h>
 
 int	is_input(t_token *current)
 {

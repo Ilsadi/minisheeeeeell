@@ -7,9 +7,13 @@ CFLAGS = -Wall -Wextra -Werror -g3 -I./inc
 SRCS = main.c \
 	paaaaarsing/redirections.c \
 	paaaaarsing/quotes.c \
-	paaaaarsing/parsing.c \
 	paaaaarsing/pipe.c \
 	paaaaarsing/expand.c \
+	paaaaarsing/parsing.c \
+	paaaaarsing/pars_fork_run.c \
+	paaaaarsing/pars_utils1.c \
+	paaaaarsing/pars_utils2.c \
+	paaaaarsing/pars_utils3.c \
 	paaaaarsing/expand_utils.c \
 	paaaaarsing/error.c \
 	paaaaarsing/ampersand.c \
@@ -42,8 +46,8 @@ SRCS = main.c \
 	exeeeeec/redirs/redir_io.c \
 	exeeeeec/redirs/heredoc.c \
 	exeeeeec/input_trunc.c \
-	exeeeeec/signaux/ctrl.c \
-	exeeeeec/signaux/echo_term.c \
+	exeeeeec/signaux/signaux.c \
+	exeeeeec/signaux/signaux_heredoc.c \
 	royal_bin/royal_bin.c \
 	royal_bin/rb_utils.c\
 	royal_bin/rb_itoa.c \

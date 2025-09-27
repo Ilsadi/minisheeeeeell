@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/27 18:36:14 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/27 18:39:24 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ int	main(int ac, char **av, char **envp)
 	clear_history();
 	free(mini.rb);
 	destroy_tab(mini.env);
-	return (0);
+	return (mini.exit_status);
 }

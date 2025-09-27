@@ -8,10 +8,11 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <sys/wait.h>
-// # include <termios.h> // a verifier si autorise
+# include <fcntl.h>
 # include <limits.h> // a verifier si autorise
 # include <errno.h> // pareil verifier
 # include <setjmp.h>
+# include <unistd.h>
 
 # define CMD 1
 # define ARG 2
@@ -145,7 +146,7 @@ typedef struct s_exp
 
 //	signaux
 
-// ctrl.c
+// signaux.c
 void							setup_parent_signals(void);
 void							sigint_handler(int sig);
 void							setup_signals(void);
@@ -153,8 +154,12 @@ void							setup_child_signals(void);
 int								execute_command(char **args, char **envp);
 int								print_exit_error(char *str, int code);
 
-// echo_terms.c
-void							disable_signal_echo(void);
+// signaux_heredoc.c
+void							send_newline_to_readline(void);
+void							sigint_heredoc_handler(int sig);
+void							setup_heredoc_signals(void);
+int								handle_heredoc_interrupt(int *pipefd, int *last_heredoc_pipe);
+
 //	input_trunc.c
 
 int								handle_redirections(t_token *tokens, int stop);
@@ -282,13 +287,34 @@ int								pars_slash(char *str);
 
 int								pars_pipe(char *str);
 
-// parsing.c
-int								str_ends_with_slash(char *s);
-void							parsing(char *str, t_mini *mini, t_pipex *p);
+// pars_fork_run.c
+void							run_child_branch(t_mini *mini);
+void							run_parent_branch(t_mini *mini, pid_t pid);
+
+//pars_utils1.c
 void							free_token_list(t_token *token);
+void							free_token(t_token *token);
+void							ft_printlist(t_token *token);
 void							restore_operators(char *str);
-char							*remove_quotes(const char *str, t_mini *mini);
 int								is_only_spaces(char *str);
+
+//pars_utils2.c
+void							remove_spaces(t_token **head);
+int								str_ends_with_slash(char *s);
+void							remove_empty_token(t_token **head, t_rb_list *rb);
+void							get_good_value(t_token **first);
+int								is_redir_tok(int type);
+
+//pars_utils3.c
+int								validate_redir_target(t_token *tok, t_mini *mini);
+int								handle_find_step(t_token **cur, int *expected, t_mini *mini);
+int								find_commands(t_token **head, t_mini *mini);
+char							*prepare_input(char *str, t_mini *mini);
+t_token							*build_tokens(char *str, t_mini *mini);
+
+// parsing.c
+
+void							parsing(char *str, t_mini *mini, t_pipex *p);
 
 // expand.c
 

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 12:04:13 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 20:06:15 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/27 20:46:21 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static int	error_pipe(char *str)
 {

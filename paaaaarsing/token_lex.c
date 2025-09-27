@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_lex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:20:05 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 20:15:49 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/27 20:47:10 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static int	process_next_token(char *line, int *i, t_mini *mini,
 	return (0);
 }
 
- t_token	*tokenize(char *line, t_mini *mini)
+t_token	*tokenize(char *line, t_mini *mini)
 {
 	t_token		*head;
 	t_token		*current;
