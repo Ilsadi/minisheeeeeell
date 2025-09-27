@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:11:30 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/22 17:29:39 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/27 18:35:00 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ static void	commands_utils(char *cmd_path, char **cmd_args,
 	free_command(env, mini, 126);
 }
 
-
 static void	command_utils2(char **cmd_args, char **env,
 		t_mini *mini)
 {
+	mini = 0;
 	if (access(cmd_args[0], F_OK) != -1)
 	{
 		if (access(cmd_args[0], X_OK) != -1)

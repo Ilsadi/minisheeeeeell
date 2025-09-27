@@ -6,7 +6,7 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:41:14 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/26 18:52:11 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/27 18:36:14 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	process_nonempty_line(char *line, t_mini *mini, t_pipex *p)
 {
-	// ft_putstr_fd("nonempty\n", 2);
 	add_history(line);
 	parsing(line, mini, p);
 	rb_free_all(mini->rb);
@@ -39,7 +38,7 @@ static int	shell_iteration(t_mini *mini, t_pipex *p)
 	free(line);
 	return (0);
 }
-	
+
 static void	shell_loop(t_mini *mini, t_pipex *p)
 {
 	while (1)
