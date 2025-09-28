@@ -6,11 +6,18 @@
 /*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:05:01 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/28 16:38:38 by cbrice           ###   ########.fr       */
+/*   Updated: 2025/09/28 16:41:23 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	is_builtins_pipe(t_token *tokens)
+{
+	while (tokens && tokens->type != CMD && tokens->type != PIPE)
+		tokens = tokens->next;
+	return (is_builtins(tokens));
+}
 
 static void	check_empty_cmd(char **cmd_args, int redir_only, t_exec_data *data)
 {
