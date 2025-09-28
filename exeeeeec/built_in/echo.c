@@ -49,4 +49,3 @@ int	ft_echo(t_token *token)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
-

@@ -80,8 +80,8 @@ static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 	int	i;
 	int	sig;
 
-	i = 0;
-	while (tab_pid[i])
+	i = -1;
+	while (tab_pid[++i])
 	{
 		waitpid(tab_pid[i], &mini->exit_status, 0);
 		if (tab_pid[i + 1] == 0)
@@ -101,7 +101,6 @@ static void	wait_pipeline(t_mini *mini, pid_t *tab_pid)
 				mini->exit_status = 1;
 		}
 		mini->exit_status = mini->exit_status % 256;
-		i++;
 	}
 }
 

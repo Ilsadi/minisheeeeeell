@@ -142,6 +142,13 @@ typedef struct s_exp
 	int		state;
 }t_exp;
 
+typedef struct s_exec_data
+{
+	t_pipex	*p;
+	t_mini	*mini;
+	char	**envp;
+}	t_exec_data;
+
 //		EXEEEEEC
 
 //	signaux
@@ -323,6 +330,16 @@ void								dollar_no_var(t_exp *exp, char *str,
 									t_mini *mini);
 void								expand_utils(t_exp *exp, t_mini *mini,
 									char *str);
+
+//token_lex_utils.c
+int									is_space(char c);
+int									is_op(char c);
+int									is_quote(char c);
+int									add_tmp_space_if_needed(char *line, int i, t_mini *mini,
+										t_tokctx *ctx);
+int									handle_quote_after_op(char *line, int *i, t_mini *mini,
+										t_tokctx *ctx);
+		
 
 // token.c
 

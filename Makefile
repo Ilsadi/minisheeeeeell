@@ -19,6 +19,7 @@ SRCS = main.c \
 	paaaaarsing/ampersand.c \
 	paaaaarsing/token.c \
 	paaaaarsing/token_ops.c \
+	paaaaarsing/token_lex_utils.c \
 	paaaaarsing/token_lex.c \
 	exeeeeec/built_in/built_in.c \
 	exeeeeec/built_in/pwd.c \

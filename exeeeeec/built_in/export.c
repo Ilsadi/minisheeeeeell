@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsadi <ilsadi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cbrice <cbrice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 16:48:21 by ilsadi            #+#    #+#             */
-/*   Updated: 2025/09/24 19:45:17 by ilsadi           ###   ########.fr       */
+/*   Updated: 2025/09/28 15:48:48 by cbrice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,3 @@ int	ft_export(t_token *token, t_mini *mini)
 	mini->exit_status = ctx.status;
 	return (ctx.status);
 }
-
